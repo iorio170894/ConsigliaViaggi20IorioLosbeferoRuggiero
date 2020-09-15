@@ -7,7 +7,7 @@
     tools:context=".LoginActivity">
 
     <Button
-        android:id="@+id/buttonAvanti2"
+        android:id="@+id/buttonAccediLogin"
         style="@android:style/Widget.Material.Light.Button.Inset"
         android:layout_width="221dp"
         android:layout_height="57dp"
@@ -16,13 +16,12 @@
         android:textColor="@color/white"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.502"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.884" />
+        app:layout_constraintVertical_bias="0.838" />
 
     <EditText
-        android:id="@+id/editTextTextPassword3"
+        android:id="@+id/editTextTextPasswordLogin"
         android:layout_width="294dp"
         android:layout_height="57dp"
         android:ems="10"
@@ -30,13 +29,13 @@
         android:inputType="textPassword"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.495"
+        app:layout_constraintHorizontal_bias="0.487"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.678" />
+        app:layout_constraintVertical_bias="0.609" />
 
     <EditText
-        android:id="@+id/editTextTextEmailAddress"
+        android:id="@+id/editTextTextEmailLogin"
         android:layout_width="296dp"
         android:layout_height="56dp"
         android:ems="10"
@@ -44,9 +43,10 @@
         android:inputType="textEmailAddress"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.497"
+        app:layout_constraintHorizontal_bias="0.495"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintVertical_bias="0.447" />
 
     <ImageView
         android:id="@+id/imageView4"

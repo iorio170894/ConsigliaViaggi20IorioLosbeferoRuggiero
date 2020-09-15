@@ -7,9 +7,9 @@ import com.amazonaws.mobileconnectors.cognitoidentityprovider.CognitoUserPool;
 import com.amazonaws.regions.Regions;
 
 public class CognitoSettings {
-    private String userPoolId="us-east-2_02C92CPL8";
-    private String clientId="2eig1l17boi1jlf5scuq3gg0no";
-    private String clientSecret="1m97rjt42flej3hdqolu6f7qadk8tdck9nlt3joja7qnl9prrmpa";
+    private String userPoolId="us-east-2_mtcGMJi7C";
+    private String clientId="552i5pr5krbl9fjvj3a8riud27";
+    private String clientSecret="1nor9civ5vbe9pjrhfphjfjodqmi18h0shtn7kon5cbrboi97d1g";
     private Regions cognitoRegion=Regions.US_EAST_2;
 
     private Context context;

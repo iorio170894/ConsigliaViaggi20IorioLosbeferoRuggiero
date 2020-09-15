@@ -3,6 +3,7 @@ package com.example.tripnaples;
 import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
 
+import android.app.Dialog;
 import android.content.Intent;
 import android.os.Bundle;
 import android.os.Handler;
@@ -10,14 +11,11 @@ import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
-import android.widget.Toast;
 
 import com.amazonaws.mobileconnectors.cognitoidentityprovider.CognitoUser;
 import com.amazonaws.mobileconnectors.cognitoidentityprovider.CognitoUserAttributes;
 import com.amazonaws.mobileconnectors.cognitoidentityprovider.CognitoUserCodeDeliveryDetails;
 import com.amazonaws.mobileconnectors.cognitoidentityprovider.handlers.SignUpHandler;
-
-import static android.widget.Toast.*;
 
 public class ActivityRegistrazione extends AppCompatActivity {
 
@@ -40,9 +38,11 @@ public class ActivityRegistrazione extends AppCompatActivity {
 
         private void registerUser() {
             final EditText inputEmail = findViewById(R.id.editTextMail);
-            final EditText inputPassword = findViewById(R.id.editTextTextPassword);
+            final EditText inputPassword = findViewById(R.id.editTextTextPasswordLogin);
             final EditText inputConfermaPassword = findViewById(R.id.editTextTextConfirmPassword);
             final EditText inputNickname = findViewById(R.id.editTextNickname);
+            final EditText inputNome = findViewById(R.id.editTextNome);
+          //  final EditText inputCognome = findViewById(R.id.editTextCognome);
 
 
             //Crea un CognitoUserAttributes e un user Attributes
@@ -51,6 +51,8 @@ public class ActivityRegistrazione extends AppCompatActivity {
 
             userAttributes.addAttribute("email",String.valueOf(inputEmail.getText()));
             userAttributes.addAttribute("nickname",String.valueOf(inputNickname.getText()));
+            userAttributes.addAttribute("name",String.valueOf(inputNome.getText()));
+            //userAttributes.addAttribute("family name",String.valueOf(inputCognome.getText()));
 
             final SignUpHandler signupCallback = new SignUpHandler() {
                 @Override
@@ -64,17 +66,50 @@ public class ActivityRegistrazione extends AppCompatActivity {
                         //user è stato confermato
                         Log.i("Tag", "Registrazione avvenuta con successo... confermata");
                     }
-                  //  if (inputPassword.equals(inputConfermaPassword)) {
-                        loagindDialog.startLoadingDialog();
-                        Handler handler = new Handler();
-                        handler.postDelayed(new Runnable() {
-                            @Override
-                            public void run() {
-                                loagindDialog.dismissDialog();
-                                startActivity(new Intent(ActivityRegistrazione.this, ActivityBenvenuto.class));
-                            }
-                        }, 5000);
-                  //  }
+
+                  /*  final AlertDialog dialog = new AlertDialog.Builder(ActivityRegistrazione.this)
+                            .setTitle("Registrazione")
+                            .setMessage("Conferma la Registrazione?")
+                            .setPositiveButton("Conferma", null)
+                            .setNegativeButton("Annulla", null)
+                            .show();
+                    Button positiveButton = dialog.getButton(AlertDialog.BUTTON_POSITIVE);
+                    positiveButton.setOnClickListener(new View.OnClickListener() {
+                        @Override
+                        public void onClick(View v) {
+                            loagindDialog.startLoadingDialog();
+                            Handler handler = new Handler();
+                            handler.postDelayed(new Runnable() {
+                                @Override
+                                public void run() {
+                                    loagindDialog.dismissDialog();
+                                    startActivity(new Intent(ActivityRegistrazione.this, MainActivity.class));
+                                }
+                            }, 5000);
+                        }
+                    });*/
+                    /*loagindDialog.startLoadingDialog();
+                    Handler handler = new Handler();
+                    handler.postDelayed(new Runnable() {
+                        @Override
+                        public void run() {
+                            loagindDialog.dismissDialog();
+                            startActivity(new Intent(ActivityRegistrazione.this, MainActivity.class));
+                        }
+                    }, 5000);*/
+                    final AlertDialog dialog = new AlertDialog.Builder(ActivityRegistrazione.this)
+                            .setTitle("Registrazione")
+                            .setMessage("Registrazione avvenuta con successo")
+                            .setPositiveButton("OK", null)
+                            .show();
+                    Button positiveButton = dialog.getButton(AlertDialog.BUTTON_POSITIVE);
+                    positiveButton.setOnClickListener(new View.OnClickListener() {
+                        @Override
+                        public void onClick(View v) {
+                            startActivity(new Intent(ActivityRegistrazione.this, MainActivity.class));
+                            dialog.dismiss();
+                        }
+                    });
                 }
 
                 @Override
@@ -102,15 +137,42 @@ public class ActivityRegistrazione extends AppCompatActivity {
                        builder.show();
                    }
                    else {
-                       CognitoSettings cognitoSettings = new CognitoSettings(ActivityRegistrazione.this);
-                       cognitoSettings.getUserPool().signUpInBackground(String.valueOf(inputNickname.getText())
-                               , String.valueOf(inputPassword.getText()), userAttributes, null, signupCallback
-                       );
+                       final AlertDialog dialog = new AlertDialog.Builder(ActivityRegistrazione.this)
+                               .setTitle("Registrazione")
+                               .setMessage("Conferma la Registrazione?")
+                               .setPositiveButton("Conferma", null)
+                               .setNegativeButton("Annulla", null)
+                               .show();
+                       Button positiveButton = dialog.getButton(AlertDialog.BUTTON_POSITIVE);
+                       positiveButton.setOnClickListener(new View.OnClickListener() {
+                           @Override
+                           public void onClick(View v) {
+                               /*loagindDialog.startLoadingDialog();
+                               Handler handler = new Handler();
+                               handler.postDelayed(new Runnable() {
+                                   @Override
+                                   public void run() {
+                                       loagindDialog.dismissDialog();
+                                       //startActivity(new Intent(ActivityRegistrazione.this, MainActivity.class));
+                                   }
+                               }, 5000);*/
+                               CognitoSettings cognitoSettings = new CognitoSettings(ActivityRegistrazione.this);
+                               cognitoSettings.getUserPool().signUpInBackground(String.valueOf(inputEmail.getText())/*+String.valueOf(inputEmail.getText())*/
+                                       , String.valueOf(inputPassword.getText()), userAttributes, null, signupCallback
+                               );
+                               dialog.dismiss();
+                           }
+                       });
                         }
+
                 }
             });
         }
 
-        LoagindDialog loagindDialog = new LoagindDialog(ActivityRegistrazione.this);
+      //  LoagindDialog loagindDialog = new LoagindDialog(ActivityRegistrazione.this);
+      //      ActivityConfirmRegistration activityConfirmRegistration = new ActivityConfirmRegistration(ActivityRegistrazione.this);
+    //LoagindDialog loagindDialog = new LoagindDialog(ActivityRegistrazione.this);
+
+
 
 }
