@@ -1,14 +1,13 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
     <color name="colorPrimary">#088977</color>
-    <color name="colorPrimaryDark">#00574B</color>
+    <color name="colorPrimaryDark">#23283a</color>
     <color name="colorAccent">#081B60</color>
     <color name="primary">#E43F3F</color>
     <color name="primary_dark">#E12929</color>
     <color name="primary_darker">#CC1D1D</color>
     <color name="accent">#FFFFFF</color>
     <color name="light_pink">#ff2851</color>
-    <color name="pink" >#FC0FC0</color>
     <color name="black">#000000</color>
     <color name="jet">#222222</color>
     <color name="oil">#333333</color>
@@ -24,7 +23,6 @@
     <color name="textSub">#76818a</color>
     <color name="Tex">#404547</color>
     <color name="White">#fff</color>
-
 
     <color name="colordevider">#f1f2f4</color>
     <color name="colorbutton">#ff5254</color>

@@ -6,26 +6,57 @@
     android:layout_height="match_parent"
     tools:context=".LoginActivity">
 
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="@color/colorPrimaryDark"
+        android:orientation="vertical"
+        android:padding="50dp"
+        tools:ignore="MissingConstraints"
+        tools:layout_editor_absoluteX="25dp"
+        tools:layout_editor_absoluteY="-11dp" >
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Login"
+            android:textColor="#fff"
+            android:textSize="48sp"
+            tools:layout_editor_absoluteX="39dp"
+            tools:layout_editor_absoluteY="-12dp"/>
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Entra in ConsigliaViaggi20 app"
+            android:textColor="#fff"
+            android:textSize="20sp"
+            tools:layout_editor_absoluteX="43dp"
+            tools:layout_editor_absoluteY="91dp"/>
+    </LinearLayout>
+
     <Button
         android:id="@+id/buttonAccediLogin"
         style="@android:style/Widget.Material.Light.Button.Inset"
         android:layout_width="221dp"
         android:layout_height="57dp"
-        android:background="@drawable/rounded_button_background"
+        android:background="@drawable/buttonstylepink"
         android:text="Accedi"
         android:textColor="@color/white"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.838" />
+        app:layout_constraintVertical_bias="0.838"
+        android:drawableRight="@drawable/ic_baseline_send_24"/>
 
     <EditText
+        android:drawableLeft="@drawable/ic_baseline_lock_24"
         android:id="@+id/editTextTextPasswordLogin"
         android:layout_width="294dp"
         android:layout_height="57dp"
         android:ems="10"
-        android:hint="Password"
+        android:hint="PASSWORD"
         android:inputType="textPassword"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
@@ -35,11 +66,12 @@
         app:layout_constraintVertical_bias="0.609" />
 
     <EditText
+        android:drawableLeft="@drawable/ic_baseline_mail_24"
         android:id="@+id/editTextTextEmailLogin"
         android:layout_width="296dp"
         android:layout_height="56dp"
         android:ems="10"
-        android:hint="Email"
+        android:hint="EMAIL"
         android:inputType="textEmailAddress"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
@@ -47,17 +79,5 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
         app:layout_constraintVertical_bias="0.447" />
-
-    <ImageView
-        android:id="@+id/imageView4"
-        android:layout_width="184dp"
-        android:layout_height="157dp"
-        android:layout_marginStart="113dp"
-        android:layout_marginTop="56dp"
-        android:layout_marginEnd="114dp"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
-        app:srcCompat="@drawable/iconamessage" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>

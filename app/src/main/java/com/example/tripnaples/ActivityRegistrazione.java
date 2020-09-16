@@ -67,36 +67,7 @@ public class ActivityRegistrazione extends AppCompatActivity {
                         Log.i("Tag", "Registrazione avvenuta con successo... confermata");
                     }
 
-                  /*  final AlertDialog dialog = new AlertDialog.Builder(ActivityRegistrazione.this)
-                            .setTitle("Registrazione")
-                            .setMessage("Conferma la Registrazione?")
-                            .setPositiveButton("Conferma", null)
-                            .setNegativeButton("Annulla", null)
-                            .show();
-                    Button positiveButton = dialog.getButton(AlertDialog.BUTTON_POSITIVE);
-                    positiveButton.setOnClickListener(new View.OnClickListener() {
-                        @Override
-                        public void onClick(View v) {
-                            loagindDialog.startLoadingDialog();
-                            Handler handler = new Handler();
-                            handler.postDelayed(new Runnable() {
-                                @Override
-                                public void run() {
-                                    loagindDialog.dismissDialog();
-                                    startActivity(new Intent(ActivityRegistrazione.this, MainActivity.class));
-                                }
-                            }, 5000);
-                        }
-                    });*/
-                    /*loagindDialog.startLoadingDialog();
-                    Handler handler = new Handler();
-                    handler.postDelayed(new Runnable() {
-                        @Override
-                        public void run() {
-                            loagindDialog.dismissDialog();
-                            startActivity(new Intent(ActivityRegistrazione.this, MainActivity.class));
-                        }
-                    }, 5000);*/
+                    //custom dialog
                     final AlertDialog dialog = new AlertDialog.Builder(ActivityRegistrazione.this)
                             .setTitle("Registrazione")
                             .setMessage("Registrazione avvenuta con successo")
@@ -137,6 +108,7 @@ public class ActivityRegistrazione extends AppCompatActivity {
                        builder.show();
                    }
                    else {
+                       //custom dialog
                        final AlertDialog dialog = new AlertDialog.Builder(ActivityRegistrazione.this)
                                .setTitle("Registrazione")
                                .setMessage("Conferma la Registrazione?")
@@ -147,15 +119,7 @@ public class ActivityRegistrazione extends AppCompatActivity {
                        positiveButton.setOnClickListener(new View.OnClickListener() {
                            @Override
                            public void onClick(View v) {
-                               /*loagindDialog.startLoadingDialog();
-                               Handler handler = new Handler();
-                               handler.postDelayed(new Runnable() {
-                                   @Override
-                                   public void run() {
-                                       loagindDialog.dismissDialog();
-                                       //startActivity(new Intent(ActivityRegistrazione.this, MainActivity.class));
-                                   }
-                               }, 5000);*/
+
                                CognitoSettings cognitoSettings = new CognitoSettings(ActivityRegistrazione.this);
                                cognitoSettings.getUserPool().signUpInBackground(String.valueOf(inputEmail.getText())/*+String.valueOf(inputEmail.getText())*/
                                        , String.valueOf(inputPassword.getText()), userAttributes, null, signupCallback
@@ -169,9 +133,6 @@ public class ActivityRegistrazione extends AppCompatActivity {
             });
         }
 
-      //  LoagindDialog loagindDialog = new LoagindDialog(ActivityRegistrazione.this);
-      //      ActivityConfirmRegistration activityConfirmRegistration = new ActivityConfirmRegistration(ActivityRegistrazione.this);
-    //LoagindDialog loagindDialog = new LoagindDialog(ActivityRegistrazione.this);
 
 
 

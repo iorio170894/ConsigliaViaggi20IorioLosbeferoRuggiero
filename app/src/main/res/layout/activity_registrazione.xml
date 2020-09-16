@@ -6,12 +6,42 @@
     android:layout_height="match_parent"
     tools:context=".ActivityRegistrazione">
 
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="@color/colorPrimaryDark"
+        android:orientation="vertical"
+        android:padding="50dp"
+        tools:ignore="MissingConstraints"
+        tools:layout_editor_absoluteX="25dp"
+        tools:layout_editor_absoluteY="-11dp" >
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Registrazione"
+            android:textColor="#fff"
+            android:textSize="48sp"
+            tools:layout_editor_absoluteX="39dp"
+            tools:layout_editor_absoluteY="-12dp"/>
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Registrati ora. È gratis!"
+            android:textColor="#fff"
+            android:textSize="20sp"
+            tools:layout_editor_absoluteX="43dp"
+            tools:layout_editor_absoluteY="91dp"/>
+    </LinearLayout>
+
     <EditText
+        android:drawableLeft="@drawable/ic_baseline_perm_contact_calendar_24"
         android:id="@+id/editTextNome"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:ems="10"
-        android:hint="Nome e Cognome"
+        android:hint="NOME E COGNOME"
         android:inputType="textPersonName"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
@@ -22,11 +52,13 @@
 
     <EditText
         android:id="@+id/editTextTextConfirmPassword"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
+        android:layout_width="211dp"
+        android:layout_height="48dp"
+        android:drawableLeft="@drawable/ic_baseline_lock_24"
         android:ems="10"
-        android:hint="Conferma Password"
+        android:hint="CONFERMA PASSWORD"
         android:inputType="textPassword"
+        android:textSize="15dp"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.497"
@@ -34,23 +66,12 @@
         app:layout_constraintTop_toTopOf="parent"
         app:layout_constraintVertical_bias="0.813" />
 
-    <ImageView
-        android:id="@+id/imageView2"
-        android:layout_width="317dp"
-        android:layout_height="149dp"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.028"
-        app:srcCompat="@drawable/iconamessage" />
-
     <Button
         android:id="@+id/buttonAvanti"
         style="@android:style/Widget.Material.Light.Button.Inset"
         android:layout_width="125dp"
         android:layout_height="50dp"
-        android:background="@drawable/rounded_button_background"
+        android:background="@drawable/buttonstylepink"
         android:text="Iscriviti"
         android:textColor="@color/white"
         app:layout_constraintBottom_toBottomOf="parent"
@@ -58,14 +79,16 @@
         app:layout_constraintHorizontal_bias="0.898"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.957" />
+        app:layout_constraintVertical_bias="0.957"
+        android:drawableRight="@drawable/ic_baseline_send_24"/>
 
     <Button
         android:id="@+id/buttonAnnulla"
         style="@android:style/Widget.Material.Light.Button.Inset"
-        android:layout_width="111dp"
-        android:layout_height="49dp"
-        android:background="@drawable/rounded_button_background"
+        android:layout_width="120dp"
+        android:layout_height="48dp"
+        android:background="@drawable/buttonstylepink"
+        android:drawableLeft="@drawable/ic_baseline_arrow_back_24"
         android:text="Annulla"
         android:textColor="@color/white"
         app:layout_constraintBottom_toBottomOf="parent"
@@ -76,11 +99,12 @@
         app:layout_constraintVertical_bias="0.956" />
 
     <EditText
+        android:drawableLeft="@drawable/ic_baseline_lock_24"
         android:id="@+id/editTextTextPasswordLogin"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:ems="10"
-        android:hint="Password"
+        android:hint="PASSWORD"
         android:inputType="textPassword"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
@@ -90,11 +114,12 @@
         app:layout_constraintVertical_bias="0.699" />
 
     <EditText
+        android:drawableLeft="@drawable/ic_baseline_mail_24"
         android:id="@+id/editTextMail"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:ems="10"
-        android:hint="Email"
+        android:hint="EMAIL"
         android:inputType="textEmailAddress"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
@@ -103,25 +128,13 @@
         app:layout_constraintTop_toTopOf="parent"
         app:layout_constraintVertical_bias="0.351" />
 
-    <TextView
-        android:id="@+id/textView5"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="Registrati ora. È gratis!"
-        android:textAppearance="@style/TextAppearance.AppCompat.Large"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.497"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.255" />
-
     <EditText
+        android:drawableLeft="@drawable/ic_baseline_person_24"
         android:id="@+id/editTextNickname"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:ems="10"
-        android:hint="Username"
+        android:hint="USERNAME"
         android:inputType="textPersonName"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
