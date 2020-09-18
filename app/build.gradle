@@ -21,6 +21,7 @@ android {
     }
 }
 
+
 dependencies {
     implementation fileTree(dir: "libs", include: ["*.jar"])
     implementation 'androidx.appcompat:appcompat:1.1.0'
@@ -32,5 +33,7 @@ dependencies {
     androidTestImplementation 'androidx.test.espresso:espresso-core:3.2.0'
     implementation 'com.amazonaws:aws-android-sdk-core:2.7.4'
     implementation 'com.amazonaws:aws-android-sdk-cognitoidentityprovider:2.7.0'
+    implementation 'com.google.android.libraries.places:places:1.1.0'
+
 
 }

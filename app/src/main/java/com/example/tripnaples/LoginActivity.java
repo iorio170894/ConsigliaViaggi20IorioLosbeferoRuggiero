@@ -43,7 +43,7 @@ public class LoginActivity extends AppCompatActivity {
                         loagindDialog.dismissDialog();
                         startActivity(new Intent(LoginActivity.this, ActivityBenvenuto.class));
                     }
-                }, 5000);
+                }, 2000);
             }
 
             @Override

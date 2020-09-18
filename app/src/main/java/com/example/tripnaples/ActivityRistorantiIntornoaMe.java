@@ -1,94 +1,158 @@
 package com.example.tripnaples;
 
-import androidx.annotation.NonNull;
-import androidx.appcompat.app.AppCompatActivity;
-import androidx.core.app.ActivityCompat;
-
-import android.Manifest;
-import android.content.pm.PackageManager;
-import android.location.Location;
+import android.content.Context;
+import android.content.DialogInterface;
+import android.content.Intent;
+import android.location.LocationManager;
+import android.os.Build;
 import android.os.Bundle;
 
-import com.google.android.gms.location.FusedLocationProviderClient;
-import com.google.android.gms.location.LocationServices;
+import com.google.android.gms.common.api.GoogleApiClient;
 import com.google.android.gms.maps.CameraUpdateFactory;
 import com.google.android.gms.maps.GoogleMap;
 import com.google.android.gms.maps.OnMapReadyCallback;
 import com.google.android.gms.maps.SupportMapFragment;
+import com.google.android.gms.maps.model.BitmapDescriptorFactory;
 import com.google.android.gms.maps.model.LatLng;
+import com.google.android.gms.maps.model.Marker;
 import com.google.android.gms.maps.model.MarkerOptions;
-import com.google.android.gms.tasks.OnSuccessListener;
-import com.google.android.gms.tasks.Task;
+import com.google.android.gms.location.LocationServices;
 
-public class ActivityRistorantiIntornoaMe extends AppCompatActivity {
-    //variabili
-    SupportMapFragment supportMapFragment;
-    FusedLocationProviderClient client;
+import android.location.Location;
+import android.Manifest;
+import android.content.pm.PackageManager;
+import android.provider.Settings;
+
+import com.google.android.gms.common.ConnectionResult;
+import com.google.android.gms.location.LocationListener;
+import com.google.android.gms.location.LocationRequest;
+
+import androidx.appcompat.app.AlertDialog;
+import androidx.appcompat.app.AppCompatActivity;
+import androidx.core.content.ContextCompat;
+
+
+public class ActivityRistorantiIntornoaMe extends AppCompatActivity implements OnMapReadyCallback,
+        LocationListener,GoogleApiClient.ConnectionCallbacks,
+        GoogleApiClient.OnConnectionFailedListener{
+
+    private GoogleMap mMap;
+    Location mLastLocation;
+    Marker mCurrLocationMarker;
+    GoogleApiClient mGoogleApiClient;
+    LocationRequest mLocationRequest;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
+
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_ristoranti_intornoa_me);
 
-        //Assegna variabili
-        supportMapFragment=(SupportMapFragment)getSupportFragmentManager()
-                .findFragmentById(R.id.google_map);
-        //inizializza locazione
-        client = LocationServices.getFusedLocationProviderClient(this);
-
-        // check permessi
-
-        if (ActivityCompat.checkSelfPermission(ActivityRistorantiIntornoaMe.this,
-                Manifest.permission.ACCESS_FINE_LOCATION) == PackageManager.PERMISSION_GRANTED){
-            //permesso garantito
-            //chiama il metodo
-            getCurrentLocation();
+        if (!isGPSEnabled()) {
+            new AlertDialog.Builder(ActivityRistorantiIntornoaMe.this)
+                    .setMessage("Attenzione, attiva il GPS!")
+                    .setCancelable(false)
+                    .setPositiveButton("Opzioni", new DialogInterface.OnClickListener() {
+                        public void onClick(DialogInterface dialog, int id) {
+                            Intent i = new Intent(Settings.ACTION_LOCATION_SOURCE_SETTINGS);
+                            startActivity(i);
+                        }
+                    })
+                    .setNegativeButton("Cancella", null)
+                    .show();
         }
-        else{
-            //permesso negato
-            //richiedi permessi
-            ActivityCompat.requestPermissions(ActivityRistorantiIntornoaMe.this,
-                    new String[]{Manifest.permission.ACCESS_FINE_LOCATION},44);
-        }
+
+
+            // Obtain the SupportMapFragment and get notified when the map is ready to be used.
+            SupportMapFragment mapFragment = (SupportMapFragment) getSupportFragmentManager()
+                    .findFragmentById(R.id.google_map);
+            mapFragment.getMapAsync(this);
+
+
     }
 
-    private void getCurrentLocation() {
-        //inizializza task location
-        Task<Location> task = client.getLastLocation();
-        task.addOnSuccessListener(new OnSuccessListener<Location>() {
-            @Override
-            public void onSuccess(final Location location) {
-                //quando ha successo
-                if (location != null){
-                    //sincronizza mappa
-                    supportMapFragment.getMapAsync(new OnMapReadyCallback() {
-                        @Override
-                        public void onMapReady(GoogleMap googleMap) {
-                            //inizializza latitudine e longitudine
-                            LatLng latLng = new LatLng(location.getLatitude()
-                                    ,location.getLongitude());
-                            //crea marker options
-                            MarkerOptions options = new MarkerOptions().position(latLng)
-                                    .title("Io sono qui");
-                            //Zoom su mappa
-                            googleMap.animateCamera(CameraUpdateFactory.newLatLngZoom(latLng, 10));
-                            //Aggiungi marker su mappa
-                            googleMap.addMarker(options);
-                        }
-                    });
-                }
-            }
-        });
+    private boolean isGPSEnabled() {
+        LocationManager cm = (LocationManager) getSystemService(Context.LOCATION_SERVICE);
+        return cm.isProviderEnabled(LocationManager.GPS_PROVIDER);
     }
 
     @Override
-    public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults) {
-        if (requestCode == 44){
-            if ( grantResults.length > 0 && grantResults[0] == PackageManager.PERMISSION_GRANTED){
-                //quando i permessi sono dati
-                //chiama il metodo
-                getCurrentLocation();
+    public void onMapReady(GoogleMap googleMap) {
+
+        mMap = googleMap;
+
+        if (android.os.Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
+            if (ContextCompat.checkSelfPermission(this,
+                    Manifest.permission.ACCESS_FINE_LOCATION)
+                    == PackageManager.PERMISSION_GRANTED) {
+                buildGoogleApiClient();
+                mMap.setMyLocationEnabled(true);
             }
         }
+        else {
+            buildGoogleApiClient();
+            mMap.setMyLocationEnabled(true);
+        }
+
     }
+    protected synchronized void buildGoogleApiClient() {
+
+        mGoogleApiClient = new GoogleApiClient.Builder(this)
+                .addConnectionCallbacks(this)
+                .addOnConnectionFailedListener(this)
+                .addApi(LocationServices.API).build();
+        mGoogleApiClient.connect();
+    }
+
+    @Override
+    public void onConnected(Bundle bundle) {
+
+        mLocationRequest = new LocationRequest();
+        mLocationRequest.setInterval(50);
+        mLocationRequest.setFastestInterval(50);
+        mLocationRequest.setPriority(LocationRequest.PRIORITY_BALANCED_POWER_ACCURACY);
+        if (ContextCompat.checkSelfPermission(this,
+                Manifest.permission.ACCESS_FINE_LOCATION)
+                == PackageManager.PERMISSION_GRANTED) {
+            LocationServices.FusedLocationApi.requestLocationUpdates(mGoogleApiClient, mLocationRequest, this);
+        }
+
+    }
+
+    @Override
+    public void onConnectionSuspended(int i) {
+
+    }
+
+    @Override
+    public void onLocationChanged(Location location) {
+
+        mLastLocation = location;
+        if (mCurrLocationMarker != null) {
+            mCurrLocationMarker.remove();
+        }
+        //Place current location marker
+        LatLng latLng = new LatLng(location.getLatitude(), location.getLongitude());
+        MarkerOptions markerOptions = new MarkerOptions();
+        markerOptions.position(latLng);
+        markerOptions.title("Posizione Corrente");
+        markerOptions.icon(BitmapDescriptorFactory.defaultMarker(BitmapDescriptorFactory.HUE_GREEN));
+        mCurrLocationMarker = mMap.addMarker(markerOptions);
+
+        //move map camera
+        mMap.moveCamera(CameraUpdateFactory.newLatLng(latLng));
+        mMap.animateCamera(CameraUpdateFactory.zoomTo(11));
+
+        //stop location updates
+        if (mGoogleApiClient != null) {
+            LocationServices.FusedLocationApi.removeLocationUpdates(mGoogleApiClient, this);
+        }
+
+    }
+
+    @Override
+    public void onConnectionFailed(ConnectionResult connectionResult) {
+
+    }
+
 }
