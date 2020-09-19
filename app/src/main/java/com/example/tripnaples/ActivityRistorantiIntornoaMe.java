@@ -48,6 +48,7 @@ public class ActivityRistorantiIntornoaMe extends AppCompatActivity implements O
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_ristoranti_intornoa_me);
 
+        //Se il GPS non è attivo
         if (!isGPSEnabled()) {
             new AlertDialog.Builder(ActivityRistorantiIntornoaMe.this)
                     .setMessage("Attenzione, attiva il GPS!")
@@ -63,7 +64,7 @@ public class ActivityRistorantiIntornoaMe extends AppCompatActivity implements O
         }
 
 
-            // Obtain the SupportMapFragment and get notified when the map is ready to be used.
+            //Ottieni SupportMapFragment e ricevi una notifica quando la mappa è pronta per essere utilizzata.
             SupportMapFragment mapFragment = (SupportMapFragment) getSupportFragmentManager()
                     .findFragmentById(R.id.google_map);
             mapFragment.getMapAsync(this);
@@ -80,7 +81,7 @@ public class ActivityRistorantiIntornoaMe extends AppCompatActivity implements O
     public void onMapReady(GoogleMap googleMap) {
 
         mMap = googleMap;
-
+        //check permessi
         if (android.os.Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
             if (ContextCompat.checkSelfPermission(this,
                     Manifest.permission.ACCESS_FINE_LOCATION)
@@ -131,7 +132,7 @@ public class ActivityRistorantiIntornoaMe extends AppCompatActivity implements O
         if (mCurrLocationMarker != null) {
             mCurrLocationMarker.remove();
         }
-        //Place current location marker
+        //Posiziona l'indicatore della posizione corrente
         LatLng latLng = new LatLng(location.getLatitude(), location.getLongitude());
         MarkerOptions markerOptions = new MarkerOptions();
         markerOptions.position(latLng);
@@ -139,11 +140,11 @@ public class ActivityRistorantiIntornoaMe extends AppCompatActivity implements O
         markerOptions.icon(BitmapDescriptorFactory.defaultMarker(BitmapDescriptorFactory.HUE_GREEN));
         mCurrLocationMarker = mMap.addMarker(markerOptions);
 
-        //move map camera
+        //muovi la mappa
         mMap.moveCamera(CameraUpdateFactory.newLatLng(latLng));
         mMap.animateCamera(CameraUpdateFactory.zoomTo(11));
 
-        //stop location updates
+        //interrompere gli aggiornamenti della posizione
         if (mGoogleApiClient != null) {
             LocationServices.FusedLocationApi.removeLocationUpdates(mGoogleApiClient, this);
         }

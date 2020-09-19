@@ -20,7 +20,7 @@ public class MainActivity extends AppCompatActivity {
             @Override
             public void onClick(View view) {
                 //apri activity relativo al Login
-                startActivity(new Intent(MainActivity.this, ActivityBenvenuto.class));
+                startActivity(new Intent(MainActivity.this, LoginActivity.class));
             }
         });
 
@@ -36,14 +36,15 @@ public class MainActivity extends AppCompatActivity {
         });
 
         //Bottone continua come ospite
-        /*
+
         Button ospite = (Button) findViewById(R.id.buttonOspite);
         ospite.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 //apri activity relativo a continua come ospite
+                startActivity(new Intent(MainActivity.this, ActivityBenvenuto.class));
             }
-        })*/
+        });
 
     }
 }
