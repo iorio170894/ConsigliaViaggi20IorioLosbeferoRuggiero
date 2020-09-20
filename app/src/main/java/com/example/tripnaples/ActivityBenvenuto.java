@@ -68,17 +68,20 @@ public class ActivityBenvenuto extends AppCompatActivity {
 
     public void ClickHome (View view){
         //Ricrea Activity
-        redirectActivity(this,ActivityBenvenuto.class);
+        recreate();
+        //redirectActivity(this,ActivityBenvenuto.class);
     }
 
     public void ClickRicerca (View view){
-        //reindirizza activity alla dashboard
+
         redirectActivity(this,ActivityRicerca.class);
     }
 
     public void ClickImpostazioni (View view){
-
-        redirectActivity(this,ActivityImpostazioni.class);
+        if(Check.loggato)
+            redirectActivity(this,ActivityImpostazioni.class);
+        else
+            redirectActivity(this,ActivityImpostazioniOspite.class);
     }
 
     public void ClickLogout (View view){

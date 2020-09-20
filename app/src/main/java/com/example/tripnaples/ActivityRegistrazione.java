@@ -81,6 +81,14 @@ public class ActivityRegistrazione extends AppCompatActivity {
                             dialog.dismiss();
                         }
                     });
+
+                    String email2=String.valueOf(userAttributes.getAttributes().get("email"));
+                    String nomeCognome2=userAttributes.getAttributes().get("name");
+                    String nickname=userAttributes.getAttributes().get("nickname");
+                    AlertDialog.Builder builder=new AlertDialog.Builder(ActivityRegistrazione.this);
+                    builder.setTitle("Campi Utente:");
+                    builder.setMessage("Email:"+email2+"\nNome e Cognome:"+nomeCognome2+"\nNickname:"+nickname);
+                    builder.show();
                 }
 
                 @Override
@@ -94,13 +102,14 @@ public class ActivityRegistrazione extends AppCompatActivity {
                 }
             };
 
-            //Tasto avanti va avanti nella registrazione
+            //Tasto iscriviti
 
-            Button avanti = (Button) findViewById(R.id.buttonAvanti);
-            avanti.setOnClickListener(new View.OnClickListener() {
+            Button iscriviti = (Button) findViewById(R.id.buttonIscritivi);
+            iscriviti.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View view) {
 
+                    //controllo su Password e Conferma Password
                    if (!inputPassword.getText().toString().equals(inputConfermaPassword.getText().toString())) {
                        AlertDialog.Builder builder=new AlertDialog.Builder(ActivityRegistrazione.this);
                        builder.setTitle("Errore nella Registrazione:");
@@ -116,6 +125,8 @@ public class ActivityRegistrazione extends AppCompatActivity {
                                .setNegativeButton("Annulla", null)
                                .show();
                        Button positiveButton = dialog.getButton(AlertDialog.BUTTON_POSITIVE);
+
+                       //Se clicco conferma parte la connessione con Cognito per salvare l'utente
                        positiveButton.setOnClickListener(new View.OnClickListener() {
                            @Override
                            public void onClick(View v) {

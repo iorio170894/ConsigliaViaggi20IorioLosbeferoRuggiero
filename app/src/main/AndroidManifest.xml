@@ -9,10 +9,10 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
-        <activity android:name=".ActivityRicerca"></activity>
+        <activity android:name=".Check"></activity>
+        <activity android:name=".ActivityImpostazioniOspite" />
+        <activity android:name=".ActivityRicerca" />
         <activity android:name=".ActivityImpostazioni" />
-        <activity android:name=".AboutUs" />
-        <activity android:name=".Dashboard" />
         <activity android:name=".NavDrawer" />
         <activity
             android:name=".ActivityRistorantiIntornoaMe"
@@ -45,9 +45,9 @@
             android:name="com.google.android.geo.API_KEY"
             android:value="AIzaSyA2e4mdWW25WyvucXfDxWbkluUo9qsYuYo" />
     </application>
-    <uses-permission android:name="android.permission.INTERNET" />
-    <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
-
     <uses-permission android:name="android.permission.ACCESS_FINE_LOCATION" />
+    <uses-permission android:name="android.permission.INTERNET" />
+
+    <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
 
 </manifest>

@@ -67,7 +67,7 @@
         app:layout_constraintVertical_bias="0.813" />
 
     <Button
-        android:id="@+id/buttonAvanti"
+        android:id="@+id/buttonIscritivi"
         style="@android:style/Widget.Material.Light.Button.Inset"
         android:layout_width="125dp"
         android:layout_height="50dp"

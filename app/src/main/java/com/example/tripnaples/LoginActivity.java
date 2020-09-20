@@ -13,14 +13,17 @@ import android.widget.EditText;
 
 import com.amazonaws.mobileconnectors.cognitoidentityprovider.CognitoDevice;
 import com.amazonaws.mobileconnectors.cognitoidentityprovider.CognitoUser;
+import com.amazonaws.mobileconnectors.cognitoidentityprovider.CognitoUserPool;
 import com.amazonaws.mobileconnectors.cognitoidentityprovider.CognitoUserSession;
 import com.amazonaws.mobileconnectors.cognitoidentityprovider.continuations.AuthenticationContinuation;
 import com.amazonaws.mobileconnectors.cognitoidentityprovider.continuations.AuthenticationDetails;
 import com.amazonaws.mobileconnectors.cognitoidentityprovider.continuations.ChallengeContinuation;
 import com.amazonaws.mobileconnectors.cognitoidentityprovider.continuations.MultiFactorAuthenticationContinuation;
 import com.amazonaws.mobileconnectors.cognitoidentityprovider.handlers.AuthenticationHandler;
+import com.amazonaws.mobileconnectors.cognitoidentityprovider.handlers.GenericHandler;
 
 public class LoginActivity extends AppCompatActivity {
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -29,6 +32,7 @@ public class LoginActivity extends AppCompatActivity {
 
         final EditText editTextEmail = findViewById(R.id.editTextTextEmailLogin);
         final EditText editTextPassword = findViewById(R.id.editTextTextPasswordLogin);
+        final CognitoUser[] thisUser = new CognitoUser[1];
 
         final AuthenticationHandler authenticationHandler = new AuthenticationHandler() {
             @Override
@@ -41,6 +45,7 @@ public class LoginActivity extends AppCompatActivity {
                     @Override
                     public void run() {
                         loagindDialog.dismissDialog();
+                        Check.loggato=true;
                         startActivity(new Intent(LoginActivity.this, ActivityBenvenuto.class));
                     }
                 }, 2000);
@@ -97,6 +102,30 @@ public class LoginActivity extends AppCompatActivity {
                 thisUser.getSessionInBackground(authenticationHandler);
             }
         });
+
     }
+
+    public static void logout(){
+        CognitoUserPool pool=CognitoSettings.getUserPool();
+        //if (pool != null) {
+        CognitoUser user = pool.getCurrentUser();
+            /*if (user != null) {
+                GenericHandler handler = new GenericHandler() {
+
+                    @Override
+                    public void onSuccess() {
+                    }
+
+                    @Override
+                    public void onFailure(Exception e) {
+                    }
+                };
+                user.globalSignOutInBackground(handler);
+            }
+
+        }*/user.signOut();
+    }
+
     LoagindDialog loagindDialog = new LoagindDialog(LoginActivity.this);
+
 }

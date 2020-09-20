@@ -42,6 +42,7 @@ public class MainActivity extends AppCompatActivity {
             @Override
             public void onClick(View view) {
                 //apri activity relativo a continua come ospite
+                Check.loggato=false;
                 startActivity(new Intent(MainActivity.this, ActivityBenvenuto.class));
             }
         });
