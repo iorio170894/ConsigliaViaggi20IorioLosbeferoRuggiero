@@ -8,19 +8,29 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
+import android.widget.AdapterView;
+import android.widget.ArrayAdapter;
 import android.widget.Button;
+import android.widget.Spinner;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.amazonaws.mobileconnectors.cognitoidentityprovider.CognitoUser;
 import com.amazonaws.mobileconnectors.cognitoidentityprovider.CognitoUserDetails;
 import com.amazonaws.mobileconnectors.cognitoidentityprovider.handlers.GetDetailsHandler;
 
-public class ActivityImpostazioni extends AppCompatActivity {
+import java.lang.reflect.Array;
+
+public class ActivityImpostazioni extends AppCompatActivity implements AdapterView.OnItemSelectedListener {
 
     private Utente utenteCorrente;
     private TextView textNomeCognome;
     private TextView textEmail;
     private TextView textNickname;
+
+    static String nomeCognomeSalvato;
+    static String emailSalvata;
+    static String nicnknameSalvato;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -47,14 +57,49 @@ public class ActivityImpostazioni extends AppCompatActivity {
                     @Override
                     public void onClick(View v) {
                         CognitoSettings.logout();
+                        Check.loggato=false;
                         //LoginActivity.logout();
-                        startActivity(new Intent(ActivityImpostazioni.this, MainActivity.class));
+                        //startActivity(new Intent(ActivityImpostazioni.this, MainActivity.class));
+                        Intent turnMain = new Intent(ActivityImpostazioni.this,MainActivity.class);
+                        turnMain.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
+                        ActivityImpostazioni.this.startActivity(turnMain);
                     }
                 });
             }
         });
 
         getDettagliUtente();
+
+        /*AlertDialog.Builder builder=new AlertDialog.Builder(ActivityImpostazioni.this);
+        builder.setTitle("Campi:");
+        builder.setMessage("Nome e Cognome:"+nomeCognomeSalvato+"\nNickname:"+nicnknameSalvato);
+        builder.show();*/
+
+        Spinner coloredSpinner = findViewById(R.id.Spinner01);
+        /*ArrayAdapter<String> adapter = new ArrayAdapter<String>(this,
+                android.R.layout.simple_spinner_item, arraySpinner);
+        adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+        s.setAdapter(adapter);
+        s.setOnItemSelectedListener(this);*/
+        ArrayAdapter adapter = ArrayAdapter.createFromResource(
+                this,
+                R.array.spinnerImpostazioni,
+                R.layout.color_spinner_layout);
+        adapter.setDropDownViewResource(R.layout.spinner_dropdown_layout);
+        coloredSpinner.setAdapter(adapter);
+        coloredSpinner.setOnItemSelectedListener(this);
+    }
+
+    @Override
+    public void onItemSelected(AdapterView<?> adapterView, View view, int i, long l) {
+        String text = adapterView.getItemAtPosition(i).toString();
+        Toast.makeText(adapterView.getContext(), text, Toast.LENGTH_SHORT).show();
+        Check.firma=text;
+    }
+
+    @Override
+    public void onNothingSelected(AdapterView<?> adapterView) {
+
     }
 
     public void getDettagliUtente(){
@@ -62,18 +107,18 @@ public class ActivityImpostazioni extends AppCompatActivity {
             @Override
             public void onSuccess(final CognitoUserDetails list) {
                 //trovi dettagli utente con successo
-                String emailSalvata = String.valueOf(list.getAttributes().getAttributes().get("email"));
-                String nomeCognomeSalvato = String.valueOf(list.getAttributes().getAttributes().get("name"));
-                String nicnknameSalvato = String.valueOf(list.getAttributes().getAttributes().get("nickname"));
+                emailSalvata = String.valueOf(list.getAttributes().getAttributes().get("email"));
+                nomeCognomeSalvato = String.valueOf(list.getAttributes().getAttributes().get("name"));
+                nicnknameSalvato = String.valueOf(list.getAttributes().getAttributes().get("nickname"));
                 utenteCorrente = new Utente(nomeCognomeSalvato,emailSalvata,nicnknameSalvato);
                 textEmail.setText(utenteCorrente.getEmail());
                 textNickname.setText(utenteCorrente.getNickname());
                 textNomeCognome.setText(utenteCorrente.getNomeCognome());
 
-                AlertDialog.Builder builder=new AlertDialog.Builder(ActivityImpostazioni.this);
+                /*AlertDialog.Builder builder=new AlertDialog.Builder(ActivityImpostazioni.this);
                 builder.setTitle("Campi Utente:");
                 builder.setMessage("Email:"+emailSalvata+"\nNome e Cognome:"+nomeCognomeSalvato+"\nNickname:"+nicnknameSalvato);
-                builder.show();
+                builder.show();*/
             }
             @Override
             public void onFailure(final Exception exception) {
@@ -93,7 +138,8 @@ public class ActivityImpostazioni extends AppCompatActivity {
                         .show();*/
             }
         };
-        CognitoUser corrente = CognitoSettings.getInstance().getUserPool().getCurrentUser();
-        CognitoSettings.getInstance().getUserPool().getUser(corrente.getUserId()).getDetailsInBackground(handler);
+        CognitoUser corrente = CognitoSettings.getUserPool().getCurrentUser();
+        CognitoSettings.getUserPool().getUser(corrente.getUserId()).getDetailsInBackground(handler);
     }
+
 }

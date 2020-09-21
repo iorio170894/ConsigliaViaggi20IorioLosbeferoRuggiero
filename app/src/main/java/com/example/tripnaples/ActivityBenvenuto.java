@@ -37,8 +37,60 @@ public class ActivityBenvenuto extends AppCompatActivity {
             }
         });
 
+        Button ricerca = (Button) findViewById(R.id.buttonRicercaStrutturaBenvenuto);
+        ricerca.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                //apri activity relativo al Login
+                startActivity(new Intent(ActivityBenvenuto.this, ActivityRicerca.class));
+            }
+        });
 
     }
+
+        @Override
+        public  void onStop(){
+            if (Check.loggato) {
+                super.onStop();
+                CognitoSettings.logout();
+                Check.loggato=false;
+            }
+            else
+                super.onStop();
+        }
+
+        @Override
+        public void onBackPressed() {
+            if (Check.loggato) {
+                final androidx.appcompat.app.AlertDialog dialog = new androidx.appcompat.app.AlertDialog.Builder(ActivityBenvenuto.this)
+                        .setTitle("Indietro")
+                        .setMessage("Confermi di tornare Indietro? sarà effettuato il Logout e tornerai alla schermata Iniziale")
+                        .setPositiveButton("Conferma", null)
+                        .setNegativeButton("Annulla", null)
+                        .show();
+                Button positiveButton = dialog.getButton(androidx.appcompat.app.AlertDialog.BUTTON_POSITIVE);
+                positiveButton.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View v) {
+
+                        CognitoSettings.logout();
+
+                        Intent turnMain = new Intent(ActivityBenvenuto.this, MainActivity.class);
+                        turnMain.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
+                        ActivityBenvenuto.this.startActivity(turnMain);
+
+
+                    }
+                });
+                Check.loggato=false;
+            }
+            else {
+                Intent turnMain = new Intent(ActivityBenvenuto.this, MainActivity.class);
+                turnMain.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
+                ActivityBenvenuto.this.startActivity(turnMain);
+            }
+
+        }
 
     public void ClickMenu (View view){
         //Apri drawer
@@ -53,7 +105,7 @@ public class ActivityBenvenuto extends AppCompatActivity {
 
     public void ClickLogo (View view){
         //chiudi drawer
-    //    closeDrawer(drawerLayout);
+        //    closeDrawer(drawerLayout);
     }
 
     public static void closeDrawer(DrawerLayout drawerLayout) {
@@ -86,31 +138,7 @@ public class ActivityBenvenuto extends AppCompatActivity {
 
     public void ClickLogout (View view){
         //chiudi app
-      //  logout(this);
-    }
-
-    public static void logout(final Activity activity) {
-        AlertDialog.Builder builder = new AlertDialog.Builder(activity);
-        builder.setTitle("Logout");
-        builder.setMessage("Sei sicuro di voler far eil Logout?");
-        builder.setPositiveButton("YES", new DialogInterface.OnClickListener() {
-            @Override
-            public void onClick(DialogInterface dialog, int which) {
-                //Finish activity
-                activity.finishAffinity();
-                //exit app
-                System.exit(0);
-            }
-        });
-        //Negative no button
-        builder.setNegativeButton("NO", new DialogInterface.OnClickListener() {
-            @Override
-            public void onClick(DialogInterface dialog, int which) {
-                //Dismiss dialog
-                dialog.dismiss();
-            }
-        });
-        builder.show();
+        //  logout(this);
     }
 
     public static void redirectActivity(Activity activity, Class aClass) {

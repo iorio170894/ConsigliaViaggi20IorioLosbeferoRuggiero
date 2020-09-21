@@ -18,11 +18,9 @@
     <string name="menu_share">Share</string>
     <string name="menu_send">Send</string>
     <string name="title_activity_home_navigation_drawer">HomeNavigationDrawer</string>
-    <string-array name="gender_array">
-        <item>Gender</item>
-        <item>Male</item>
-        <item>Female</item>
-        <item>Rather not say</item>
-        <item>A gender not listed here</item>
+    <string name="title_activity_ricerca">Map</string>
+    <string-array name="spinnerImpostazioni">
+        <item>Nome e Cognome</item>
+        <item>Nickname</item>
     </string-array>
 </resources>

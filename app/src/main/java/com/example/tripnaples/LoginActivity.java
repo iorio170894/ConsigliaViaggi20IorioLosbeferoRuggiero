@@ -22,8 +22,8 @@ import com.amazonaws.mobileconnectors.cognitoidentityprovider.continuations.Mult
 import com.amazonaws.mobileconnectors.cognitoidentityprovider.handlers.AuthenticationHandler;
 import com.amazonaws.mobileconnectors.cognitoidentityprovider.handlers.GenericHandler;
 
-public class LoginActivity extends AppCompatActivity {
 
+public class LoginActivity extends AppCompatActivity {
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -32,7 +32,6 @@ public class LoginActivity extends AppCompatActivity {
 
         final EditText editTextEmail = findViewById(R.id.editTextTextEmailLogin);
         final EditText editTextPassword = findViewById(R.id.editTextTextPasswordLogin);
-        final CognitoUser[] thisUser = new CognitoUser[1];
 
         final AuthenticationHandler authenticationHandler = new AuthenticationHandler() {
             @Override
@@ -57,7 +56,7 @@ public class LoginActivity extends AppCompatActivity {
                 // L'API necessita delle credenziali di accesso dell'utente per continuare
                 // bisogna aver password e userId per continuare
                 AuthenticationDetails authenticationDetails = new AuthenticationDetails(userId
-                    , String.valueOf(editTextPassword.getText()), null);
+                        , String.valueOf(editTextPassword.getText()), null);
 
                 // Passa le credenziali di accesso dell'utente alla continuazione
                 authenticationContinuation.setAuthenticationDetails(authenticationDetails);
@@ -94,7 +93,8 @@ public class LoginActivity extends AppCompatActivity {
             public void onClick(View view) {
                 CognitoSettings cognitoSettings = new CognitoSettings(LoginActivity.this);
 
-                CognitoUser thisUser = cognitoSettings.getUserPool().getUser(String.valueOf(editTextEmail.getText()));
+                CognitoUser thisUser = cognitoSettings.getUserPool().
+                        getUser(String.valueOf(editTextEmail.getText()));
 
                 //Sign in the user
                 Log.i("Cognito", "in button clicked..");
@@ -102,30 +102,6 @@ public class LoginActivity extends AppCompatActivity {
                 thisUser.getSessionInBackground(authenticationHandler);
             }
         });
-
     }
-
-    public static void logout(){
-        CognitoUserPool pool=CognitoSettings.getUserPool();
-        //if (pool != null) {
-        CognitoUser user = pool.getCurrentUser();
-            /*if (user != null) {
-                GenericHandler handler = new GenericHandler() {
-
-                    @Override
-                    public void onSuccess() {
-                    }
-
-                    @Override
-                    public void onFailure(Exception e) {
-                    }
-                };
-                user.globalSignOutInBackground(handler);
-            }
-
-        }*/user.signOut();
-    }
-
     LoagindDialog loagindDialog = new LoagindDialog(LoginActivity.this);
-
 }

@@ -9,10 +9,9 @@ import com.amazonaws.mobileconnectors.cognitoidentityprovider.handlers.GenericHa
 import com.amazonaws.regions.Regions;
 
 public class CognitoSettings {
-    private static CognitoSettings INSTANCE = new CognitoSettings(null);
-    private static String userPoolId="us-east-2_mtcGMJi7C";
-    private static String clientId="552i5pr5krbl9fjvj3a8riud27";
-    private static String clientSecret="1nor9civ5vbe9pjrhfphjfjodqmi18h0shtn7kon5cbrboi97d1g";
+    private static String userPoolId="us-east-2_lsiqRfFjT";
+    private static String clientId="44958qqvjntk6kr1k533jetpeg";
+    private static String clientSecret="8v3rdc8q822itbfdqmrts127pg0huqs44uhb4psq1oimdqivs91";
     private static Regions cognitoRegion=Regions.US_EAST_2;
 
     private static Context context;
@@ -42,7 +41,7 @@ public class CognitoSettings {
         CognitoUserPool pool=CognitoSettings.getUserPool();
         if (pool != null) {
             CognitoUser user = pool.getCurrentUser();
-            if (user != null) {
+            /*if (user != null) {
                 GenericHandler handler = new GenericHandler() {
 
                     @Override
@@ -52,13 +51,10 @@ public class CognitoSettings {
                     @Override
                     public void onFailure(Exception e) {
                     }
-                };
-                user.globalSignOutInBackground(handler);
+                };*/
+                //user.globalSignOutInBackground(handler);
+                user.signOut();
             }
 
         }
-    }
-    public static CognitoSettings getInstance() {
-        return(INSTANCE);
-    }
 }

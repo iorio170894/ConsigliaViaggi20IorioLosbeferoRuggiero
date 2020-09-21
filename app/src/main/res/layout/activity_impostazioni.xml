@@ -163,14 +163,24 @@
             android:textSize="23dp" />
 
         <TextView
-            android:layout_width="match_parent"
+            android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:padding="12dp"
             android:layout_marginTop="50dp"
-            android:layout_marginLeft="50dp"
             android:text="Firma recensioni con:"
+            android:layout_gravity="center"
             android:textColor="@color/colordevider"
+            android:paddingLeft="16dp"
+            android:paddingRight="16dp"
+            android:paddingBottom="8dp"
             android:textSize="15sp" />
+
+        <Spinner
+            android:id="@+id/Spinner01"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content">
+
+        </Spinner>
 
 
 

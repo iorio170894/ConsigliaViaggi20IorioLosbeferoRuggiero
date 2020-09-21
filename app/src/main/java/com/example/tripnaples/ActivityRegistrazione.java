@@ -16,6 +16,7 @@ import com.amazonaws.mobileconnectors.cognitoidentityprovider.CognitoUser;
 import com.amazonaws.mobileconnectors.cognitoidentityprovider.CognitoUserAttributes;
 import com.amazonaws.mobileconnectors.cognitoidentityprovider.CognitoUserCodeDeliveryDetails;
 import com.amazonaws.mobileconnectors.cognitoidentityprovider.handlers.SignUpHandler;
+import com.amazonaws.services.cognitoidentityprovider.model.SignUpResult;
 
 public class ActivityRegistrazione extends AppCompatActivity {
 
@@ -36,113 +37,104 @@ public class ActivityRegistrazione extends AppCompatActivity {
         });
     }
 
-        private void registerUser() {
-            final EditText inputEmail = findViewById(R.id.editTextMail);
-            final EditText inputPassword = findViewById(R.id.editTextTextPasswordLogin);
-            final EditText inputConfermaPassword = findViewById(R.id.editTextTextConfirmPassword);
-            final EditText inputNickname = findViewById(R.id.editTextNickname);
-            final EditText inputNome = findViewById(R.id.editTextNome);
-          //  final EditText inputCognome = findViewById(R.id.editTextCognome);
+    private void registerUser() {
+        final EditText inputEmail = findViewById(R.id.editTextMailRegistration);
+        final EditText inputPassword = findViewById(R.id.editTextTextPasswordRegistration);
+        final EditText inputConfermaPassword = findViewById(R.id.editTextTextConfirmPasswordRegistration);
+        final EditText inputNickname = findViewById(R.id.editTextNicknameRegistration);
+        final EditText inputNome = findViewById(R.id.editTextNomeCognomeRegistration);
+        //  final EditText inputCognome = findViewById(R.id.editTextCognome);
 
 
-            //Crea un CognitoUserAttributes e un user Attributes
+        //Crea un CognitoUserAttributes e un user Attributes
 
-            final CognitoUserAttributes userAttributes = new CognitoUserAttributes();
+        final CognitoUserAttributes userAttributes = new CognitoUserAttributes();
 
-            userAttributes.addAttribute("email",String.valueOf(inputEmail.getText()));
-            userAttributes.addAttribute("nickname",String.valueOf(inputNickname.getText()));
-            userAttributes.addAttribute("name",String.valueOf(inputNome.getText()));
-            //userAttributes.addAttribute("family name",String.valueOf(inputCognome.getText()));
+        //userAttributes.addAttribute("family name",String.valueOf(inputCognome.getText()));
 
-            final SignUpHandler signupCallback = new SignUpHandler() {
-                @Override
-                public void onSuccess(CognitoUser user, boolean signUpConfirmationState, CognitoUserCodeDeliveryDetails cognitoUserCodeDeliveryDetails) {
-                    //Registrazione riuscita
-                    Log.i("Tag", "Registrazione avvenuta con successo" + signUpConfirmationState);
-                    //Controlla se user (cognitoUser) deve essere confermato
-                    if (!signUpConfirmationState) {
-                        Log.i("Tag", "Registrazione avvenuta con successo, codice di verifica inviato a" + cognitoUserCodeDeliveryDetails.getDestination());
-                    } else {
-                        //user è stato confermato
-                        Log.i("Tag", "Registrazione avvenuta con successo... confermata");
+        final SignUpHandler signupCallback = new SignUpHandler() {
+
+            public void onSuccess(CognitoUser user, boolean signUpConfirmationState, CognitoUserCodeDeliveryDetails cognitoUserCodeDeliveryDetails) {
+                //Registrazione riuscita
+                Log.i("Tag", "Registrazione avvenuta con successo" + signUpConfirmationState);
+                //Controlla se user (cognitoUser) deve essere confermato
+                if (!signUpConfirmationState) {
+                    Log.i("Tag", "Registrazione avvenuta con successo, codice di verifica inviato a" + cognitoUserCodeDeliveryDetails.getDestination());
+                } else {
+                    //user è stato confermato
+                    Log.i("Tag", "Registrazione avvenuta con successo... confermata");
+                }
+
+                //custom dialog
+                final AlertDialog dialog = new AlertDialog.Builder(ActivityRegistrazione.this)
+                        .setTitle("Registrazione")
+                        .setMessage("Registrazione avvenuta con successo")
+                        .setPositiveButton("OK", null)
+                        .show();
+                Button positiveButton = dialog.getButton(AlertDialog.BUTTON_POSITIVE);
+                positiveButton.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View v) {
+                        startActivity(new Intent(ActivityRegistrazione.this, MainActivity.class));
+                        dialog.dismiss();
                     }
+                });
+            }
 
+
+            @Override
+            public void onFailure(Exception exception) {
+                //registrazione fallita controlla l'eccezione
+                Log.i( "Tag","Registrazione fallita" + exception.getLocalizedMessage());
+                AlertDialog.Builder builder=new AlertDialog.Builder(ActivityRegistrazione.this);
+                builder.setTitle("Errore nella Registrazione:");
+                builder.setMessage("Attenzione:"+exception.getLocalizedMessage());
+                builder.show();
+            }
+        };
+
+        //Tasto avanti va avanti nella registrazione
+
+        Button avanti = (Button) findViewById(R.id.buttonIscritivi);
+        avanti.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+
+                if (!inputPassword.getText().toString().equals(inputConfermaPassword.getText().toString())) {
+                    AlertDialog.Builder builder=new AlertDialog.Builder(ActivityRegistrazione.this);
+                    builder.setTitle("Errore nella Registrazione:");
+                    builder.setMessage("Attenzione: Password e Conferma Password non coincidono");
+                    builder.show();
+                }
+                else {
                     //custom dialog
                     final AlertDialog dialog = new AlertDialog.Builder(ActivityRegistrazione.this)
                             .setTitle("Registrazione")
-                            .setMessage("Registrazione avvenuta con successo")
-                            .setPositiveButton("OK", null)
+                            .setMessage("Conferma la Registrazione?")
+                            .setPositiveButton("Conferma", null)
+                            .setNegativeButton("Annulla", null)
                             .show();
                     Button positiveButton = dialog.getButton(AlertDialog.BUTTON_POSITIVE);
                     positiveButton.setOnClickListener(new View.OnClickListener() {
                         @Override
                         public void onClick(View v) {
-                            startActivity(new Intent(ActivityRegistrazione.this, MainActivity.class));
+
+                            userAttributes.addAttribute("email",String.valueOf(inputEmail.getText()));
+                            userAttributes.addAttribute("nickname",String.valueOf(inputNickname.getText()));
+                            userAttributes.addAttribute("name",String.valueOf(inputNome.getText()));
+
+                            CognitoSettings cognitoSettings = new CognitoSettings(ActivityRegistrazione.this);
+                            cognitoSettings.getUserPool().signUpInBackground(String.valueOf(inputEmail.getText())
+                                    , String.valueOf(inputPassword.getText()), userAttributes, null, signupCallback
+                            );
                             dialog.dismiss();
                         }
                     });
-
-                    String email2=String.valueOf(userAttributes.getAttributes().get("email"));
-                    String nomeCognome2=userAttributes.getAttributes().get("name");
-                    String nickname=userAttributes.getAttributes().get("nickname");
-                    AlertDialog.Builder builder=new AlertDialog.Builder(ActivityRegistrazione.this);
-                    builder.setTitle("Campi Utente:");
-                    builder.setMessage("Email:"+email2+"\nNome e Cognome:"+nomeCognome2+"\nNickname:"+nickname);
-                    builder.show();
                 }
 
-                @Override
-                public void onFailure(Exception exception) {
-                    //registrazione fallita controlla l'eccezione
-                    Log.i( "Tag","Registrazione fallita" + exception.getLocalizedMessage());
-                    AlertDialog.Builder builder=new AlertDialog.Builder(ActivityRegistrazione.this);
-                    builder.setTitle("Errore nella Registrazione:");
-                    builder.setMessage("Attenzione:"+exception.getLocalizedMessage());
-                    builder.show();
-                }
-            };
-
-            //Tasto iscriviti
-
-            Button iscriviti = (Button) findViewById(R.id.buttonIscritivi);
-            iscriviti.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View view) {
-
-                    //controllo su Password e Conferma Password
-                   if (!inputPassword.getText().toString().equals(inputConfermaPassword.getText().toString())) {
-                       AlertDialog.Builder builder=new AlertDialog.Builder(ActivityRegistrazione.this);
-                       builder.setTitle("Errore nella Registrazione:");
-                       builder.setMessage("Attenzione: Password e Conferma Password non coincidono");
-                       builder.show();
-                   }
-                   else {
-                       //custom dialog
-                       final AlertDialog dialog = new AlertDialog.Builder(ActivityRegistrazione.this)
-                               .setTitle("Registrazione")
-                               .setMessage("Conferma la Registrazione?")
-                               .setPositiveButton("Conferma", null)
-                               .setNegativeButton("Annulla", null)
-                               .show();
-                       Button positiveButton = dialog.getButton(AlertDialog.BUTTON_POSITIVE);
-
-                       //Se clicco conferma parte la connessione con Cognito per salvare l'utente
-                       positiveButton.setOnClickListener(new View.OnClickListener() {
-                           @Override
-                           public void onClick(View v) {
-
-                               CognitoSettings cognitoSettings = new CognitoSettings(ActivityRegistrazione.this);
-                               cognitoSettings.getUserPool().signUpInBackground(String.valueOf(inputEmail.getText())/*+String.valueOf(inputEmail.getText())*/
-                                       , String.valueOf(inputPassword.getText()), userAttributes, null, signupCallback
-                               );
-                               dialog.dismiss();
-                           }
-                       });
-                        }
-
-                }
-            });
-        }
+            }
+        });
+    }
 
 
 

@@ -37,7 +37,7 @@
 
     <EditText
         android:drawableLeft="@drawable/ic_baseline_perm_contact_calendar_24"
-        android:id="@+id/editTextNome"
+        android:id="@+id/editTextNomeCognomeRegistration"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:ems="10"
@@ -51,7 +51,7 @@
         app:layout_constraintVertical_bias="0.59" />
 
     <EditText
-        android:id="@+id/editTextTextConfirmPassword"
+        android:id="@+id/editTextTextConfirmPasswordRegistration"
         android:layout_width="211dp"
         android:layout_height="48dp"
         android:drawableLeft="@drawable/ic_baseline_lock_24"
@@ -100,7 +100,7 @@
 
     <EditText
         android:drawableLeft="@drawable/ic_baseline_lock_24"
-        android:id="@+id/editTextTextPasswordLogin"
+        android:id="@+id/editTextTextPasswordRegistration"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:ems="10"
@@ -115,7 +115,7 @@
 
     <EditText
         android:drawableLeft="@drawable/ic_baseline_mail_24"
-        android:id="@+id/editTextMail"
+        android:id="@+id/editTextMailRegistration"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:ems="10"
@@ -130,11 +130,11 @@
 
     <EditText
         android:drawableLeft="@drawable/ic_baseline_person_24"
-        android:id="@+id/editTextNickname"
+        android:id="@+id/editTextNicknameRegistration"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:ems="10"
-        android:hint="USERNAME"
+        android:hint="NICKNAME"
         android:inputType="textPersonName"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
