@@ -70,17 +70,7 @@ public class ActivityImpostazioni extends AppCompatActivity implements AdapterVi
 
         getDettagliUtente();
 
-        /*AlertDialog.Builder builder=new AlertDialog.Builder(ActivityImpostazioni.this);
-        builder.setTitle("Campi:");
-        builder.setMessage("Nome e Cognome:"+nomeCognomeSalvato+"\nNickname:"+nicnknameSalvato);
-        builder.show();*/
-
         Spinner coloredSpinner = findViewById(R.id.Spinner01);
-        /*ArrayAdapter<String> adapter = new ArrayAdapter<String>(this,
-                android.R.layout.simple_spinner_item, arraySpinner);
-        adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
-        s.setAdapter(adapter);
-        s.setOnItemSelectedListener(this);*/
         ArrayAdapter adapter = ArrayAdapter.createFromResource(
                 this,
                 R.array.spinnerImpostazioni,

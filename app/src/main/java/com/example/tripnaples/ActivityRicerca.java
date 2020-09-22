@@ -24,7 +24,12 @@ import android.location.Location;
 import android.Manifest;
 import android.content.pm.PackageManager;
 import android.provider.Settings;
+import android.view.View;
+import android.widget.AdapterView;
+import android.widget.ArrayAdapter;
 import android.widget.SearchView;
+import android.widget.Spinner;
+import android.widget.Toast;
 
 import com.google.android.gms.common.ConnectionResult;
 import com.google.android.gms.location.LocationListener;
@@ -42,7 +47,7 @@ import androidx.fragment.app.FragmentActivity;
 
 public class ActivityRicerca extends AppCompatActivity implements OnMapReadyCallback,
         LocationListener,GoogleApiClient.ConnectionCallbacks,
-        GoogleApiClient.OnConnectionFailedListener{
+        GoogleApiClient.OnConnectionFailedListener, AdapterView.OnItemSelectedListener{
 
     private GoogleMap mMap;
     Location mLastLocation;
@@ -77,6 +82,41 @@ public class ActivityRicerca extends AppCompatActivity implements OnMapReadyCall
                 .findFragmentById(R.id.map);
         mapFragment.getMapAsync(this);
 
+        //Sinner Categoria Struttura
+        Spinner spinnerStruttura = findViewById(R.id.SpinnerStruttura);
+        ArrayAdapter adapter = ArrayAdapter.createFromResource(
+                this,
+                R.array.spinnerStrutture,
+                R.layout.color_spinner_layout2);
+        adapter.setDropDownViewResource(R.layout.spinner_dropdown_layout);
+        spinnerStruttura.setAdapter(adapter);
+        spinnerStruttura.setOnItemSelectedListener(this);
+
+        //Sinner Range di prezzo
+        Spinner spinnerRangePrezzo = findViewById(R.id.SpinnerRangePrezzo);
+        ArrayAdapter adapter2 = ArrayAdapter.createFromResource(
+                this,
+                R.array.spinnerRangePrezzo,
+                R.layout.color_spinner_layout2);
+        adapter2.setDropDownViewResource(R.layout.spinner_dropdown_layout);
+        spinnerRangePrezzo.setAdapter(adapter2);
+        spinnerRangePrezzo.setOnItemSelectedListener(this);
+
+    }
+
+    @Override
+    public void onConnectionFailed(ConnectionResult connectionResult) {
+
+    }
+
+    @Override
+    public void onItemSelected(AdapterView<?> adapterView, View view, int i, long l) {
+        String text = adapterView.getItemAtPosition(i).toString();
+        Toast.makeText(adapterView.getContext(), text, Toast.LENGTH_SHORT).show();
+    }
+
+    @Override
+    public void onNothingSelected(AdapterView<?> adapterView) {
 
     }
 
@@ -156,11 +196,6 @@ public class ActivityRicerca extends AppCompatActivity implements OnMapReadyCall
         if (mGoogleApiClient != null) {
             LocationServices.FusedLocationApi.removeLocationUpdates(mGoogleApiClient, this);
         }
-
-    }
-
-    @Override
-    public void onConnectionFailed(ConnectionResult connectionResult) {
 
     }
 

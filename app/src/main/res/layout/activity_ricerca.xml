@@ -7,6 +7,28 @@
     android:layout_height="match_parent"
     tools:context=".ActivityRicerca">
 
+    <SearchView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:id="@+id/sv_location"
+        android:queryHint="Cerca struttura su Mappa per nome"
+        android:iconifiedByDefault="false"
+        android:layout_margin="10dp"
+        android:elevation="5dp"
+        android:background="@drawable/bg_round"/>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:orientation="vertical">
+        <fragment
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:id="@+id/map"
+            android:name="com.google.android.gms.maps.SupportMapFragment"/>
+    </LinearLayout>
+
+
     <LinearLayout
         android:id="@+id/linearLayout23"
         android:layout_width="match_parent"
@@ -14,7 +36,7 @@
         android:background="@drawable/bg_round"
         android:orientation="vertical"
         tools:ignore="MissingConstraints"
-        android:layout_marginTop="5dp"
+        android:layout_marginTop="70dp"
         android:layout_marginLeft="30dp"
         android:layout_marginRight="30dp"
         tools:layout_editor_absoluteX="-2dp"
@@ -37,7 +59,7 @@
                 android:paddingBottom="8dp"/>
 
             <Spinner
-                android:id="@+id/SpinnerRicerca"
+                android:id="@+id/SpinnerStruttura"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
                 android:layout_gravity="end"/>
@@ -69,7 +91,7 @@
 
         <EditText
             android:id="@+id/editTextIndirizzoRicerca"
-            android:layout_width="wrap_content"
+            android:layout_width="255dp"
             android:layout_height="wrap_content"
             android:ems="10"
             android:paddingLeft="16dp"
@@ -112,7 +134,7 @@
 
             <EditText
                 android:id="@+id/editTextCittàStruttura"
-                android:layout_width="wrap_content"
+                android:layout_width="273dp"
                 android:layout_height="wrap_content"
                 android:ems="10"
                 android:paddingLeft="16dp"
@@ -171,45 +193,24 @@
         <Button
             android:id="@+id/buttonCercaRegistra"
             style="@android:style/Widget.Material.Light.Button.Inset"
-            android:layout_marginTop="15sp"
-            android:layout_marginBottom="15dp"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:background="@drawable/bg_round"
             android:layout_gravity="center"
+            android:layout_marginBottom="3dp"
+            android:background="@drawable/buttonsstyle2"
+            android:drawableLeft="@drawable/ic_search_ricerca"
             android:text="Cerca"
             android:textColor="@color/colorPrimary"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent"
-            app:layout_constraintVertical_bias="0.838"
-            android:drawableLeft="@drawable/ic_search_ricerca"/>
+            app:layout_constraintVertical_bias="0.838" />
 
 
     </LinearLayout>
 
-    <LinearLayout
-        android:layout_width="match_parent"
-        android:layout_marginTop="250dp"
-        android:layout_height="match_parent"
-        android:orientation="vertical">
-        <SearchView
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:id="@+id/sv_location"
-            android:queryHint="Cerca struttura su Mappa per nome"
-            android:iconifiedByDefault="false"
-            android:layout_margin="10dp"
-            android:elevation="5dp"
-            android:background="@drawable/bg_round"/>
-        <fragment
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:id="@+id/map"
-            android:name="com.google.android.gms.maps.SupportMapFragment"/>
-    </LinearLayout>
 
 
-    
+
 </RelativeLayout>
