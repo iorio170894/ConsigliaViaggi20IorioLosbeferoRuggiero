@@ -48,16 +48,16 @@ public class ActivityBenvenuto extends AppCompatActivity {
 
     }
 
-        @Override
-        public  void onStop(){
+     /*   @Override
+        public  void onDestroy(){
             if (Check.loggato) {
                 super.onStop();
                 CognitoSettings.logout();
-                Check.loggato=false;
+                //Check.loggato=false;
             }
             else
                 super.onStop();
-        }
+        }*/
 
         @Override
         public void onBackPressed() {
@@ -82,7 +82,7 @@ public class ActivityBenvenuto extends AppCompatActivity {
 
                     }
                 });
-                Check.loggato=false;
+               // Check.loggato=false;
             }
             else {
                 Intent turnMain = new Intent(ActivityBenvenuto.this, MainActivity.class);

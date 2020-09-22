@@ -3,6 +3,8 @@ package com.example.tripnaples;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.location.Address;
+import android.location.Geocoder;
 import android.location.LocationManager;
 import android.os.Build;
 import android.os.Bundle;
@@ -22,14 +24,20 @@ import android.location.Location;
 import android.Manifest;
 import android.content.pm.PackageManager;
 import android.provider.Settings;
+import android.widget.SearchView;
 
 import com.google.android.gms.common.ConnectionResult;
 import com.google.android.gms.location.LocationListener;
 import com.google.android.gms.location.LocationRequest;
 
+import java.io.IOException;
+import java.util.List;
+
 import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.content.ContextCompat;
+import androidx.fragment.app.FragmentActivity;
+
 
 
 public class ActivityRicerca extends AppCompatActivity implements OnMapReadyCallback,

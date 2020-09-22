@@ -57,7 +57,7 @@ public class ActivityImpostazioni extends AppCompatActivity implements AdapterVi
                     @Override
                     public void onClick(View v) {
                         CognitoSettings.logout();
-                        Check.loggato=false;
+                        //Check.loggato=false;
                         //LoginActivity.logout();
                         //startActivity(new Intent(ActivityImpostazioni.this, MainActivity.class));
                         Intent turnMain = new Intent(ActivityImpostazioni.this,MainActivity.class);
@@ -124,18 +124,18 @@ public class ActivityImpostazioni extends AppCompatActivity implements AdapterVi
             public void onFailure(final Exception exception) {
                 // Fallimento nel recupero dei dettagli dell'utente
                 Log.e("Eccezione dettagli utente:",exception.toString());
-            /*    new android.app.AlertDialog.Builder(ActivityImpostazioni.this)
+                new android.app.AlertDialog.Builder(ActivityImpostazioni.this)
                         .setTitle("Errore nel recuper dei dettagli utente")
                         .setMessage("We're sorry but we are experiencing problems with your account. Try to exit and log in again. Error details: " + exception.getLocalizedMessage())
                         .setPositiveButton("Ok!", new DialogInterface.OnClickListener() {
                             public void onClick(DialogInterface dialog, int which) {
-                                Intent turnToLoginPage = new Intent(ProfileActivity.this,LoginActivity.class);
+                                Intent turnToLoginPage = new Intent(ActivityImpostazioni.this,LoginActivity.class);
                                 turnToLoginPage.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
-                                ProfileActivity.this.startActivity(turnToLoginPage);
+                                ActivityImpostazioni.this.startActivity(turnToLoginPage);
                             }
                         })
                         .setIcon(android.R.drawable.ic_dialog_alert)
-                        .show();*/
+                        .show();
             }
         };
         CognitoUser corrente = CognitoSettings.getUserPool().getCurrentUser();
