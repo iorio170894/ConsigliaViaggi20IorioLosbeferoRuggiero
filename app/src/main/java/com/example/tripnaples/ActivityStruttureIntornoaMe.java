@@ -227,7 +227,8 @@ public class ActivityStruttureIntornoaMe extends AppCompatActivity implements On
             markerOptionsStrutture.title(strutturaInserita.getNome());
             //markerOptionsStrutture.snippet(strutturaInserita.getIndirizzo());
             //markerOptionsStrutture.snippet(strutturaInserita.getCittà());
-            markerOptionsStrutture.snippet(strutturaInserita.getTipo_struttura());
+            double distancetoCurrentPosition=getDistanceKm(latLng,latLngStrutture);
+            markerOptionsStrutture.snippet(String.valueOf("Distanza: "+distancetoCurrentPosition+" km."));
             markerOptionsStrutture.icon(BitmapDescriptorFactory.defaultMarker(BitmapDescriptorFactory.HUE_RED));
             mCurrLocationMarker = mMap.addMarker(markerOptionsStrutture);
             //mMap.moveCamera(CameraUpdateFactory.newLatLng(latLngStrutture));
@@ -244,6 +245,26 @@ public class ActivityStruttureIntornoaMe extends AppCompatActivity implements On
             LocationServices.FusedLocationApi.removeLocationUpdates(mGoogleApiClient, this);
         }
 
+    }
+
+    public static double getDistanceKm(LatLng pt1, LatLng pt2){
+        double distance = 0d;
+        try{
+            double theta = pt1.longitude - pt2.longitude;
+            double dist = Math.sin(Math.toRadians(pt1.latitude)) * Math.sin(Math.toRadians(pt2.latitude))
+                    + Math.cos(Math.toRadians(pt1.latitude)) * Math.cos(Math.toRadians(pt2.latitude)) * Math.cos(Math.toRadians(theta));
+
+            dist = Math.acos(dist);
+            dist = Math.toDegrees(dist);
+            distance = dist * 60 * 1853.1596;
+        }
+        catch (Exception ex){
+            System.out.println(ex.getMessage());
+        }
+        distance=distance/1000;
+        distance = Math.round(distance * 100);
+        distance = distance/100;
+        return distance;
     }
 
     @Override
