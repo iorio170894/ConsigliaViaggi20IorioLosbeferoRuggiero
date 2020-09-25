@@ -9,4 +9,5 @@ public class Check {
     static boolean loggato;
     static String firma;
 
+    static String intornoaMe;
 }

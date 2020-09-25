@@ -39,4 +39,5 @@ dependencies {
     implementation 'com.google.android.libraries.places:places:1.1.0'
     implementation group: 'com.amazonaws', name: 'aws-android-sdk-cognitoidentityprovider', version: '2.15.1'
     implementation group: 'com.amazonaws', name: 'aws-android-sdk-core', version: '2.15.1'
+    implementation 'com.android.volley:volley:1.1.0'
 }

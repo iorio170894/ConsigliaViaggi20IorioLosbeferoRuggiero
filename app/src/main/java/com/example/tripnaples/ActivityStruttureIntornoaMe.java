@@ -3,8 +3,6 @@ package com.example.tripnaples;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
-import android.location.Address;
-import android.location.Geocoder;
 import android.location.LocationManager;
 import android.os.Build;
 import android.os.Bundle;
@@ -30,14 +28,6 @@ import android.location.Location;
 import android.Manifest;
 import android.content.pm.PackageManager;
 import android.provider.Settings;
-import android.view.View;
-import android.widget.AdapterView;
-import android.widget.ArrayAdapter;
-import android.widget.Button;
-import android.widget.SearchView;
-import android.widget.Spinner;
-import android.widget.TextView;
-import android.widget.Toast;
 
 import com.google.android.gms.common.ConnectionResult;
 import com.google.android.gms.location.LocationListener;
@@ -47,42 +37,38 @@ import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
-import java.io.IOException;
-import java.lang.reflect.Array;
 import java.util.ArrayList;
-import java.util.List;
 
 import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.content.ContextCompat;
-import androidx.fragment.app.FragmentActivity;
 
 
-
-public class ActivityRicerca extends AppCompatActivity implements OnMapReadyCallback,
+public class ActivityStruttureIntornoaMe extends AppCompatActivity implements OnMapReadyCallback,
         LocationListener,GoogleApiClient.ConnectionCallbacks,
-        GoogleApiClient.OnConnectionFailedListener, AdapterView.OnItemSelectedListener{
+        GoogleApiClient.OnConnectionFailedListener{
 
     private GoogleMap mMap;
+    private GoogleMap mMapStrutture;
     Location mLastLocation;
     Marker mCurrLocationMarker;
+    Marker setLocation;
     GoogleApiClient mGoogleApiClient;
     LocationRequest mLocationRequest;
 
     //JSON
-    private RequestQueue mQueue;
-    TextView mTextViewResult;
+    //private RequestQueue mQueue;
     ArrayList<Struttura> arrayStrutture=new ArrayList<>();
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
 
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_ricerca);
+        setContentView(R.layout.activity_struttre_intornoa_me);
 
         //Se il GPS non è attivo
         if (!isGPSEnabled()) {
-            new AlertDialog.Builder(ActivityRicerca.this)
+            new AlertDialog.Builder(ActivityStruttureIntornoaMe.this)
                     .setMessage("Attenzione, attiva il GPS!")
                     .setCancelable(false)
                     .setPositiveButton("Opzioni", new DialogInterface.OnClickListener() {
@@ -94,60 +80,22 @@ public class ActivityRicerca extends AppCompatActivity implements OnMapReadyCall
                     .setNegativeButton("Cancella", null)
                     .show();
         }
+        //mQueue = Volley.newRequestQueue(this);
+        //jsonParse();
+        String input = Check.intornoaMe;
+        String url = "http://consigliaviaggi20.us-east-2.elasticbeanstalk.com/struttura/search_strutture.php?inputTipo="+input;
+        JsonClass jsonStrutturaVicinoaMe= new JsonClass();
+        arrayStrutture=jsonStrutturaVicinoaMe.jsonParse(url);
 
+            //Ottieni SupportMapFragment e ricevi una notifica quando la mappa è pronta per essere utilizzata.
+            SupportMapFragment mapFragment = (SupportMapFragment) getSupportFragmentManager()
+                    .findFragmentById(R.id.google_map);
+            mapFragment.getMapAsync(this);
 
-        //Ottieni SupportMapFragment e ricevi una notifica quando la mappa è pronta per essere utilizzata.
-        SupportMapFragment mapFragment = (SupportMapFragment) getSupportFragmentManager()
-                .findFragmentById(R.id.map);
-        mapFragment.getMapAsync(this);
-
-        //Sinner Categoria Struttura
-        Spinner spinnerStruttura = findViewById(R.id.SpinnerStruttura);
-        ArrayAdapter adapter = ArrayAdapter.createFromResource(
-                this,
-                R.array.spinnerStrutture,
-                R.layout.color_spinner_layout2);
-        adapter.setDropDownViewResource(R.layout.spinner_dropdown_layout);
-        spinnerStruttura.setAdapter(adapter);
-        spinnerStruttura.setOnItemSelectedListener(this);
-
-        //Sinner Range di prezzo
-        Spinner spinnerRangePrezzo = findViewById(R.id.SpinnerRangePrezzo);
-        ArrayAdapter adapter2 = ArrayAdapter.createFromResource(
-                this,
-                R.array.spinnerRangePrezzo,
-                R.layout.color_spinner_layout2);
-        adapter2.setDropDownViewResource(R.layout.spinner_dropdown_layout);
-        spinnerRangePrezzo.setAdapter(adapter2);
-        spinnerRangePrezzo.setOnItemSelectedListener(this);
-
-        //Bottone cerca con filtri
-        mQueue = Volley.newRequestQueue(this);
-       // mTextViewResult = findViewById(R.id.text_view_result);
-
-        Button cercaStruttureConFiltri;
-        cercaStruttureConFiltri = findViewById(R.id.buttonCercaRicerca);
-        cercaStruttureConFiltri.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                //arrayStrutture=jsonParse();
-                jsonParse();
-                //startActivity(new Intent(ActivityRicerca.this, ActivityBenvenuto.class));
-                for (int i=0; i<arrayStrutture.size(); i++){
-                    Struttura strutturaInserita=arrayStrutture.get(i);
-                    mTextViewResult.append("Struttura:\ncod_struttura:"+String.valueOf(strutturaInserita.getCod_struttura())+"\nindirizzo:"+strutturaInserita.getIndirizzo()+
-                            "\nrange_prezzo:"+String.valueOf(strutturaInserita.getRange_prezzo())+"\nlatitudine:"+strutturaInserita.getLatitudine()+
-                            "\nlongitudine:"+strutturaInserita.getLongitudine()+ "\ncittà:"+strutturaInserita.getCittà()+"\nnome:"+strutturaInserita.getNome()+
-                            "\ntipo_struttura:"+strutturaInserita.getTipo_struttura()+"\n\n");
-                }
-            }
-
-        });
 
 
     }
-
-
+/*
     public void jsonParse() {
         //final ArrayList<Struttura> array = new ArrayList<>();
         String input = "ristorante";
@@ -173,7 +121,7 @@ public class ActivityRicerca extends AppCompatActivity implements OnMapReadyCall
                                         "\nrange_prezzo:"+String.valueOf(range_prezzo)+"\nlatitudine:"+latitudine+
                                         "\nlongitudine:"+longitudine+ "\ncittà:"+città+"\nnome:"+nome+
                                         "\ntipo_struttura:"+tipo_struttura+"\n\n");*/
-                                Struttura strutturaClass = new Struttura(cod_struttura,indirizzo,range_prezzo,latitudine,longitudine,
+                               /* Struttura strutturaClass = new Struttura(cod_struttura,indirizzo,range_prezzo,latitudine,longitudine,
                                         nome,città,tipo_struttura);
                                 arrayStrutture.add(strutturaClass);
 
@@ -181,7 +129,7 @@ public class ActivityRicerca extends AppCompatActivity implements OnMapReadyCall
                                         "\nrange_prezzo:"+String.valueOf(strutturaClass.getRange_prezzo())+"\nlatitudine:"+strutturaClass.getLatitudine()+
                                         "\nlongitudine:"+strutturaClass.getLongitudine()+ "\ncittà:"+strutturaClass.getCittà()+"\nnome:"+strutturaClass.getNome()+
                                         "\ntipo_struttura:"+strutturaClass.getTipo_struttura()+"\n\n");*/
-                            }
+                           /* }
                         } catch (JSONException e) {
                             e.printStackTrace();
                         }
@@ -194,23 +142,7 @@ public class ActivityRicerca extends AppCompatActivity implements OnMapReadyCall
         });
         mQueue.add(request);
         //return array;
-    }
-
-    @Override
-    public void onConnectionFailed(ConnectionResult connectionResult) {
-
-    }
-
-    @Override
-    public void onItemSelected(AdapterView<?> adapterView, View view, int i, long l) {
-        String text = adapterView.getItemAtPosition(i).toString();
-        Toast.makeText(adapterView.getContext(), text, Toast.LENGTH_SHORT).show();
-    }
-
-    @Override
-    public void onNothingSelected(AdapterView<?> adapterView) {
-
-    }
+    }*/
 
     private boolean isGPSEnabled() {
         LocationManager cm = (LocationManager) getSystemService(Context.LOCATION_SERVICE);
@@ -272,22 +204,50 @@ public class ActivityRicerca extends AppCompatActivity implements OnMapReadyCall
         if (mCurrLocationMarker != null) {
             mCurrLocationMarker.remove();
         }
-        //Posiziona l'indicatore della posizione corrente
-       // LatLng latLng = new LatLng(location.getLatitude(), location.getLongitude());
-        //MarkerOptions markerOptions = new MarkerOptions();
-        //markerOptions.position(latLng);
-        //markerOptions.title("Posizione Corrente");
-        //markerOptions.icon(BitmapDescriptorFactory.defaultMarker(BitmapDescriptorFactory.HUE_GREEN));
-        //mCurrLocationMarker = mMap.addMarker(markerOptions);
+
+        LatLng latLng = new LatLng(location.getLatitude(), location.getLongitude());
+        MarkerOptions markerOptions = new MarkerOptions();
+        markerOptions.position(latLng);
+        markerOptions.title("Posizione Corrente");
+        markerOptions.icon(BitmapDescriptorFactory.defaultMarker(BitmapDescriptorFactory.HUE_GREEN));
+        mCurrLocationMarker = mMap.addMarker(markerOptions);
+
+       /* LatLng latLngStrutture = new LatLng(40.858523, 14.136731);
+        MarkerOptions markerOptionsStrutture = new MarkerOptions();
+        markerOptionsStrutture.position(latLngStrutture);
+        markerOptionsStrutture.title("Tenuta Afrodite");
+        markerOptionsStrutture.icon(BitmapDescriptorFactory.defaultMarker(BitmapDescriptorFactory.HUE_RED));
+        mCurrLocationMarker = mMap.addMarker(markerOptionsStrutture);*/
+
+        for (int i=0; i<arrayStrutture.size(); i++){
+            Struttura strutturaInserita=arrayStrutture.get(i);
+            LatLng latLngStrutture = new LatLng(strutturaInserita.getLatitudine(),strutturaInserita.getLongitudine());
+            MarkerOptions markerOptionsStrutture = new MarkerOptions();
+            markerOptionsStrutture.position(latLngStrutture);
+            markerOptionsStrutture.title(strutturaInserita.getNome());
+            //markerOptionsStrutture.snippet(strutturaInserita.getIndirizzo());
+            //markerOptionsStrutture.snippet(strutturaInserita.getCittà());
+            markerOptionsStrutture.snippet(strutturaInserita.getTipo_struttura());
+            markerOptionsStrutture.icon(BitmapDescriptorFactory.defaultMarker(BitmapDescriptorFactory.HUE_RED));
+            mCurrLocationMarker = mMap.addMarker(markerOptionsStrutture);
+            //mMap.moveCamera(CameraUpdateFactory.newLatLng(latLngStrutture));
+            //mMap.animateCamera(CameraUpdateFactory.zoomTo(11));
+        }
+
 
         //muovi la mappa
-        mMap.moveCamera(CameraUpdateFactory.newLatLng(new LatLng(40.8283157,14.2454157)));
-        mMap.animateCamera(CameraUpdateFactory.zoomTo(10));
+        mMap.moveCamera(CameraUpdateFactory.newLatLng(latLng));
+        mMap.animateCamera(CameraUpdateFactory.zoomTo(11));
 
         //interrompere gli aggiornamenti della posizione
         if (mGoogleApiClient != null) {
             LocationServices.FusedLocationApi.removeLocationUpdates(mGoogleApiClient, this);
         }
+
+    }
+
+    @Override
+    public void onConnectionFailed(ConnectionResult connectionResult) {
 
     }
 

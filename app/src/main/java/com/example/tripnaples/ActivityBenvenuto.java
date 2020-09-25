@@ -27,13 +27,43 @@ public class ActivityBenvenuto extends AppCompatActivity {
         drawerLayout=findViewById(R.id.drawer_layout);
 
 
-        //Bottone Ristoranti intorno a me
+        //Bottone ristoranti intorno a me
         Button ristoranti = (Button) findViewById(R.id.buttonSearchRistoranti);
         ristoranti.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                //apri activity relativo al Login
-                startActivity(new Intent(ActivityBenvenuto.this, ActivityRistorantiIntornoaMe.class));
+                Check.intornoaMe="ristorante";
+                startActivity(new Intent(ActivityBenvenuto.this, ActivityStruttureIntornoaMe.class));
+            }
+        });
+
+        //Bottone parchi intorno a me
+        Button parchi = (Button) findViewById(R.id.buttonSearchParchi);
+        parchi.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Check.intornoaMe="parco";
+                startActivity(new Intent(ActivityBenvenuto.this, ActivityStruttureIntornoaMe.class));
+            }
+        });
+
+        //Bottone hotel intorno a me
+        Button hotel = (Button) findViewById(R.id.buttonSearchHotel);
+        hotel.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Check.intornoaMe="hotel";
+                startActivity(new Intent(ActivityBenvenuto.this, ActivityStruttureIntornoaMe.class));
+            }
+        });
+
+        //Bottone bar intorno a me
+        Button bar = (Button) findViewById(R.id.buttonSearchBar);
+        bar.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Check.intornoaMe="bar";
+                startActivity(new Intent(ActivityBenvenuto.this, ActivityStruttureIntornoaMe.class));
             }
         });
 
@@ -41,7 +71,6 @@ public class ActivityBenvenuto extends AppCompatActivity {
         ricerca.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                //apri activity relativo al Login
                 startActivity(new Intent(ActivityBenvenuto.this, ActivityRicerca.class));
             }
         });

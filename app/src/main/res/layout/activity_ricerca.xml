@@ -17,17 +17,6 @@
         android:elevation="5dp"
         android:background="@drawable/bg_round"/>
 
-    <LinearLayout
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:orientation="vertical">
-        <fragment
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:id="@+id/map"
-            android:name="com.google.android.gms.maps.SupportMapFragment"/>
-    </LinearLayout>
-
 
     <LinearLayout
         android:id="@+id/linearLayout23"
@@ -191,7 +180,7 @@
             android:layout_marginRight="16dp"/>
 
         <Button
-            android:id="@+id/buttonCercaRegistra"
+            android:id="@+id/buttonCercaRicerca"
             style="@android:style/Widget.Material.Light.Button.Inset"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
@@ -208,9 +197,20 @@
             app:layout_constraintVertical_bias="0.838" />
 
 
+
     </LinearLayout>
 
 
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:orientation="vertical">
+        <fragment
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:id="@+id/map"
+            android:name="com.google.android.gms.maps.SupportMapFragment"/>
+    </LinearLayout>
 
 
 </RelativeLayout>
