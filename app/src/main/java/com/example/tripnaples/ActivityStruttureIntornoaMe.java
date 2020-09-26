@@ -1,5 +1,6 @@
 package com.example.tripnaples;
 
+import android.app.Dialog;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
@@ -28,6 +29,10 @@ import android.location.Location;
 import android.Manifest;
 import android.content.pm.PackageManager;
 import android.provider.Settings;
+import android.view.Gravity;
+import android.view.View;
+import android.widget.Button;
+import android.widget.TextView;
 
 import com.google.android.gms.common.ConnectionResult;
 import com.google.android.gms.location.LocationListener;
@@ -55,6 +60,9 @@ public class ActivityStruttureIntornoaMe extends AppCompatActivity implements On
     Marker setLocation;
     GoogleApiClient mGoogleApiClient;
     LocationRequest mLocationRequest;
+
+
+    Dialog myDialogStruttura;
 
     //JSON
     //private RequestQueue mQueue;
@@ -206,39 +214,75 @@ public class ActivityStruttureIntornoaMe extends AppCompatActivity implements On
         }
 
         LatLng latLng = new LatLng(location.getLatitude(), location.getLongitude());
-        MarkerOptions markerOptions = new MarkerOptions();
+        final MarkerOptions markerOptions = new MarkerOptions();
         markerOptions.position(latLng);
         markerOptions.title("Posizione Corrente");
         markerOptions.icon(BitmapDescriptorFactory.defaultMarker(BitmapDescriptorFactory.HUE_GREEN));
         mCurrLocationMarker = mMap.addMarker(markerOptions);
 
-       /* LatLng latLngStrutture = new LatLng(40.858523, 14.136731);
-        MarkerOptions markerOptionsStrutture = new MarkerOptions();
-        markerOptionsStrutture.position(latLngStrutture);
-        markerOptionsStrutture.title("Tenuta Afrodite");
-        markerOptionsStrutture.icon(BitmapDescriptorFactory.defaultMarker(BitmapDescriptorFactory.HUE_RED));
-        mCurrLocationMarker = mMap.addMarker(markerOptionsStrutture);*/
 
         for (int i=0; i<arrayStrutture.size(); i++){
-            Struttura strutturaInserita=arrayStrutture.get(i);
+            final Struttura strutturaInserita=arrayStrutture.get(i);
             LatLng latLngStrutture = new LatLng(strutturaInserita.getLatitudine(),strutturaInserita.getLongitudine());
             MarkerOptions markerOptionsStrutture = new MarkerOptions();
             markerOptionsStrutture.position(latLngStrutture);
             markerOptionsStrutture.title(strutturaInserita.getNome());
             //markerOptionsStrutture.snippet(strutturaInserita.getIndirizzo());
             //markerOptionsStrutture.snippet(strutturaInserita.getCittà());
+
+            //calcolo della distanza dalla posizione corrente
             double distancetoCurrentPosition=getDistanceKm(latLng,latLngStrutture);
             markerOptionsStrutture.snippet(String.valueOf("Distanza: "+distancetoCurrentPosition+" km."));
+            //markerOptionsStrutture.snippet(String.valueOf(strutturaInserita.getLatitudine())+String.valueOf(strutturaInserita.getLongitudine()));
             markerOptionsStrutture.icon(BitmapDescriptorFactory.defaultMarker(BitmapDescriptorFactory.HUE_RED));
+
             mCurrLocationMarker = mMap.addMarker(markerOptionsStrutture);
             //mMap.moveCamera(CameraUpdateFactory.newLatLng(latLngStrutture));
             //mMap.animateCamera(CameraUpdateFactory.zoomTo(11));
+
         }
 
 
         //muovi la mappa
         mMap.moveCamera(CameraUpdateFactory.newLatLng(latLng));
         mMap.animateCamera(CameraUpdateFactory.zoomTo(11));
+
+        mMap.setOnMarkerClickListener(new GoogleMap.OnMarkerClickListener() {
+            @Override
+            public boolean onMarkerClick(Marker marker) {
+                LatLng latLngCurrent=marker.getPosition();
+
+                double latitudineCurr=latLngCurrent.latitude;
+                double longitudineCurr=latLngCurrent.longitude;
+
+                for (int i=0; i<arrayStrutture.size(); i++){
+                    final Struttura strutturaCurr=arrayStrutture.get(i);
+                    if (strutturaCurr.getLatitudine()==latitudineCurr &&
+                        strutturaCurr.getLongitudine()==longitudineCurr){
+
+                        final AlertDialog dialog = new AlertDialog.Builder(ActivityStruttureIntornoaMe.this)
+                                .setTitle(strutturaCurr.getTipo_struttura()+": \n"+strutturaCurr.getNome())
+                                .setMessage(strutturaCurr.getIndirizzo()+", "+strutturaCurr.getCittà())
+                                //.setMessage(latitudineCurr+", "+longitudineCurr)
+                                .setPositiveButton("Aggiungi/Visualizza recensioni", null)
+                                .show();
+
+                        dialog.getWindow().setGravity(Gravity.BOTTOM);
+
+                        Button positiveButton = dialog.getButton(AlertDialog.BUTTON_POSITIVE);
+                        positiveButton.setOnClickListener(new View.OnClickListener() {
+                            @Override
+                            public void onClick(View v) {
+                                startActivity(new Intent(ActivityStruttureIntornoaMe.this, ActivityStruttura.class));
+                                dialog.dismiss();
+                            }
+                        });
+                    }
+                }
+
+                return false;
+            }
+        });
 
         //interrompere gli aggiornamenti della posizione
         if (mGoogleApiClient != null) {

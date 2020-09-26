@@ -1,0 +1,96 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout
+    xmlns:tools="http://schemas.android.com/tools"
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    android:orientation="vertical"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:layout_gravity="center"
+    android:background="@drawable/bg_round">
+
+    <LinearLayout
+        android:id="@+id/linearLayout2"
+        android:layout_width="match_parent"
+        android:layout_marginTop="20dp"
+        android:layout_height="match_parent"
+        android:orientation="vertical"
+        tools:ignore="MissingConstraints"
+        tools:layout_editor_absoluteX="-2dp"
+        tools:layout_editor_absoluteY="-6dp">
+
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="16dp"
+            android:layout_marginRight="16dp"
+            android:orientation="horizontal">
+
+            <TextView
+                android:id="@+id/textNomeStruttura"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:textSize="20sp"
+                android:text="Pizzeria da Michele"
+                android:textStyle="bold"
+                android:textColor="@color/colorPrimaryDark"
+                android:paddingTop="8dp"
+                android:paddingLeft="16dp"
+                android:paddingRight="16dp"
+                android:paddingBottom="8dp"/>
+
+
+
+        </LinearLayout>
+
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="16dp"
+            android:layout_marginRight="16dp"
+            android:paddingBottom="8dp"
+            android:orientation="horizontal">
+
+            <TextView
+                android:id="@+id/textIndirizzo"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Via Salvatore Iorio"
+                android:textSize="16sp"
+                android:textColor="@color/colorPrimaryDark"
+                android:paddingTop="8dp"
+                android:paddingLeft="16dp"
+                android:paddingRight="16dp"
+                android:paddingBottom="8dp"/>
+
+            <TextView
+                android:id="@+id/textCittà"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:textSize="16sp"
+                android:text="Napoli"
+                android:textColor="@color/colorPrimaryDark"
+                android:paddingTop="8dp"
+                android:paddingLeft="16dp"
+                android:paddingRight="16dp"
+                android:paddingBottom="8dp"/>
+
+        </LinearLayout>
+
+
+        <Button
+            android:id="@+id/buttonRecensioni"
+            style="@android:style/Widget.Material.Light.Button.Inset"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:background="@drawable/buttonsstyle2"
+            android:drawableLeft="@drawable/ic_review"
+            android:text="Visualizza/Inserisci Recensioni"
+            android:textColor="@color/colorPrimary" />
+
+
+
+    </LinearLayout>
+</LinearLayout>
