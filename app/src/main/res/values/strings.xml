@@ -24,14 +24,14 @@
         <item>Nickname</item>
     </string-array>
     <string-array name="spinnerStrutture">
-        <item>Ristorante</item>
-        <item>Hotel</item>
-        <item>Bar</item>
-        <item>Parco</item>
+        <item>ristorante</item>
+        <item>hotel</item>
+        <item>bar</item>
+        <item>parco</item>
     </string-array>
     <string-array name="spinnerRangePrezzo">
-        <item>Basso</item>
-        <item>Medio</item>
-        <item>Alto</item>
+        <item>basso</item>
+        <item>medio</item>
+        <item>alto</item>
     </string-array>
 </resources>

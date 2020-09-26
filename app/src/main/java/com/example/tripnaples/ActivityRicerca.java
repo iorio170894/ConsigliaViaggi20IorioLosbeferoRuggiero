@@ -30,10 +30,12 @@ import android.location.Location;
 import android.Manifest;
 import android.content.pm.PackageManager;
 import android.provider.Settings;
+import android.view.Gravity;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
+import android.widget.EditText;
 import android.widget.SearchView;
 import android.widget.Spinner;
 import android.widget.TextView;
@@ -74,6 +76,14 @@ public class ActivityRicerca extends AppCompatActivity implements OnMapReadyCall
     TextView mTextViewResult;
     ArrayList<Struttura> arrayStrutture=new ArrayList<>();
 
+    //Spinner
+    //static String strutturaSelected="default";
+    //static String rangeSelected="default";
+    //static int positionSpinner;
+
+    static boolean check_premuto=false;
+
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
 
@@ -96,33 +106,30 @@ public class ActivityRicerca extends AppCompatActivity implements OnMapReadyCall
         }
 
 
-        //Ottieni SupportMapFragment e ricevi una notifica quando la mappa è pronta per essere utilizzata.
-        SupportMapFragment mapFragment = (SupportMapFragment) getSupportFragmentManager()
-                .findFragmentById(R.id.map);
-        mapFragment.getMapAsync(this);
-
-        //Sinner Categoria Struttura
-        Spinner spinnerStruttura = findViewById(R.id.SpinnerStruttura);
-        ArrayAdapter adapter = ArrayAdapter.createFromResource(
+        //Spinner Categoria Struttura
+        final Spinner spinnerStruttura = findViewById(R.id.SpinnerStruttura);
+        final ArrayAdapter adapter = ArrayAdapter.createFromResource(
                 this,
                 R.array.spinnerStrutture,
                 R.layout.color_spinner_layout2);
         adapter.setDropDownViewResource(R.layout.spinner_dropdown_layout);
         spinnerStruttura.setAdapter(adapter);
         spinnerStruttura.setOnItemSelectedListener(this);
+        //final String strutturaSelected = adapter.getItem(positionSpinner).toString();
 
         //Sinner Range di prezzo
-        Spinner spinnerRangePrezzo = findViewById(R.id.SpinnerRangePrezzo);
-        ArrayAdapter adapter2 = ArrayAdapter.createFromResource(
+        final Spinner spinnerRangePrezzo = findViewById(R.id.SpinnerRangePrezzo);
+        final ArrayAdapter adapter2 = ArrayAdapter.createFromResource(
                 this,
                 R.array.spinnerRangePrezzo,
                 R.layout.color_spinner_layout2);
         adapter2.setDropDownViewResource(R.layout.spinner_dropdown_layout);
         spinnerRangePrezzo.setAdapter(adapter2);
         spinnerRangePrezzo.setOnItemSelectedListener(this);
+        //final String rangeSelected = adapter2.getItem(0).toString();
 
         //Bottone cerca con filtri
-        mQueue = Volley.newRequestQueue(this);
+        //mQueue = Volley.newRequestQueue(this);
        // mTextViewResult = findViewById(R.id.text_view_result);
 
         Button cercaStruttureConFiltri;
@@ -130,16 +137,48 @@ public class ActivityRicerca extends AppCompatActivity implements OnMapReadyCall
         cercaStruttureConFiltri.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                //arrayStrutture=jsonParse();
-                jsonParse();
-                //startActivity(new Intent(ActivityRicerca.this, ActivityBenvenuto.class));
-                for (int i=0; i<arrayStrutture.size(); i++){
-                    Struttura strutturaInserita=arrayStrutture.get(i);
-                    mTextViewResult.append("Struttura:\ncod_struttura:"+String.valueOf(strutturaInserita.getCod_struttura())+"\nindirizzo:"+strutturaInserita.getIndirizzo()+
-                            "\nrange_prezzo:"+String.valueOf(strutturaInserita.getRange_prezzo())+"\nlatitudine:"+strutturaInserita.getLatitudine()+
-                            "\nlongitudine:"+strutturaInserita.getLongitudine()+ "\ncittà:"+strutturaInserita.getCittà()+"\nnome:"+strutturaInserita.getNome()+
-                            "\ntipo_struttura:"+strutturaInserita.getTipo_struttura()+"\n\n");
+
+                String strutturaSelected=spinnerStruttura.getSelectedItem().toString();
+                String rangePrezzoSelected=spinnerRangePrezzo.getSelectedItem().toString();
+                EditText inputcittàSelected= findViewById(R.id.editTextCittàStruttura);
+                String cittàSelected = String.valueOf(inputcittàSelected.getText());
+                int range=0;
+
+                if (rangePrezzoSelected.equals("basso")){
+                    rangePrezzoSelected="1";
+                    range=Integer.parseInt(rangePrezzoSelected);
                 }
+                else if (rangePrezzoSelected.equals("medio")){
+                    rangePrezzoSelected="2";
+                    range=Integer.parseInt(rangePrezzoSelected);
+                }
+                else if (rangePrezzoSelected.equals("alto")){
+                    rangePrezzoSelected="3";
+                    range=Integer.parseInt(rangePrezzoSelected);
+                }
+
+                //String url = "http://consigliaviaggi20.us-east-2.elasticbeanstalk.com/struttura/search_filter_strutture.php?inputTipo="+strutturaSelected+"&inputCitt%C3%A0="+cittàSelected+"&inputRangePrezzo="+range;
+                  String url = "http://consigliaviaggi20.us-east-2.elasticbeanstalk.com/struttura/search_filter_strutture.php?inputTipo="+strutturaSelected+"&inputCitt%C3%A0="+cittàSelected+"&inputRangePrezzo="+range;
+
+                JsonClass jsonRicerca= new JsonClass();
+                arrayStrutture=jsonRicerca.jsonParse(url);
+
+                if (arrayStrutture.isEmpty()) {
+                    AlertDialog.Builder builder = new AlertDialog.Builder(ActivityRicerca.this);
+                    builder.setTitle("Errore nella ricerca:");
+                    builder.setMessage("Non sono state trovate strutture!");
+                    builder.show();
+                }
+
+                //check_premuto=true;
+
+                //onLocationChanged(mLastLocation);
+
+                //Ottieni SupportMapFragment e ricevi una notifica quando la mappa è pronta per essere utilizzata.
+                SupportMapFragment mapFragment = (SupportMapFragment) getSupportFragmentManager()
+                        .findFragmentById(R.id.map);
+                mapFragment.getMapAsync(ActivityRicerca.this);
+
             }
 
         });
@@ -147,54 +186,6 @@ public class ActivityRicerca extends AppCompatActivity implements OnMapReadyCall
 
     }
 
-
-    public void jsonParse() {
-        //final ArrayList<Struttura> array = new ArrayList<>();
-        String input = "ristorante";
-        String url = "http://consigliaviaggi20.us-east-2.elasticbeanstalk.com/struttura/search_strutture.php?inputTipo="+input;
-        //final ArrayList<Struttura> arrayStrutture = new ArrayList<>();
-        JsonObjectRequest request = new JsonObjectRequest(Request.Method.GET, url, null,
-                new Response.Listener<JSONObject>() {
-                    @Override
-                    public void onResponse(JSONObject response) {
-                        try {
-                            JSONArray jsonArray = response.getJSONArray("records");
-                            for (int i = 0; i < jsonArray.length(); i++) {
-                                JSONObject struttura = jsonArray.getJSONObject(i);
-                                int cod_struttura = struttura.getInt("cod_struttura");
-                                String indirizzo = struttura.getString("indirizzo");
-                                int range_prezzo = struttura.getInt("range_prezzo");
-                                double latitudine = struttura.getDouble("latitudine");
-                                double longitudine = struttura.getDouble("longitudine");
-                                String nome = struttura.getString("nome");
-                                String città = struttura.getString("città");
-                                String tipo_struttura = struttura.getString("tipo_struttura");
-                                /*mTextViewResult.append("cod_struttura:"+String.valueOf(cod_struttura)+"\nindirizzo:"+indirizzo+
-                                        "\nrange_prezzo:"+String.valueOf(range_prezzo)+"\nlatitudine:"+latitudine+
-                                        "\nlongitudine:"+longitudine+ "\ncittà:"+città+"\nnome:"+nome+
-                                        "\ntipo_struttura:"+tipo_struttura+"\n\n");*/
-                                Struttura strutturaClass = new Struttura(cod_struttura,indirizzo,range_prezzo,latitudine,longitudine,
-                                        nome,città,tipo_struttura);
-                                arrayStrutture.add(strutturaClass);
-
-                                /*mTextViewResult.append("cod_struttura:"+String.valueOf(strutturaClass.getCod_struttura())+"\nindirizzo:"+strutturaClass.getIndirizzo()+
-                                        "\nrange_prezzo:"+String.valueOf(strutturaClass.getRange_prezzo())+"\nlatitudine:"+strutturaClass.getLatitudine()+
-                                        "\nlongitudine:"+strutturaClass.getLongitudine()+ "\ncittà:"+strutturaClass.getCittà()+"\nnome:"+strutturaClass.getNome()+
-                                        "\ntipo_struttura:"+strutturaClass.getTipo_struttura()+"\n\n");*/
-                            }
-                        } catch (JSONException e) {
-                            e.printStackTrace();
-                        }
-                    }
-                }, new Response.ErrorListener() {
-            @Override
-            public void onErrorResponse(VolleyError error) {
-                error.printStackTrace();
-            }
-        });
-        mQueue.add(request);
-        //return array;
-    }
 
     @Override
     public void onConnectionFailed(ConnectionResult connectionResult) {
@@ -203,8 +194,17 @@ public class ActivityRicerca extends AppCompatActivity implements OnMapReadyCall
 
     @Override
     public void onItemSelected(AdapterView<?> adapterView, View view, int i, long l) {
+        //positionSpinner=i;
         String text = adapterView.getItemAtPosition(i).toString();
         Toast.makeText(adapterView.getContext(), text, Toast.LENGTH_SHORT).show();
+
+        /*if(text == "hotel" || text == "parco" || text == "ristorante" || text == "bar"){
+            strutturaSelected=text;
+        }
+        else if (text == "basso" || text == "medio" || text == "alto"){
+            rangeSelected=text;
+        }*/
+
     }
 
     @Override
@@ -279,6 +279,28 @@ public class ActivityRicerca extends AppCompatActivity implements OnMapReadyCall
         //markerOptions.title("Posizione Corrente");
         //markerOptions.icon(BitmapDescriptorFactory.defaultMarker(BitmapDescriptorFactory.HUE_GREEN));
         //mCurrLocationMarker = mMap.addMarker(markerOptions);
+
+        //if (check_premuto) {
+            for (int i=0; i<arrayStrutture.size(); i++){
+                final Struttura strutturaInserita=arrayStrutture.get(i);
+                LatLng latLngStrutture = new LatLng(strutturaInserita.getLatitudine(),strutturaInserita.getLongitudine());
+                MarkerOptions markerOptionsStrutture = new MarkerOptions();
+                markerOptionsStrutture.position(latLngStrutture);
+                markerOptionsStrutture.title(strutturaInserita.getNome());
+                //markerOptionsStrutture.snippet(strutturaInserita.getIndirizzo());
+                //markerOptionsStrutture.snippet(strutturaInserita.getCittà());
+
+                //calcolo della distanza dalla posizione corrente
+                //markerOptionsStrutture.snippet(String.valueOf(strutturaInserita.getLatitudine())+String.valueOf(strutturaInserita.getLongitudine()));
+                markerOptionsStrutture.snippet(strutturaInserita.getTipo_struttura());
+                markerOptionsStrutture.icon(BitmapDescriptorFactory.defaultMarker(BitmapDescriptorFactory.HUE_RED));
+
+                mCurrLocationMarker = mMap.addMarker(markerOptionsStrutture);
+                //mMap.moveCamera(CameraUpdateFactory.newLatLng(latLngStrutture));
+                //mMap.animateCamera(CameraUpdateFactory.zoomTo(11));
+
+            }
+      //  }
 
         //muovi la mappa
         mMap.moveCamera(CameraUpdateFactory.newLatLng(new LatLng(40.8283157,14.2454157)));
