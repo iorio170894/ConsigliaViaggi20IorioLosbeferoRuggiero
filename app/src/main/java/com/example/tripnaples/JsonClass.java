@@ -49,10 +49,12 @@ import androidx.annotation.Nullable;
 
 public class JsonClass extends Context {
 
+
     private RequestQueue mQueue;
 
     public ArrayList<Struttura> jsonParse(String url) {
         final ArrayList<Struttura> array = new ArrayList<>();
+        //array=null;
         mQueue = Volley.newRequestQueue(this);
         //final ArrayList<Struttura> arrayStrutture = new ArrayList<>();
         JsonObjectRequest request = new JsonObjectRequest(Request.Method.GET, url, null,

@@ -8,12 +8,7 @@ import android.location.LocationManager;
 import android.os.Build;
 import android.os.Bundle;
 
-import com.android.volley.Request;
-import com.android.volley.RequestQueue;
-import com.android.volley.Response;
-import com.android.volley.VolleyError;
-import com.android.volley.toolbox.JsonObjectRequest;
-import com.android.volley.toolbox.Volley;
+
 import com.google.android.gms.common.api.GoogleApiClient;
 import com.google.android.gms.maps.CameraUpdateFactory;
 import com.google.android.gms.maps.GoogleMap;
@@ -32,15 +27,13 @@ import android.provider.Settings;
 import android.view.Gravity;
 import android.view.View;
 import android.widget.Button;
-import android.widget.TextView;
+
 
 import com.google.android.gms.common.ConnectionResult;
 import com.google.android.gms.location.LocationListener;
 import com.google.android.gms.location.LocationRequest;
 
-import org.json.JSONArray;
-import org.json.JSONException;
-import org.json.JSONObject;
+
 
 import java.util.ArrayList;
 
@@ -101,6 +94,15 @@ public class ActivityStruttureIntornoaMe extends AppCompatActivity implements On
             mapFragment.getMapAsync(this);
 
 
+
+    }
+
+    @Override
+    public void onBackPressed() {
+
+        Intent turnBack = new Intent(ActivityStruttureIntornoaMe.this, ActivityBenvenuto.class);
+        turnBack.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
+        ActivityStruttureIntornoaMe.this.startActivity(turnBack);
 
     }
 /*
@@ -213,13 +215,19 @@ public class ActivityStruttureIntornoaMe extends AppCompatActivity implements On
             mCurrLocationMarker.remove();
         }
 
-        LatLng latLng = new LatLng(location.getLatitude(), location.getLongitude());
+        final LatLng latLng = new LatLng(location.getLatitude(), location.getLongitude());
         final MarkerOptions markerOptions = new MarkerOptions();
         markerOptions.position(latLng);
         markerOptions.title("Posizione Corrente");
         markerOptions.icon(BitmapDescriptorFactory.defaultMarker(BitmapDescriptorFactory.HUE_GREEN));
         mCurrLocationMarker = mMap.addMarker(markerOptions);
 
+        if (arrayStrutture.isEmpty()) {
+            AlertDialog.Builder builder = new AlertDialog.Builder(ActivityStruttureIntornoaMe.this);
+            builder.setTitle("Errore nella ricerca:");
+            builder.setMessage("Non sono state trovate strutture!");
+            builder.show();
+        }
 
         for (int i=0; i<arrayStrutture.size(); i++){
             final Struttura strutturaInserita=arrayStrutture.get(i);
@@ -250,7 +258,7 @@ public class ActivityStruttureIntornoaMe extends AppCompatActivity implements On
         mMap.setOnMarkerClickListener(new GoogleMap.OnMarkerClickListener() {
             @Override
             public boolean onMarkerClick(Marker marker) {
-                LatLng latLngCurrent=marker.getPosition();
+                final LatLng latLngCurrent=marker.getPosition();
 
                 double latitudineCurr=latLngCurrent.latitude;
                 double longitudineCurr=latLngCurrent.longitude;
@@ -260,9 +268,11 @@ public class ActivityStruttureIntornoaMe extends AppCompatActivity implements On
                     if (strutturaCurr.getLatitudine()==latitudineCurr &&
                         strutturaCurr.getLongitudine()==longitudineCurr){
 
+                        double distancetoCurrentPosition=getDistanceKm(latLng,latLngCurrent);
+
                         final AlertDialog dialog = new AlertDialog.Builder(ActivityStruttureIntornoaMe.this)
                                 .setTitle(strutturaCurr.getTipo_struttura()+": \n"+strutturaCurr.getNome())
-                                .setMessage(strutturaCurr.getIndirizzo()+", "+strutturaCurr.getCittà())
+                                .setMessage(strutturaCurr.getIndirizzo()+", "+strutturaCurr.getCittà()+"\nDistanza: "+distancetoCurrentPosition+" km.")
                                 //.setMessage(latitudineCurr+", "+longitudineCurr)
                                 .setPositiveButton("Aggiungi/Visualizza recensioni", null)
                                 .show();
@@ -273,7 +283,15 @@ public class ActivityStruttureIntornoaMe extends AppCompatActivity implements On
                         positiveButton.setOnClickListener(new View.OnClickListener() {
                             @Override
                             public void onClick(View v) {
+
+                                Check.coordinateStruttura=latLngCurrent;
+                                Check.nomeStruttura=strutturaCurr.getNome();
+                                Check.indirizzoStruttura=strutturaCurr.getIndirizzo();
+                                Check.cittàStruttura=strutturaCurr.getCittà();
+                                Check.tipoStruttura=strutturaCurr.getTipo_struttura();
+
                                 startActivity(new Intent(ActivityStruttureIntornoaMe.this, ActivityStruttura.class));
+
                                 dialog.dismiss();
                             }
                         });

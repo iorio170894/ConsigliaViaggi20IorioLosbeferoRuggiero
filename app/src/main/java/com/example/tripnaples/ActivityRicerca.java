@@ -9,12 +9,7 @@ import android.location.LocationManager;
 import android.os.Build;
 import android.os.Bundle;
 
-import com.android.volley.Request;
-import com.android.volley.RequestQueue;
-import com.android.volley.Response;
-import com.android.volley.VolleyError;
-import com.android.volley.toolbox.JsonObjectRequest;
-import com.android.volley.toolbox.Volley;
+
 import com.google.android.gms.common.api.GoogleApiClient;
 import com.google.android.gms.maps.CameraUpdateFactory;
 import com.google.android.gms.maps.GoogleMap;
@@ -36,29 +31,24 @@ import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.EditText;
+
 import android.widget.SearchView;
 import android.widget.Spinner;
 import android.widget.TextView;
-import android.widget.Toast;
+
 
 import com.google.android.gms.common.ConnectionResult;
 import com.google.android.gms.location.LocationListener;
 import com.google.android.gms.location.LocationRequest;
 
-import org.json.JSONArray;
-import org.json.JSONException;
-import org.json.JSONObject;
-
 import java.io.IOException;
-import java.lang.reflect.Array;
 import java.util.ArrayList;
 import java.util.List;
+
 
 import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.content.ContextCompat;
-import androidx.fragment.app.FragmentActivity;
-
 
 
 public class ActivityRicerca extends AppCompatActivity implements OnMapReadyCallback,
@@ -70,11 +60,14 @@ public class ActivityRicerca extends AppCompatActivity implements OnMapReadyCall
     Marker mCurrLocationMarker;
     GoogleApiClient mGoogleApiClient;
     LocationRequest mLocationRequest;
+    SearchView searchView;
+    SupportMapFragment mapFragment;
+
+    ArrayList<Struttura> arrayStrutture= new ArrayList<>();
 
     //JSON
-    private RequestQueue mQueue;
+    //private RequestQueue mQueue;
     TextView mTextViewResult;
-    ArrayList<Struttura> arrayStrutture=new ArrayList<>();
 
     //Spinner
     //static String strutturaSelected="default";
@@ -104,6 +97,42 @@ public class ActivityRicerca extends AppCompatActivity implements OnMapReadyCall
                     .setNegativeButton("Cancella", null)
                     .show();
         }
+
+        //SearchView
+        searchView=findViewById(R.id.sv_location);
+
+
+        mapFragment = (SupportMapFragment) getSupportFragmentManager()
+                .findFragmentById(R.id.map);
+        mapFragment.getMapAsync(this);
+
+        searchView.setOnQueryTextListener(new SearchView.OnQueryTextListener() {
+            @Override
+            public boolean onQueryTextSubmit(String query) {
+                return false;
+            }
+
+            @Override
+            public boolean onQueryTextChange(String newText) {
+                String text = searchView.getQuery().toString();
+                List<Address> addressList = null;
+
+                if (text != null || !text.equals("")) {
+
+                    String url = "http://consigliaviaggi20.us-east-2.elasticbeanstalk.com/struttura/search_per_nome.php?nome="+text;
+
+                    // mQueue = Volley.newRequestQueue(this);
+                    JsonClass jsonRicerca= new JsonClass();
+                    //arrayStrutture.clear();
+                    arrayStrutture=jsonRicerca.jsonParse(url);
+                    check_premuto=true;
+                    mapFragment.getMapAsync(ActivityRicerca.this);
+
+                }
+                return false;
+            }
+        });
+
 
 
         //Spinner Categoria Struttura
@@ -138,6 +167,7 @@ public class ActivityRicerca extends AppCompatActivity implements OnMapReadyCall
             @Override
             public void onClick(View view) {
 
+
                 String strutturaSelected=spinnerStruttura.getSelectedItem().toString();
                 String rangePrezzoSelected=spinnerRangePrezzo.getSelectedItem().toString();
                 EditText inputcittàSelected= findViewById(R.id.editTextCittàStruttura);
@@ -160,32 +190,44 @@ public class ActivityRicerca extends AppCompatActivity implements OnMapReadyCall
                 //String url = "http://consigliaviaggi20.us-east-2.elasticbeanstalk.com/struttura/search_filter_strutture.php?inputTipo="+strutturaSelected+"&inputCitt%C3%A0="+cittàSelected+"&inputRangePrezzo="+range;
                   String url = "http://consigliaviaggi20.us-east-2.elasticbeanstalk.com/struttura/search_filter_strutture.php?inputTipo="+strutturaSelected+"&inputCitt%C3%A0="+cittàSelected+"&inputRangePrezzo="+range;
 
+               // mQueue = Volley.newRequestQueue(this);
                 JsonClass jsonRicerca= new JsonClass();
+                //arrayStrutture.clear();
                 arrayStrutture=jsonRicerca.jsonParse(url);
 
-                if (arrayStrutture.isEmpty()) {
-                    AlertDialog.Builder builder = new AlertDialog.Builder(ActivityRicerca.this);
-                    builder.setTitle("Errore nella ricerca:");
-                    builder.setMessage("Non sono state trovate strutture!");
-                    builder.show();
-                }
+               // mQueue.add(request);
 
-                //check_premuto=true;
+                /*//Ottieni SupportMapFragment e ricevi una notifica quando la mappa è pronta per essere utilizzata.
+                SupportMapFragment mapFragment = (SupportMapFragment) getSupportFragmentManager()
+                        .findFragmentById(R.id.map);
+                mapFragment.getMapAsync(ActivityRicerca.this);*/
+
+                check_premuto=true;
 
                 //onLocationChanged(mLastLocation);
 
-                //Ottieni SupportMapFragment e ricevi una notifica quando la mappa è pronta per essere utilizzata.
-                SupportMapFragment mapFragment = (SupportMapFragment) getSupportFragmentManager()
-                        .findFragmentById(R.id.map);
                 mapFragment.getMapAsync(ActivityRicerca.this);
+
 
             }
 
         });
 
 
+
+
     }
 
+
+    @Override
+    public void onBackPressed() {
+
+        Intent turnBack = new Intent(ActivityRicerca.this, ActivityBenvenuto.class);
+        turnBack.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
+        ActivityRicerca.this.startActivity(turnBack);
+        check_premuto=false;
+
+    }
 
     @Override
     public void onConnectionFailed(ConnectionResult connectionResult) {
@@ -196,7 +238,7 @@ public class ActivityRicerca extends AppCompatActivity implements OnMapReadyCall
     public void onItemSelected(AdapterView<?> adapterView, View view, int i, long l) {
         //positionSpinner=i;
         String text = adapterView.getItemAtPosition(i).toString();
-        Toast.makeText(adapterView.getContext(), text, Toast.LENGTH_SHORT).show();
+        //Toast.makeText(adapterView.getContext(), text, Toast.LENGTH_SHORT).show();
 
         /*if(text == "hotel" || text == "parco" || text == "ristorante" || text == "bar"){
             strutturaSelected=text;
@@ -268,17 +310,30 @@ public class ActivityRicerca extends AppCompatActivity implements OnMapReadyCall
     @Override
     public void onLocationChanged(Location location) {
 
+        mMap.clear();
+
         mLastLocation = location;
         if (mCurrLocationMarker != null) {
             mCurrLocationMarker.remove();
         }
+
+
         //Posiziona l'indicatore della posizione corrente
-       // LatLng latLng = new LatLng(location.getLatitude(), location.getLongitude());
-        //MarkerOptions markerOptions = new MarkerOptions();
-        //markerOptions.position(latLng);
-        //markerOptions.title("Posizione Corrente");
-        //markerOptions.icon(BitmapDescriptorFactory.defaultMarker(BitmapDescriptorFactory.HUE_GREEN));
-        //mCurrLocationMarker = mMap.addMarker(markerOptions);
+        LatLng latLng = new LatLng(location.getLatitude(), location.getLongitude());
+        MarkerOptions markerOptions = new MarkerOptions();
+        markerOptions.position(latLng);
+        markerOptions.title("Posizione Corrente");
+        markerOptions.icon(BitmapDescriptorFactory.defaultMarker(BitmapDescriptorFactory.HUE_GREEN));
+        mCurrLocationMarker = mMap.addMarker(markerOptions);
+
+        if (check_premuto) {
+            if (arrayStrutture.isEmpty()) {
+                AlertDialog.Builder builder = new AlertDialog.Builder(ActivityRicerca.this);
+                builder.setTitle("Errore nella ricerca:");
+                builder.setMessage("Non sono state trovate strutture!");
+                builder.show();
+            }
+        }
 
         //if (check_premuto) {
             for (int i=0; i<arrayStrutture.size(); i++){
@@ -296,15 +351,52 @@ public class ActivityRicerca extends AppCompatActivity implements OnMapReadyCall
                 markerOptionsStrutture.icon(BitmapDescriptorFactory.defaultMarker(BitmapDescriptorFactory.HUE_RED));
 
                 mCurrLocationMarker = mMap.addMarker(markerOptionsStrutture);
-                //mMap.moveCamera(CameraUpdateFactory.newLatLng(latLngStrutture));
-                //mMap.animateCamera(CameraUpdateFactory.zoomTo(11));
+                mMap.moveCamera(CameraUpdateFactory.newLatLng(latLngStrutture));
+                mMap.animateCamera(CameraUpdateFactory.zoomTo(11));
 
             }
       //  }
 
         //muovi la mappa
-        mMap.moveCamera(CameraUpdateFactory.newLatLng(new LatLng(40.8283157,14.2454157)));
-        mMap.animateCamera(CameraUpdateFactory.zoomTo(10));
+        //mMap.moveCamera(CameraUpdateFactory.newLatLng(new LatLng(40.8283157,14.2454157)));
+        //mMap.animateCamera(CameraUpdateFactory.zoomTo(10));
+
+        mMap.setOnMarkerClickListener(new GoogleMap.OnMarkerClickListener() {
+            @Override
+            public boolean onMarkerClick(Marker marker) {
+                LatLng latLngCurrent=marker.getPosition();
+
+                double latitudineCurr=latLngCurrent.latitude;
+                double longitudineCurr=latLngCurrent.longitude;
+
+                for (int i=0; i<arrayStrutture.size(); i++){
+                    final Struttura strutturaCurr=arrayStrutture.get(i);
+                    if (strutturaCurr.getLatitudine()==latitudineCurr &&
+                            strutturaCurr.getLongitudine()==longitudineCurr){
+
+                        final AlertDialog dialog = new AlertDialog.Builder(ActivityRicerca.this)
+                                .setTitle(strutturaCurr.getTipo_struttura()+": \n"+strutturaCurr.getNome())
+                                .setMessage(strutturaCurr.getIndirizzo()+", "+strutturaCurr.getCittà())
+                                //.setMessage(latitudineCurr+", "+longitudineCurr)
+                                .setPositiveButton("Aggiungi/Visualizza recensioni", null)
+                                .show();
+
+                        dialog.getWindow().setGravity(Gravity.BOTTOM);
+
+                        Button positiveButton = dialog.getButton(AlertDialog.BUTTON_POSITIVE);
+                        positiveButton.setOnClickListener(new View.OnClickListener() {
+                            @Override
+                            public void onClick(View v) {
+                                startActivity(new Intent(ActivityRicerca.this, ActivityStruttura.class));
+                                dialog.dismiss();
+                            }
+                        });
+                    }
+                }
+
+                return false;
+            }
+        });
 
         //interrompere gli aggiornamenti della posizione
         if (mGoogleApiClient != null) {
