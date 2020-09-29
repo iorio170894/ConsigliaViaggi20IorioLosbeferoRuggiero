@@ -38,6 +38,7 @@ public class LoginActivity extends AppCompatActivity {
             public void onSuccess(CognitoUserSession userSession, CognitoDevice newDevice) {
                 // L'accesso è riuscito, cognitoUserSession conterrà i token per l'utente
                 Log.i("Cognito", "Login succesfull");
+                Check.controlloActivityImpostazioni=false;
                 loagindDialog.startLoadingDialog();
                 Handler handler = new Handler();
                 handler.postDelayed(new Runnable() {

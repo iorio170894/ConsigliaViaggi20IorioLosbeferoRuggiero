@@ -12,11 +12,15 @@ import android.graphics.drawable.ColorDrawable;
 import android.location.LocationManager;
 import android.os.Bundle;
 import android.provider.Settings;
+import android.util.Log;
 import android.view.View;
 import android.widget.ArrayAdapter;
 import android.widget.ListView;
 import android.widget.TextView;
 
+import com.amazonaws.mobileconnectors.cognitoidentityprovider.CognitoUser;
+import com.amazonaws.mobileconnectors.cognitoidentityprovider.CognitoUserDetails;
+import com.amazonaws.mobileconnectors.cognitoidentityprovider.handlers.GetDetailsHandler;
 import com.google.android.gms.maps.CameraUpdateFactory;
 import com.google.android.gms.maps.GoogleMap;
 import com.google.android.gms.maps.OnMapReadyCallback;
@@ -25,7 +29,7 @@ import com.google.android.gms.maps.model.MarkerOptions;
 
 import java.util.ArrayList;
 
-public class ActivityStruttura extends AppCompatActivity implements OnMapReadyCallback {
+public class ActivityStrutturaLoggato extends AppCompatActivity implements OnMapReadyCallback {
 
     GoogleMap mMap;
 
@@ -33,6 +37,8 @@ public class ActivityStruttura extends AppCompatActivity implements OnMapReadyCa
     private TextView textIndirizzoStruttura;
     private TextView textCittàStruttura;
     private TextView textTipoStruttura;
+    private TextView textFirma;
+    String nicnknameSalvato;
 
     Dialog mydialog;
 
@@ -41,8 +47,10 @@ public class ActivityStruttura extends AppCompatActivity implements OnMapReadyCa
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_struttura);
 
+        getNicknameUtente();
+
         if (!isGPSEnabled()) {
-            new AlertDialog.Builder(ActivityStruttura.this)
+            new AlertDialog.Builder(ActivityStrutturaLoggato.this)
                     .setMessage("Attenzione, attiva il GPS!")
                     .setCancelable(false)
                     .setPositiveButton("Opzioni", new DialogInterface.OnClickListener() {
@@ -130,9 +138,46 @@ public class ActivityStruttura extends AppCompatActivity implements OnMapReadyCa
     }
 
     public void ShowPopup (View v){
+        TextView textFirma;
         mydialog.setContentView(R.layout.custompopuprecensione);
+        textFirma= mydialog.findViewById(R.id.firmaRecensione);
         mydialog.getWindow().setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
         mydialog.show();
+        /*AlertDialog.Builder builder=new AlertDialog.Builder(ActivityStrutturaLoggato.this);
+        builder.setTitle("Firma:");
+        builder.setMessage("Utente: "+nicnknameSalvato);
+        builder.show();*/
+        if (!Check.controlloActivityImpostazioni) {
+            Check.firma = nicnknameSalvato;
+        }
+        textFirma.setText(Check.firma);
+    }
+
+    public void getNicknameUtente(){
+        GetDetailsHandler handler = new GetDetailsHandler() {
+            @Override
+            public void onSuccess(final CognitoUserDetails list) {
+                //trovi dettagli utente con successo
+                nicnknameSalvato = String.valueOf(list.getAttributes().getAttributes().get("nickname"));
+
+                /*AlertDialog.Builder builder=new AlertDialog.Builder(ActivityImpostazioni.this);
+                builder.setTitle("Campi Utente:");
+                builder.setMessage("Email:"+emailSalvata+"\nNome e Cognome:"+nomeCognomeSalvato+"\nNickname:"+nicnknameSalvato);
+                builder.show();*/
+            }
+            @Override
+            public void onFailure(final Exception exception) {
+                // Fallimento nel recupero dei dettagli dell'utente
+                Log.e("Eccezione dettagli utente:",exception.toString());
+                new android.app.AlertDialog.Builder(ActivityStrutturaLoggato.this)
+                        .setTitle("Errore nel recuper dei dettagli utente")
+                        .setMessage("We're sorry but we are experiencing problems with your account. Try to exit and log in again. Error details: " + exception.getLocalizedMessage())
+                        .setIcon(android.R.drawable.ic_dialog_alert)
+                        .show();
+            }
+        };
+        CognitoUser corrente = CognitoSettings.getUserPool().getCurrentUser();
+        CognitoSettings.getUserPool().getUser(corrente.getUserId()).getDetailsInBackground(handler);
     }
 
     @Override

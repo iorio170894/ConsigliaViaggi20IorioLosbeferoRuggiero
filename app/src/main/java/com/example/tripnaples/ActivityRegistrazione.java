@@ -78,6 +78,7 @@ public class ActivityRegistrazione extends AppCompatActivity {
                 positiveButton.setOnClickListener(new View.OnClickListener() {
                     @Override
                     public void onClick(View v) {
+                        //Check.firma=String.valueOf(inputNickname.getText());
                         startActivity(new Intent(ActivityRegistrazione.this, MainActivity.class));
                         dialog.dismiss();
                     }

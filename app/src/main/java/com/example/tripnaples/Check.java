@@ -17,4 +17,5 @@ public class Check {
     static String indirizzoStruttura;
     static String cittàStruttura;
     static String tipoStruttura;
+    static boolean controlloActivityImpostazioni;
 }

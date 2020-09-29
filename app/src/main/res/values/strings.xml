@@ -20,8 +20,8 @@
     <string name="title_activity_home_navigation_drawer">HomeNavigationDrawer</string>
     <string name="title_activity_ricerca">Map</string>
     <string-array name="spinnerImpostazioni">
-        <item>Nome e Cognome</item>
         <item>Nickname</item>
+        <item>Nome e Cognome</item>
     </string-array>
     <string-array name="spinnerStrutture">
         <item>ristorante</item>

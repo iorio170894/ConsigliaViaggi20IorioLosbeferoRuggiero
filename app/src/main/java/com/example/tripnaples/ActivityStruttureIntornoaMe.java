@@ -290,7 +290,10 @@ public class ActivityStruttureIntornoaMe extends AppCompatActivity implements On
                                 Check.cittàStruttura=strutturaCurr.getCittà();
                                 Check.tipoStruttura=strutturaCurr.getTipo_struttura();
 
-                                startActivity(new Intent(ActivityStruttureIntornoaMe.this, ActivityStruttura.class));
+                                if (Check.loggato)
+                                    startActivity(new Intent(ActivityStruttureIntornoaMe.this, ActivityStrutturaLoggato.class));
+                                else
+                                    startActivity(new Intent(ActivityStruttureIntornoaMe.this, ActivityStrutturaNonLoggato.class));
 
                                 dialog.dismiss();
                             }

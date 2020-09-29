@@ -78,13 +78,21 @@ public class ActivityImpostazioni extends AppCompatActivity implements AdapterVi
         adapter.setDropDownViewResource(R.layout.spinner_dropdown_layout);
         coloredSpinner.setAdapter(adapter);
         coloredSpinner.setOnItemSelectedListener(this);
+        //Check.firma=coloredSpinner.getSelectedItem().toString();
     }
 
     @Override
     public void onItemSelected(AdapterView<?> adapterView, View view, int i, long l) {
         String text = adapterView.getItemAtPosition(i).toString();
         Toast.makeText(adapterView.getContext(), text, Toast.LENGTH_SHORT).show();
-        Check.firma=text;
+        //Check.firma=text;
+        Check.controlloActivityImpostazioni=true;
+        if (text.equals("Nome e Cognome")){
+            Check.firma=nomeCognomeSalvato;
+        }
+        else if (text.equals("Nickname")){
+            Check.firma=nicnknameSalvato;
+        }
     }
 
     @Override

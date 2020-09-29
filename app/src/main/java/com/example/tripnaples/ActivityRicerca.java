@@ -364,7 +364,7 @@ public class ActivityRicerca extends AppCompatActivity implements OnMapReadyCall
         mMap.setOnMarkerClickListener(new GoogleMap.OnMarkerClickListener() {
             @Override
             public boolean onMarkerClick(Marker marker) {
-                LatLng latLngCurrent=marker.getPosition();
+                final LatLng latLngCurrent=marker.getPosition();
 
                 double latitudineCurr=latLngCurrent.latitude;
                 double longitudineCurr=latLngCurrent.longitude;
@@ -387,7 +387,18 @@ public class ActivityRicerca extends AppCompatActivity implements OnMapReadyCall
                         positiveButton.setOnClickListener(new View.OnClickListener() {
                             @Override
                             public void onClick(View v) {
-                                startActivity(new Intent(ActivityRicerca.this, ActivityStruttura.class));
+
+                                Check.coordinateStruttura=latLngCurrent;
+                                Check.nomeStruttura=strutturaCurr.getNome();
+                                Check.indirizzoStruttura=strutturaCurr.getIndirizzo();
+                                Check.cittàStruttura=strutturaCurr.getCittà();
+                                Check.tipoStruttura=strutturaCurr.getTipo_struttura();
+
+                                if (Check.loggato)
+                                    startActivity(new Intent(ActivityRicerca.this, ActivityStrutturaLoggato.class));
+                                else
+                                    startActivity(new Intent(ActivityRicerca.this, ActivityStrutturaNonLoggato.class));
+
                                 dialog.dismiss();
                             }
                         });
