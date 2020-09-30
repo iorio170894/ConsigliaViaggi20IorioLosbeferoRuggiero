@@ -15,7 +15,10 @@ import android.provider.Settings;
 import android.util.Log;
 import android.view.View;
 import android.widget.ArrayAdapter;
+import android.widget.Button;
+import android.widget.EditText;
 import android.widget.ListView;
+import android.widget.RatingBar;
 import android.widget.TextView;
 
 import com.amazonaws.mobileconnectors.cognitoidentityprovider.CognitoUser;
@@ -39,6 +42,12 @@ public class ActivityStrutturaLoggato extends AppCompatActivity implements OnMap
     private TextView textTipoStruttura;
     private TextView textFirma;
     String nicnknameSalvato;
+    TextView rateCount, showRating;
+    EditText review;
+    Button submit;
+    RatingBar ratingBar;
+    float rateValue;
+    String temp;
 
     Dialog mydialog;
 
@@ -151,6 +160,48 @@ public class ActivityStrutturaLoggato extends AppCompatActivity implements OnMap
             Check.firma = nicnknameSalvato;
         }
         textFirma.setText(Check.firma);
+        rateCount=mydialog.findViewById(R.id.rateCount);
+        ratingBar=mydialog.findViewById(R.id.ratingBar);
+        review=mydialog.findViewById(R.id.review);
+        submit=mydialog.findViewById(R.id.submitBtn);
+        //showRating=mydialog.findViewById(R.id.showRating);
+
+        ratingBar.setOnRatingBarChangeListener(new RatingBar.OnRatingBarChangeListener() {
+            @Override
+            public void onRatingChanged(RatingBar ratingBar, float v, boolean b) {
+
+                rateValue=ratingBar.getRating();
+
+                if (rateValue <=1 && rateValue >0)
+                    rateCount.setText("Bad" +rateValue + "/5");
+                else if (rateValue <=2 && rateValue >1)
+                    rateCount.setText("OK" +rateValue + "/5");
+                else if (rateValue <=3 && rateValue >2)
+                    rateCount.setText("Good" +rateValue + "/5");
+                else if (rateValue <=4 && rateValue >3)
+                    rateCount.setText("Very Good" +rateValue + "/5");
+                if (rateValue <=5 && rateValue >4)
+                    rateCount.setText("Best" +rateValue + "/5");
+            }
+        });
+        submit.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                final AlertDialog dialog = new AlertDialog.Builder(ActivityStrutturaLoggato.this)
+                        .setTitle("Invio Recensione da approvare")
+                        .setMessage("Recensione da approvare inviata al BackOffice con successo!")
+                        .setPositiveButton("OK", null)
+                        .show();
+                Button positiveButton = dialog.getButton(AlertDialog.BUTTON_POSITIVE);
+                positiveButton.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View v) {
+                        dialog.dismiss();
+                        mydialog.dismiss();
+                    }
+                });
+            }
+        });
     }
 
     public void getNicknameUtente(){

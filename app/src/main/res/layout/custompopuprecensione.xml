@@ -53,7 +53,6 @@
                 android:layout_height="wrap_content"
                 android:id="@+id/ratingBar"
                 android:layout_gravity="center">
-
             </RatingBar>
 
         </LinearLayout>
@@ -63,9 +62,26 @@
             android:layout_height="wrap_content"
             android:layout_marginLeft="16dp"
             android:layout_marginRight="16dp"
-            android:paddingBottom="8dp"
             android:orientation="horizontal"
             android:gravity="center">
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:textAppearance="?android:textAppearanceMedium"
+                android:id="@+id/rateCount"
+                android:textColor="@color/colorPrimaryDark" />
+        </LinearLayout>
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="16dp"
+            android:layout_marginRight="16dp"
+            android:paddingBottom="8dp"
+            android:paddingTop="8dp"
+            android:orientation="horizontal"
+            android:gravity="start">
 
             <TextView
                 android:layout_width="wrap_content"
@@ -73,7 +89,7 @@
                 android:text="Utente: "
                 android:textSize="16sp"
                 android:textColor="@color/colorPrimaryDark"
-                android:gravity="center"
+                android:gravity="start"
                 android:textStyle="bold"/>
 
             <TextView
@@ -81,7 +97,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_gravity="center"
-                android:gravity="center"
+                android:gravity="start"
                 android:textColor="@color/colorPrimaryDark"
                 android:textSize="16sp" />
 
@@ -96,7 +112,6 @@
             android:layout_height="wrap_content"
             android:layout_marginLeft="16dp"
             android:layout_marginRight="16dp"
-            android:paddingBottom="8dp"
             android:gravity="center"
             android:orientation="horizontal">
 
@@ -106,7 +121,6 @@
                 android:text="Descrizione Testuale:"
                 android:textSize="20sp"
                 android:textColor="@color/colorPrimaryDark"
-                android:paddingTop="8dp"
                 android:textStyle="bold"
                 android:paddingLeft="16dp"
                 android:paddingRight="16dp"
@@ -129,6 +143,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
                 android:gravity="start"
+                android:id="@+id/review"
                 >
 
             </EditText>
@@ -138,16 +153,15 @@
 
 
         <Button
-            android:id="@+id/buttonInviaRecensione"
+            android:id="@+id/submitBtn"
             style="@android:style/Widget.Material.Light.Button.Inset"
             android:layout_width="wrap_content"
             android:layout_height="50dp"
             android:layout_gravity="center"
-            android:layout_marginTop="20dp"
+            android:layout_marginTop="12dp"
             android:background="@drawable/buttonstylepink"
             android:text="Invia"
             android:textColor="@color/colordevider" />
-
 
 
     </LinearLayout>
