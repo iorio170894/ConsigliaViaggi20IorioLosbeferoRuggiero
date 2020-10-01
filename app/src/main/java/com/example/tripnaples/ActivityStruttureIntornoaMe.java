@@ -289,6 +289,8 @@ public class ActivityStruttureIntornoaMe extends AppCompatActivity implements On
                                 Check.indirizzoStruttura=strutturaCurr.getIndirizzo();
                                 Check.cittàStruttura=strutturaCurr.getCittà();
                                 Check.tipoStruttura=strutturaCurr.getTipo_struttura();
+                                Check.codiceStruttura=strutturaCurr.getCod_struttura();
+                                Check.link_immagine=strutturaCurr.getLink_immagine();
 
                                 if (Check.loggato)
                                     startActivity(new Intent(ActivityStruttureIntornoaMe.this, ActivityStrutturaLoggato.class));

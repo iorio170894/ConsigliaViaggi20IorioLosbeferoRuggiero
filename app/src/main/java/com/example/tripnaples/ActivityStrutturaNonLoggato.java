@@ -14,9 +14,12 @@ import android.os.Bundle;
 import android.provider.Settings;
 import android.view.View;
 import android.widget.ArrayAdapter;
+import android.widget.ImageView;
 import android.widget.ListView;
 import android.widget.TextView;
 
+import com.bumptech.glide.Glide;
+import com.bumptech.glide.load.engine.DiskCacheStrategy;
 import com.google.android.gms.maps.CameraUpdateFactory;
 import com.google.android.gms.maps.GoogleMap;
 import com.google.android.gms.maps.OnMapReadyCallback;
@@ -33,6 +36,7 @@ public class ActivityStrutturaNonLoggato extends AppCompatActivity implements On
     private TextView textIndirizzoStruttura;
     private TextView textCittàStruttura;
     private TextView textTipoStruttura;
+    ImageView imageView;
 
 
     @Override
@@ -64,12 +68,22 @@ public class ActivityStrutturaNonLoggato extends AppCompatActivity implements On
         textIndirizzoStruttura = findViewById(R.id.indirizzoStrutturaNonLoggato);
         textCittàStruttura= findViewById(R.id.cittàStrutturaNonLoggato);
         textTipoStruttura= findViewById(R.id.tipoStrutturaNonLoggato);
+        imageView=findViewById(R.id.imageViewStruttura2);
 
         textNomeStruttura.setText(Check.nomeStruttura);
         textIndirizzoStruttura.setText(Check.indirizzoStruttura);
         textCittàStruttura.setText(Check.cittàStruttura);
         textTipoStruttura.setText(Check.tipoStruttura);
 
+        Glide.with(ActivityStrutturaNonLoggato.this)
+                .load(Check.link_immagine)
+                .diskCacheStrategy(DiskCacheStrategy.NONE)
+                .into(imageView);
+
+        /*AlertDialog.Builder builder=new AlertDialog.Builder(ActivityStrutturaNonLoggato.this);
+        builder.setTitle("Link Immagine");
+        builder.setMessage(Check.link_immagine);
+        builder.show();*/
 
         ListView listView;
         listView=(ListView)findViewById(R.id.listViewNonLoggato);
@@ -137,8 +151,10 @@ public class ActivityStrutturaNonLoggato extends AppCompatActivity implements On
                 .position(Check.coordinateStruttura)
                 .title(Check.nomeStruttura))
                 .setSnippet(Check.tipoStruttura);
-        mMap.moveCamera(CameraUpdateFactory.newLatLng(Check.coordinateStruttura));
-        mMap.animateCamera(CameraUpdateFactory.zoomTo(6));
+        //mMap.moveCamera(CameraUpdateFactory.newLatLng(Check.coordinateStruttura));
+        //mMap.moveCamera(CameraUpdateFactory.newLatLngZoom(Check.coordinateStruttura,11));
+        mMap.animateCamera(CameraUpdateFactory.newLatLngZoom(Check.coordinateStruttura,13));
+        //mMap.animateCamera(CameraUpdateFactory.zoomTo(6));
     }
 
     private boolean isGPSEnabled() {

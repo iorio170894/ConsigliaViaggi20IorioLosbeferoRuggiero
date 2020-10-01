@@ -9,9 +9,11 @@ public class Struttura {
     private String nome;
     private String città;
     private String tipo_struttura;
+    private String link_immagine;
+
 
     public Struttura (int cod_struttura, String indirizzo, int range_prezzo, double latitudine,
-                      double longitudine, String nome, String città, String tipo_struttura){
+                      double longitudine, String nome, String città, String tipo_struttura, String link_immagine){
         this.cod_struttura=cod_struttura;
         this.indirizzo=indirizzo;
         this.range_prezzo=range_prezzo;
@@ -20,6 +22,7 @@ public class Struttura {
         this.nome=nome;
         this.città=città;
         this.tipo_struttura=tipo_struttura;
+        this.link_immagine=link_immagine;
     }
 
 
@@ -34,7 +37,16 @@ public class Struttura {
                 ", \nnome='" + nome + '\'' +
                 ", \ncittà='" + città + '\'' +
                 ", \ntipo_struttura='" + tipo_struttura + '\'' +
+                ", \nlink_immagine='" + link_immagine + '\'' +
                 "}\n\n";
+    }
+
+    public String getLink_immagine() {
+        return link_immagine;
+    }
+
+    public void setLink_immagine(String link_immagine) {
+        this.link_immagine = link_immagine;
     }
 
     public double getLatitudine() {

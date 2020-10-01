@@ -17,20 +17,37 @@ import android.view.View;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.ImageView;
 import android.widget.ListView;
 import android.widget.RatingBar;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.amazonaws.mobileconnectors.cognitoidentityprovider.CognitoUser;
 import com.amazonaws.mobileconnectors.cognitoidentityprovider.CognitoUserDetails;
 import com.amazonaws.mobileconnectors.cognitoidentityprovider.handlers.GetDetailsHandler;
+import com.android.volley.AuthFailureError;
+import com.android.volley.Request;
+import com.android.volley.RequestQueue;
+import com.android.volley.Response;
+import com.android.volley.VolleyError;
+import com.android.volley.toolbox.StringRequest;
+import com.android.volley.toolbox.Volley;
+import com.bumptech.glide.Glide;
+import com.bumptech.glide.load.engine.DiskCacheStrategy;
 import com.google.android.gms.maps.CameraUpdateFactory;
 import com.google.android.gms.maps.GoogleMap;
 import com.google.android.gms.maps.OnMapReadyCallback;
 import com.google.android.gms.maps.SupportMapFragment;
 import com.google.android.gms.maps.model.MarkerOptions;
 
+import org.json.JSONException;
+import org.json.JSONObject;
+
+import java.io.UnsupportedEncodingException;
 import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.Map;
 
 public class ActivityStrutturaLoggato extends AppCompatActivity implements OnMapReadyCallback {
 
@@ -40,6 +57,7 @@ public class ActivityStrutturaLoggato extends AppCompatActivity implements OnMap
     private TextView textIndirizzoStruttura;
     private TextView textCittàStruttura;
     private TextView textTipoStruttura;
+    ImageView imageView;
     private TextView textFirma;
     String nicnknameSalvato;
     TextView rateCount, showRating;
@@ -48,6 +66,8 @@ public class ActivityStrutturaLoggato extends AppCompatActivity implements OnMap
     RatingBar ratingBar;
     float rateValue;
     String temp;
+
+    private RequestQueue requestQueue;
 
     Dialog mydialog;
 
@@ -82,11 +102,18 @@ public class ActivityStrutturaLoggato extends AppCompatActivity implements OnMap
         textIndirizzoStruttura = findViewById(R.id.indirizzoStruttura);
         textCittàStruttura= findViewById(R.id.cittàStruttura);
         textTipoStruttura= findViewById(R.id.tipoStruttura);
+        imageView=findViewById(R.id.imageViewStruttura);
 
         textNomeStruttura.setText(Check.nomeStruttura);
         textIndirizzoStruttura.setText(Check.indirizzoStruttura);
         textCittàStruttura.setText(Check.cittàStruttura);
         textTipoStruttura.setText(Check.tipoStruttura);
+
+        Glide.with(ActivityStrutturaLoggato.this)
+                .load(Check.link_immagine)
+                .diskCacheStrategy(DiskCacheStrategy.NONE)
+                .into(imageView);
+
 
 
         ListView listView;
@@ -187,22 +214,157 @@ public class ActivityStrutturaLoggato extends AppCompatActivity implements OnMap
         submit.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                final AlertDialog dialog = new AlertDialog.Builder(ActivityStrutturaLoggato.this)
-                        .setTitle("Invio Recensione da approvare")
-                        .setMessage("Recensione da approvare inviata al BackOffice con successo!")
-                        .setPositiveButton("OK", null)
-                        .show();
-                Button positiveButton = dialog.getButton(AlertDialog.BUTTON_POSITIVE);
-                positiveButton.setOnClickListener(new View.OnClickListener() {
-                    @Override
-                    public void onClick(View v) {
-                        dialog.dismiss();
-                        mydialog.dismiss();
-                    }
-                });
+                /*
+            * {
+                    "numero_stelle": "5",
+                    "descrizione_testuale": "Ottima struttura, da consigliare. Ci tornerò!",
+                    "codice_struttura": "1",
+                    "utente": "iorio170894"
+            }
+            *
+            * */
+                String data = "{\n"+
+                        "\"numero_stelle\":" + "\"" + rateValue + "\",\n"+
+                        "\"descrizione_testuale\":" + "\"" + String.valueOf(review.getText()) + "\",\n"+
+                        "\"codice_struttura\":" + "\"" + Check.codiceStruttura + "\",\n"+
+                        "\"utente\":" + "\"" + Check.firma + "\"\n"+
+                        "}";
+                JsonPost(data);
+
             }
         });
     }
+
+    private void JsonPost(String data)
+    {
+        final String savedata= data;
+        String URL="http://consigliaviaggi20.us-east-2.elasticbeanstalk.com/recensione_da_approvare/insert_recensione_da_approvare.php";
+
+        requestQueue = Volley.newRequestQueue(getApplicationContext());
+        StringRequest stringRequest = new StringRequest(Request.Method.POST, URL, new Response.Listener<String>() {
+            @Override
+            public void onResponse(String response) {
+                try {
+                    JSONObject objres=new JSONObject(response);
+                    //Toast.makeText(getApplicationContext(),objres.toString(),Toast.LENGTH_LONG).show();
+                    /*AlertDialog.Builder builder=new AlertDialog.Builder(ActivityStrutturaLoggato.this);
+                    builder.setTitle("Json Response:");
+                    builder.setMessage(objres.toString());
+                    builder.show();*/
+                    final AlertDialog dialog = new AlertDialog.Builder(ActivityStrutturaLoggato.this)
+                            .setTitle("Invio Recensione da approvare")
+                            .setMessage("Recensione da approvare inviata al BackOffice con successo!")
+                            .setPositiveButton("OK", null)
+                            .show();
+                    Button positiveButton = dialog.getButton(AlertDialog.BUTTON_POSITIVE);
+                    positiveButton.setOnClickListener(new View.OnClickListener() {
+                        @Override
+                        public void onClick(View v) {
+                            dialog.dismiss();
+                            mydialog.dismiss();
+                        }
+                    });
+
+
+                } catch (JSONException e) {
+                    //Toast.makeText(getApplicationContext(),"Server Error",Toast.LENGTH_LONG).show();
+                    AlertDialog.Builder builder=new AlertDialog.Builder(ActivityStrutturaLoggato.this);
+                    builder.setTitle("Json Response:");
+                    builder.setMessage("Server Error");
+                    builder.show();
+
+                }
+                //Log.i("VOLLEY", response);
+            }
+        }, new Response.ErrorListener() {
+            @Override
+            public void onErrorResponse(VolleyError error) {
+
+                //Toast.makeText(getApplicationContext(), error.getMessage(), Toast.LENGTH_SHORT).show();
+                AlertDialog.Builder builder=new AlertDialog.Builder(ActivityStrutturaLoggato.this);
+                builder.setTitle("Json Response Error: "+error.getMessage());
+                builder.setMessage(error.getMessage());
+                builder.show();
+
+                //Log.v("VOLLEY", error.toString());
+            }
+        }) {
+            @Override
+            public String getBodyContentType() {
+                return "application/json; charset=utf-8";
+            }
+
+            @Override
+            public byte[] getBody() throws AuthFailureError {
+                try {
+                    return savedata == null ? null : savedata.getBytes("utf-8");
+                } catch (UnsupportedEncodingException uee) {
+                    //Log.v("Unsupported Encoding while trying to get the bytes", data);
+                    return null;
+                }
+            }
+
+        };
+        requestQueue.add(stringRequest);
+    }
+
+/*
+    private void postRequest() {
+        RequestQueue requestQueue= Volley.newRequestQueue(ActivityStrutturaLoggato.this);
+        String url="http://consigliaviaggi20.us-east-2.elasticbeanstalk.com/recensione_da_approvare/insert_recensione_da_approvare.php";
+        StringRequest stringRequest=new StringRequest(Request.Method.POST, url, new Response.Listener<String>() {
+            @Override
+            public void onResponse(String response) {
+                //let's parse json data
+                try {
+                    JSONObject jsonObject = new JSONObject(response);
+                    //post_response_text.setText("Data 1 : " + jsonObject.getString("data_1_post")+"\n");
+                    //post_response_text.append("Data 2 : " + jsonObject.getString("data_2_post")+"\n");
+                    //post_response_text.append("Data 3 : " + jsonObject.getString("data_3_post")+"\n");
+                    //post_response_text.append("Data 4 : " + jsonObject.getString("data_4_post")+"\n");
+                }
+                catch (Exception e){
+                    e.printStackTrace();
+                    //post_response_text.setText("POST DATA : unable to Parse Json");
+                }
+            }
+        }, new Response.ErrorListener() {
+            @Override
+            public void onErrorResponse(VolleyError error) {
+                //post_response_text.setText("Post Data : Response Failed");
+            }
+        }){
+
+            /*
+            * {
+                    "numero_stelle": "5",
+                    "descrizione_testuale": "Ottima struttura, da consigliare. Ci tornerò!",
+                    "codice_struttura": "1",
+                    "utente": "iorio170894"
+            }
+            *
+            * *//*
+            @Override
+            protected Map<String,String> getParams(){
+                Map<String,String> params=new HashMap<String, String>();
+                params.put("numero_stelle",String.valueOf(rateValue));
+                params.put("descrizione_testuale",String.valueOf(review.getText()));
+                params.put("codice_struttura",String.valueOf(Check.codiceStruttura));
+                params.put("utente",Check.firma);
+                return params;
+            }
+
+            @Override
+            public Map<String,String> getHeaders() throws AuthFailureError {
+                Map<String,String> params=new HashMap<String, String>();
+                params.put("Content-Type","application/x-www-form-urlencoded");
+                return params;
+            }
+        };
+
+        requestQueue.add(stringRequest);
+
+    }*/
 
     public void getNicknameUtente(){
         GetDetailsHandler handler = new GetDetailsHandler() {
@@ -240,8 +402,9 @@ public class ActivityStrutturaLoggato extends AppCompatActivity implements OnMap
                 .position(Check.coordinateStruttura)
                 .title(Check.nomeStruttura))
                 .setSnippet(Check.tipoStruttura);
-        mMap.moveCamera(CameraUpdateFactory.newLatLng(Check.coordinateStruttura));
-        mMap.animateCamera(CameraUpdateFactory.zoomTo(6));
+        //mMap.moveCamera(CameraUpdateFactory.newLatLng(Check.coordinateStruttura));
+        //mMap.animateCamera(CameraUpdateFactory.zoomTo(6));
+        mMap.animateCamera(CameraUpdateFactory.newLatLngZoom(Check.coordinateStruttura,13));
     }
 
     private boolean isGPSEnabled() {

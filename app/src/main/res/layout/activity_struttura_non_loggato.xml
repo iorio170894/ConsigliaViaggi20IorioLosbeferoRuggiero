@@ -7,89 +7,120 @@
     android:orientation="vertical"
     tools:context=".ActivityStrutturaNonLoggato">
 
-    <fragment
-        android:layout_width="380dp"
-        android:layout_height="270dp"
-        android:layout_gravity="center"
-        android:id="@+id/map_struttura_non_loggato"
-        android:name="com.google.android.gms.maps.SupportMapFragment" />
-
-
-
-
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginLeft="16dp"
-        android:layout_marginRight="16dp"
+        android:layout_marginTop="5dp"
+        android:paddingBottom="15dp"
         android:orientation="horizontal">
+
+
+       <ImageView
+           android:layout_width="180dp"
+           android:layout_height="150dp"
+           android:layout_marginLeft="7dp"
+           android:id="@+id/imageViewStruttura2"
+           android:scaleType="centerCrop"/>
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="7dp"
+            android:layout_marginTop="5dp"
+            android:orientation="vertical">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="5dp"
+            android:orientation="horizontal">
 
         <TextView
-            android:id="@+id/nomeStrutturaNonLoggato"
-            android:layout_width="wrap_content"
+                android:id="@+id/nomeStrutturaNonLoggato"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:paddingTop="8dp"
+                android:textColor="@color/colorPrimaryDark"
+                android:textSize="20sp"
+                android:textStyle="bold" />
+
+        </LinearLayout>
+
+        <LinearLayout
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:paddingLeft="16dp"
-            android:paddingTop="8dp"
-            android:paddingRight="16dp"
-            android:textColor="@color/colorPrimaryDark"
-            android:textSize="20sp"
-            android:textStyle="bold" />
-
-
-
-    </LinearLayout>
-
-    <LinearLayout
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_marginLeft="16dp"
-        android:layout_marginRight="16dp"
-        android:orientation="horizontal">
-
-        <TextView
-            android:id="@+id/tipoStrutturaNonLoggato"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:paddingLeft="16dp"
-            android:paddingRight="16dp"
-            android:textColor="@color/colorPrimaryDark"
-            android:textSize="16sp" />
-
-
-
-    </LinearLayout>
-
-    <LinearLayout
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_marginLeft="16dp"
-        android:layout_marginRight="16dp"
-        android:orientation="horizontal">
+            android:layout_marginTop="5dp"
+            android:orientation="horizontal">
 
         <TextView
             android:id="@+id/indirizzoStrutturaNonLoggato"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:paddingLeft="16dp"
-            android:paddingRight="16dp"
+            android:labelFor="@+id/nomeStrutturaNonLoggato"
             android:textColor="@color/colorPrimaryDark"
             android:textSize="16sp" />
+
 
         <TextView
             android:id="@+id/cittàStrutturaNonLoggato"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:layout_marginLeft="10dp"
             android:layout_weight="1"
-            android:gravity="end"
-            android:paddingLeft="16dp"
-            android:paddingRight="16dp"
             android:textColor="@color/colorPrimaryDark"
             android:textSize="16sp" />
+            </LinearLayout>
 
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="5dp"
+                android:orientation="horizontal">
+
+        <TextView
+            android:id="@+id/tipoStrutturaNonLoggato"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textColor="@color/colorPrimaryDark"
+            android:textSize="16sp" />
+            </LinearLayout>
 
     </LinearLayout>
 
+    </LinearLayout>
 
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginLeft="16dp"
+        android:orientation="horizontal">
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Posizione: "
+            android:textColor="@color/colorPrimaryDark"
+            android:textSize="16sp" />
+    </LinearLayout>
+
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="220dp"
+
+        android:paddingTop="10dp"
+        android:paddingBottom="8dp"
+        android:orientation="horizontal">
+
+    <fragment
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center"
+
+        android:id="@+id/map_struttura_non_loggato"
+        android:name="com.google.android.gms.maps.SupportMapFragment" />
+
+    </LinearLayout>
 
     <LinearLayout
         android:layout_width="match_parent"
@@ -124,6 +155,7 @@
 
 
     </LinearLayout>
+
 
 
 

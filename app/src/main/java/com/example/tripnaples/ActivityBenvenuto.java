@@ -67,6 +67,26 @@ public class ActivityBenvenuto extends AppCompatActivity {
             }
         });
 
+        //Bottone teatri intorno a me
+        Button teatri = (Button) findViewById(R.id.buttonSearchTeatri);
+        teatri.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Check.intornoaMe="teatro";
+                startActivity(new Intent(ActivityBenvenuto.this, ActivityStruttureIntornoaMe.class));
+            }
+        });
+
+        //Bottone musei intorno a me
+        Button musei = (Button) findViewById(R.id.buttonSearchMusei);
+        musei.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Check.intornoaMe="museo";
+                startActivity(new Intent(ActivityBenvenuto.this, ActivityStruttureIntornoaMe.class));
+            }
+        });
+
         Button ricerca = (Button) findViewById(R.id.buttonRicercaStrutturaBenvenuto);
         ricerca.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -74,6 +94,7 @@ public class ActivityBenvenuto extends AppCompatActivity {
                 startActivity(new Intent(ActivityBenvenuto.this, ActivityRicerca.class));
             }
         });
+
 
     }
 
