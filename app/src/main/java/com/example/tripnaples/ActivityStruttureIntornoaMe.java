@@ -281,7 +281,7 @@ public class ActivityStruttureIntornoaMe extends AppCompatActivity implements On
                                 .setTitle(strutturaCurr.getTipo_struttura()+": \n"+strutturaCurr.getNome())
                                 .setMessage(strutturaCurr.getIndirizzo()+", "+strutturaCurr.getCittà()+"\nDistanza: "+distancetoCurrentPosition+" km.")
                                 //.setMessage(latitudineCurr+", "+longitudineCurr)
-                                .setPositiveButton("Aggiungi/Visualizza recensioni", null)
+                                .setPositiveButton("Visualizza dettagli Struttura", null)
                                 .show();
 
                         dialog.getWindow().setGravity(Gravity.BOTTOM);

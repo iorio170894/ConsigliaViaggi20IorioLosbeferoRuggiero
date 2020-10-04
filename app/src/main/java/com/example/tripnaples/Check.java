@@ -24,4 +24,6 @@ public class Check {
     static String link_immagine;
     static String[] strings = new String[1000];
     static ArrayList<Struttura> arrayStrutture=new ArrayList<>();
+    static LatLng coordinateStrutturaPerNome;
+    static String nomeStrutturaPerNome;
 }
