@@ -35,6 +35,7 @@ import android.widget.EditText;
 import android.widget.SearchView;
 import android.widget.Spinner;
 import android.widget.TextView;
+import android.widget.Toast;
 
 
 import com.google.android.gms.common.ConnectionResult;
@@ -51,12 +52,10 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.content.ContextCompat;
 
 
-public class ActivityRicerca extends AppCompatActivity implements OnMapReadyCallback,
-        LocationListener,GoogleApiClient.ConnectionCallbacks,
-        GoogleApiClient.OnConnectionFailedListener, AdapterView.OnItemSelectedListener{
+public class ActivityRicerca extends AppCompatActivity implements AdapterView.OnItemSelectedListener{
 
-    private GoogleMap mMap;
-    Location mLastLocation;
+   // private GoogleMap mMap;
+   // Location mLastLocation;
     Marker mCurrLocationMarker;
     GoogleApiClient mGoogleApiClient;
     LocationRequest mLocationRequest;
@@ -64,6 +63,9 @@ public class ActivityRicerca extends AppCompatActivity implements OnMapReadyCall
     SupportMapFragment mapFragment;
 
     ArrayList<Struttura> arrayStrutture= new ArrayList<>();
+    String strutturaSelected;
+    String cittàSelected;
+    int range;
 
     //JSON
     //private RequestQueue mQueue;
@@ -74,7 +76,7 @@ public class ActivityRicerca extends AppCompatActivity implements OnMapReadyCall
     //static String rangeSelected="default";
     //static int positionSpinner;
 
-    static boolean check_premuto=false;
+    //static boolean check_premuto=false;
 
 
     @Override
@@ -84,28 +86,16 @@ public class ActivityRicerca extends AppCompatActivity implements OnMapReadyCall
         setContentView(R.layout.activity_ricerca);
 
         //Se il GPS non è attivo
-        if (!isGPSEnabled()) {
-            new AlertDialog.Builder(ActivityRicerca.this)
-                    .setMessage("Attenzione, attiva il GPS!")
-                    .setCancelable(false)
-                    .setPositiveButton("Opzioni", new DialogInterface.OnClickListener() {
-                        public void onClick(DialogInterface dialog, int id) {
-                            Intent i = new Intent(Settings.ACTION_LOCATION_SOURCE_SETTINGS);
-                            startActivity(i);
-                        }
-                    })
-                    .setNegativeButton("Cancella", null)
-                    .show();
-        }
 
         //SearchView
-        searchView=findViewById(R.id.sv_location);
+        // searchView=findViewById(R.id.sv_location);
 
 
-        mapFragment = (SupportMapFragment) getSupportFragmentManager()
+       /* mapFragment = (SupportMapFragment) getSupportFragmentManager()
                 .findFragmentById(R.id.map);
-        mapFragment.getMapAsync(this);
+        mapFragment.getMapAsync(this);*/
 
+        /*
         searchView.setOnQueryTextListener(new SearchView.OnQueryTextListener() {
             @Override
             public boolean onQueryTextSubmit(String query) {
@@ -132,7 +122,7 @@ public class ActivityRicerca extends AppCompatActivity implements OnMapReadyCall
                 return false;
             }
         });
-
+    */
 
 
         //Spinner Categoria Struttura
@@ -159,7 +149,7 @@ public class ActivityRicerca extends AppCompatActivity implements OnMapReadyCall
 
         //Bottone cerca con filtri
         //mQueue = Volley.newRequestQueue(this);
-       // mTextViewResult = findViewById(R.id.text_view_result);
+        // mTextViewResult = findViewById(R.id.text_view_result);
 
         Button cercaStruttureConFiltri;
         cercaStruttureConFiltri = findViewById(R.id.buttonCercaRicerca);
@@ -167,12 +157,11 @@ public class ActivityRicerca extends AppCompatActivity implements OnMapReadyCall
             @Override
             public void onClick(View view) {
 
-
-                String strutturaSelected=spinnerStruttura.getSelectedItem().toString();
+                strutturaSelected=spinnerStruttura.getSelectedItem().toString();
                 String rangePrezzoSelected=spinnerRangePrezzo.getSelectedItem().toString();
                 EditText inputcittàSelected= findViewById(R.id.editTextCittàStruttura);
-                String cittàSelected = String.valueOf(inputcittàSelected.getText());
-                int range=0;
+                cittàSelected = String.valueOf(inputcittàSelected.getText());
+                range=0;
 
                 if (rangePrezzoSelected.equals("basso")){
                     rangePrezzoSelected="1";
@@ -187,58 +176,44 @@ public class ActivityRicerca extends AppCompatActivity implements OnMapReadyCall
                     range=Integer.parseInt(rangePrezzoSelected);
                 }
 
-                //String url = "http://consigliaviaggi20.us-east-2.elasticbeanstalk.com/struttura/search_filter_strutture.php?inputTipo="+strutturaSelected+"&inputCitt%C3%A0="+cittàSelected+"&inputRangePrezzo="+range;
-                  String url = "http://consigliaviaggi20.us-east-2.elasticbeanstalk.com/struttura/search_filter_strutture.php?inputTipo="+strutturaSelected+"&inputCitt%C3%A0="+cittàSelected+"&inputRangePrezzo="+range;
+                //if (check_premuto) {
+                Check.inputUrl = "http://consigliaviaggi20.us-east-2.elasticbeanstalk.com/struttura/search_filter_strutture.php?inputTipo=" + strutturaSelected + "&inputCitt%C3%A0=" + cittàSelected + "&inputRangePrezzo=" + range;
+                //String url = "http://consigliaviaggi20.us-east-2.elasticbeanstalk.com/struttura/search_strutture.php?inputTipo=teatro";
+                //JsonClass jsonStrutturaVicinoaMe = new JsonClass();
+                //arrayStrutture = jsonStrutturaVicinoaMe.jsonParse(url);
 
-               // mQueue = Volley.newRequestQueue(this);
-                JsonClass jsonRicerca= new JsonClass();
-                //arrayStrutture.clear();
-                arrayStrutture=jsonRicerca.jsonParse(url);
+                startActivity(new Intent(ActivityRicerca.this, ActivityStruttureIntornoaMe.class));
+               // check_premuto=true;
 
-               // mQueue.add(request);
-
-                /*//Ottieni SupportMapFragment e ricevi una notifica quando la mappa è pronta per essere utilizzata.
-                SupportMapFragment mapFragment = (SupportMapFragment) getSupportFragmentManager()
-                        .findFragmentById(R.id.map);
-                mapFragment.getMapAsync(ActivityRicerca.this);*/
-
-                check_premuto=true;
-
-                //onLocationChanged(mLastLocation);
-
-                mapFragment.getMapAsync(ActivityRicerca.this);
+               // mapFragment.getMapAsync(ActivityRicerca.this);
 
 
             }
 
         });
 
-
-
+        //}
 
     }
 
 
-    @Override
+   /* @Override
     public void onBackPressed() {
 
         Intent turnBack = new Intent(ActivityRicerca.this, ActivityBenvenuto.class);
         turnBack.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
         ActivityRicerca.this.startActivity(turnBack);
-        check_premuto=false;
+        //check_premuto=false;
 
-    }
+    }*/
 
-    @Override
-    public void onConnectionFailed(ConnectionResult connectionResult) {
 
-    }
 
     @Override
     public void onItemSelected(AdapterView<?> adapterView, View view, int i, long l) {
         //positionSpinner=i;
         String text = adapterView.getItemAtPosition(i).toString();
-        //Toast.makeText(adapterView.getContext(), text, Toast.LENGTH_SHORT).show();
+        Toast.makeText(adapterView.getContext(), text, Toast.LENGTH_SHORT).show();
 
         /*if(text == "hotel" || text == "parco" || text == "ristorante" || text == "bar"){
             strutturaSelected=text;
@@ -254,11 +229,12 @@ public class ActivityRicerca extends AppCompatActivity implements OnMapReadyCall
 
     }
 
+    /*
     private boolean isGPSEnabled() {
         LocationManager cm = (LocationManager) getSystemService(Context.LOCATION_SERVICE);
         return cm.isProviderEnabled(LocationManager.GPS_PROVIDER);
-    }
-
+    }*/
+/*
     @Override
     public void onMapReady(GoogleMap googleMap) {
 
@@ -333,9 +309,13 @@ public class ActivityRicerca extends AppCompatActivity implements OnMapReadyCall
                 builder.setMessage("Non sono state trovate strutture!");
                 builder.show();
             }
+            AlertDialog.Builder builder = new AlertDialog.Builder(ActivityRicerca.this);
+            builder.setTitle("Strutture trovate");
+            builder.setMessage("Dimensione: "+arrayStrutture.size());
+            builder.show();
         }
 
-        //if (check_premuto) {
+        if (check_premuto) {
             for (int i=0; i<arrayStrutture.size(); i++){
                 final Struttura strutturaInserita=arrayStrutture.get(i);
                 LatLng latLngStrutture = new LatLng(strutturaInserita.getLatitudine(),strutturaInserita.getLongitudine());
@@ -355,7 +335,7 @@ public class ActivityRicerca extends AppCompatActivity implements OnMapReadyCall
                 mMap.animateCamera(CameraUpdateFactory.zoomTo(11));
 
             }
-      //  }
+        }
 
         //muovi la mappa
         //mMap.moveCamera(CameraUpdateFactory.newLatLng(new LatLng(40.8283157,14.2454157)));
@@ -415,5 +395,5 @@ public class ActivityRicerca extends AppCompatActivity implements OnMapReadyCall
         }
 
     }
-
+*/
 }

@@ -28,6 +28,8 @@
         <item>hotel</item>
         <item>bar</item>
         <item>parco</item>
+        <item>teatro</item>
+        <item>museo</item>
     </string-array>
     <string-array name="spinnerRangePrezzo">
         <item>basso</item>

@@ -6,16 +6,23 @@ import androidx.drawerlayout.widget.DrawerLayout;
 
 import android.app.Activity;
 import android.app.AlertDialog;
+import android.app.Dialog;
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.graphics.Color;
+import android.graphics.drawable.ColorDrawable;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.Button;
+import android.widget.RatingBar;
+import android.widget.TextView;
 
 public class ActivityBenvenuto extends AppCompatActivity {
 
     //variabili
     DrawerLayout drawerLayout;
+    Dialog mydialog;
+    String tipoStruttura;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -32,7 +39,8 @@ public class ActivityBenvenuto extends AppCompatActivity {
         ristoranti.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                Check.intornoaMe="ristorante";
+                tipoStruttura="ristorante";
+                Check.inputUrl = "http://consigliaviaggi20.us-east-2.elasticbeanstalk.com/struttura/search_strutture.php?inputTipo="+tipoStruttura;
                 startActivity(new Intent(ActivityBenvenuto.this, ActivityStruttureIntornoaMe.class));
             }
         });
@@ -42,7 +50,8 @@ public class ActivityBenvenuto extends AppCompatActivity {
         parchi.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                Check.intornoaMe="parco";
+                tipoStruttura="parco";
+                Check.inputUrl = "http://consigliaviaggi20.us-east-2.elasticbeanstalk.com/struttura/search_strutture.php?inputTipo="+tipoStruttura;
                 startActivity(new Intent(ActivityBenvenuto.this, ActivityStruttureIntornoaMe.class));
             }
         });
@@ -52,7 +61,8 @@ public class ActivityBenvenuto extends AppCompatActivity {
         hotel.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                Check.intornoaMe="hotel";
+                tipoStruttura="hotel";
+                Check.inputUrl = "http://consigliaviaggi20.us-east-2.elasticbeanstalk.com/struttura/search_strutture.php?inputTipo="+tipoStruttura;
                 startActivity(new Intent(ActivityBenvenuto.this, ActivityStruttureIntornoaMe.class));
             }
         });
@@ -62,7 +72,8 @@ public class ActivityBenvenuto extends AppCompatActivity {
         bar.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                Check.intornoaMe="bar";
+                tipoStruttura="bar";
+                Check.inputUrl = "http://consigliaviaggi20.us-east-2.elasticbeanstalk.com/struttura/search_strutture.php?inputTipo="+tipoStruttura;
                 startActivity(new Intent(ActivityBenvenuto.this, ActivityStruttureIntornoaMe.class));
             }
         });
@@ -72,7 +83,8 @@ public class ActivityBenvenuto extends AppCompatActivity {
         teatri.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                Check.intornoaMe="teatro";
+                tipoStruttura="teatro";
+                Check.inputUrl = "http://consigliaviaggi20.us-east-2.elasticbeanstalk.com/struttura/search_strutture.php?inputTipo="+tipoStruttura;
                 startActivity(new Intent(ActivityBenvenuto.this, ActivityStruttureIntornoaMe.class));
             }
         });
@@ -82,19 +94,38 @@ public class ActivityBenvenuto extends AppCompatActivity {
         musei.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                Check.intornoaMe="museo";
+                tipoStruttura="museo";
+                Check.inputUrl = "http://consigliaviaggi20.us-east-2.elasticbeanstalk.com/struttura/search_strutture.php?inputTipo="+tipoStruttura;
                 startActivity(new Intent(ActivityBenvenuto.this, ActivityStruttureIntornoaMe.class));
             }
         });
 
-        Button ricerca = (Button) findViewById(R.id.buttonRicercaStrutturaBenvenuto);
-        ricerca.setOnClickListener(new View.OnClickListener() {
+        mydialog=new Dialog(this);
+
+
+
+    }
+
+    public void ShowPopupRicerca (View v){
+        mydialog.setContentView(R.layout.custompopupricerca);
+        mydialog.getWindow().setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
+        mydialog.show();
+
+        Button ricercaAvanzata = (Button) mydialog.findViewById(R.id.buttonRicercaAvanzata);
+        ricercaAvanzata.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 startActivity(new Intent(ActivityBenvenuto.this, ActivityRicerca.class));
             }
         });
 
+        Button ricercaPerNome = (Button) mydialog.findViewById(R.id.buttonRicercaPerNome);
+        ricercaPerNome.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                startActivity(new Intent(ActivityBenvenuto.this, ActivityRicercaPerNome.class));
+            }
+        });
 
     }
 

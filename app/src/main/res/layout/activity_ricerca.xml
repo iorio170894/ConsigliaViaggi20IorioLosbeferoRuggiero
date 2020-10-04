@@ -9,34 +9,40 @@
 
     <LinearLayout
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:orientation="vertical">
-        <fragment
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:id="@+id/map"
-            android:name="com.google.android.gms.maps.SupportMapFragment"/>
+        android:layout_height="wrap_content"
+        android:background="@color/colorPrimaryDark"
+        android:orientation="vertical"
+        android:padding="50dp"
+        tools:ignore="MissingConstraints"
+        tools:layout_editor_absoluteX="25dp"
+        tools:layout_editor_absoluteY="-11dp" >
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Ricerca Avanzata"
+            android:layout_gravity="center"
+            android:textColor="#fff"
+            android:textSize="35sp"
+            tools:layout_editor_absoluteX="39dp"
+            tools:layout_editor_absoluteY="-12dp"/>
+
+
     </LinearLayout>
 
-    <SearchView
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:id="@+id/sv_location"
-        android:queryHint="Cerca struttura su Mappa per nome"
-        android:iconifiedByDefault="false"
-        android:layout_margin="10dp"
-        android:elevation="5dp"
-        android:background="@drawable/bg_round"/>
+
+
 
 
     <LinearLayout
         android:id="@+id/linearLayout23"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
+        android:layout_height="match_parent"
         android:background="@drawable/bg_round"
         android:orientation="vertical"
         tools:ignore="MissingConstraints"
-        android:layout_marginTop="70dp"
+        android:layout_marginTop="220dp"
+        android:layout_marginBottom="130dp"
         android:layout_marginLeft="30dp"
         android:layout_marginRight="30dp"
         tools:layout_editor_absoluteX="-2dp"
@@ -45,13 +51,14 @@
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:orientation="horizontal">
+            android:orientation="horizontal"
+            android:layout_marginTop="20dp">
 
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="Categoria Struttura:"
-                android:textSize="16sp"
+                android:text="Tipo Struttura:"
+                android:textSize="20sp"
                 android:textColor="@color/colorPrimaryDark"
                 android:paddingTop="8dp"
                 android:paddingLeft="16dp"
@@ -87,18 +94,19 @@
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:orientation="horizontal">
+            android:orientation="horizontal"
+            android:layout_marginTop="20dp">
 
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:paddingLeft="16dp"
                 android:paddingTop="8dp"
-                android:paddingRight="16dp"
+                android:paddingRight="20dp"
                 android:paddingBottom="8dp"
                 android:text="Città:"
                 android:textColor="@color/colorPrimaryDark"
-                android:textSize="16sp" />
+                android:textSize="20sp" />
 
 
             <EditText
@@ -130,13 +138,14 @@
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:orientation="horizontal">
+            android:orientation="horizontal"
+            android:layout_marginTop="20dp">
 
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="Range di prezzo:"
-                android:textSize="16sp"
+                android:textSize="20sp"
                 android:textColor="@color/colorPrimaryDark"
                 android:paddingTop="8dp"
                 android:paddingLeft="16dp"
@@ -149,27 +158,29 @@
                 android:layout_height="match_parent"
                 android:layout_gravity="end"/>
 
+            <View
+                android:layout_width="match_parent"
+                android:layout_height="1dp"
+                android:background="@color/grey2"
+                android:layout_marginLeft="16dp"
+                android:layout_marginRight="16dp" />
+
 
         </LinearLayout>
 
-        <View
-            android:layout_width="match_parent"
-            android:layout_height="1dp"
-            android:background="@color/grey2"
-            android:layout_marginLeft="16dp"
-            android:layout_marginRight="16dp"/>
 
         <Button
             android:id="@+id/buttonCercaRicerca"
             style="@android:style/Widget.Material.Light.Button.Inset"
-            android:layout_width="wrap_content"
+            android:layout_width="120dp"
+            android:layout_marginTop="50dp"
             android:layout_height="wrap_content"
             android:layout_gravity="center"
             android:layout_marginBottom="3dp"
-            android:background="@drawable/buttonsstyle2"
-            android:drawableLeft="@drawable/ic_search_ricerca"
+            android:background="@drawable/buttonstylepink"
+            android:drawableLeft="@drawable/ic_search_white"
             android:text="Cerca"
-            android:textColor="@color/colorPrimary"
+            android:textColor="@color/colordevider"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"

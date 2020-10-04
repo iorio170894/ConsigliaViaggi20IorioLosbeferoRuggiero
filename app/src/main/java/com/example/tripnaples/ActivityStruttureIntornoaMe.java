@@ -83,10 +83,11 @@ public class ActivityStruttureIntornoaMe extends AppCompatActivity implements On
         }
         //mQueue = Volley.newRequestQueue(this);
         //jsonParse();
-        String input = Check.intornoaMe;
-        String url = "http://consigliaviaggi20.us-east-2.elasticbeanstalk.com/struttura/search_strutture.php?inputTipo="+input;
+        //String input = Check.intornoaMe;
+        //String url = "http://consigliaviaggi20.us-east-2.elasticbeanstalk.com/struttura/search_strutture.php?inputTipo="+input;
         JsonClass jsonStrutturaVicinoaMe= new JsonClass();
-        arrayStrutture=jsonStrutturaVicinoaMe.jsonParse(url);
+        arrayStrutture=jsonStrutturaVicinoaMe.jsonParse(Check.inputUrl);
+
 
             //Ottieni SupportMapFragment e ricevi una notifica quando la mappa è pronta per essere utilizzata.
             SupportMapFragment mapFragment = (SupportMapFragment) getSupportFragmentManager()
@@ -97,14 +98,15 @@ public class ActivityStruttureIntornoaMe extends AppCompatActivity implements On
 
     }
 
-    @Override
+
+   /* @Override
     public void onBackPressed() {
 
         Intent turnBack = new Intent(ActivityStruttureIntornoaMe.this, ActivityBenvenuto.class);
         turnBack.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
         ActivityStruttureIntornoaMe.this.startActivity(turnBack);
 
-    }
+    }*/
 /*
     public void jsonParse() {
         //final ArrayList<Struttura> array = new ArrayList<>();
@@ -228,6 +230,11 @@ public class ActivityStruttureIntornoaMe extends AppCompatActivity implements On
             builder.setMessage("Non sono state trovate strutture!");
             builder.show();
         }
+
+       /* AlertDialog.Builder builder = new AlertDialog.Builder(ActivityStruttureIntornoaMe.this);
+        builder.setTitle("Strutture trovate");
+        builder.setMessage("Dimensione: "+arrayStrutture.size());
+        builder.show();*/
 
         for (int i=0; i<arrayStrutture.size(); i++){
             final Struttura strutturaInserita=arrayStrutture.get(i);

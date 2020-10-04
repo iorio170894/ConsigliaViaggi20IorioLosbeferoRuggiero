@@ -7,11 +7,13 @@ import android.os.Bundle;
 
 import com.google.android.gms.maps.model.LatLng;
 
+import java.util.ArrayList;
+
 public class Check {
 
     static boolean loggato;
     static String firma;
-    static String intornoaMe;
+    static String inputUrl;
     static LatLng coordinateStruttura;
     static String nomeStruttura;
     static String indirizzoStruttura;
@@ -20,4 +22,6 @@ public class Check {
     static boolean controlloActivityImpostazioni;
     static int codiceStruttura;
     static String link_immagine;
+    static String[] strings = new String[1000];
+    static ArrayList<Struttura> arrayStrutture=new ArrayList<>();
 }
