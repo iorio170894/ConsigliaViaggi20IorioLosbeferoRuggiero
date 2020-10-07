@@ -2,6 +2,8 @@ package com.example.tripnaples;
 
 import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.recyclerview.widget.LinearLayoutManager;
+import androidx.recyclerview.widget.RecyclerView;
 
 import android.app.Dialog;
 import android.content.Context;
@@ -71,6 +73,12 @@ public class ActivityStrutturaLoggato extends AppCompatActivity implements OnMap
 
     Dialog mydialog;
 
+    RecyclerView recyclerView;
+
+    String utentiRecensione[]={"utente1","utente2","utente3","utente4","utente5","utente6"};
+    String descrizioneTestuale[]={"bellissima struttura","esperienza indimenticabile","Non lo consiglio a nessuno!","bellissima struttura","esperienza indimenticabile","Non lo consiglio a nessuno!"};
+    double numero_stelle[]={4,3.5,5,1,1.5,3.5};
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -114,63 +122,13 @@ public class ActivityStrutturaLoggato extends AppCompatActivity implements OnMap
                 .diskCacheStrategy(DiskCacheStrategy.NONE)
                 .into(imageView);
 
-
-
-        ListView listView;
-        listView=(ListView)findViewById(R.id.listView);
-
-        ArrayList<String> arrayList= new ArrayList<>();
-        arrayList.add("Pippo\n" +
-                      "numero Stelle: 4\n" +
-                      "Bellissimo posto si mangia bene,personale cordiale");
-        arrayList.add("Pippo\n" +
-                "numero Stelle: 4\n" +
-                "Bellissimo posto si mangia bene,personale cordiale");
-        arrayList.add("Pippo\n" +
-                "numero Stelle: 4\n" +
-                "Bellissimo posto si mangia bene,personale cordiale");
-        arrayList.add("Pippo\n" +
-                "numero Stelle: 4\n" +
-                "Bellissimo posto si mangia bene,personale cordiale");
-        arrayList.add("Pippo\n" +
-                "numero Stelle: 4\n" +
-                "Bellissimo posto si mangia bene,personale cordiale");
-        arrayList.add("Pippo\n" +
-                "numero Stelle: 4\n" +
-                "Bellissimo posto si mangia bene,personale cordiale");
-        arrayList.add("Pippo\n" +
-                "numero Stelle: 4\n" +
-                "Bellissimo posto si mangia bene,personale cordiale");
-        arrayList.add("Pippo\n" +
-                "numero Stelle: 4\n" +
-                "Bellissimo posto si mangia bene,personale cordiale");
-        arrayList.add("Pippo\n" +
-                "numero Stelle: 4\n" +
-                "Bellissimo posto si mangia bene,personale cordiale");
-        arrayList.add("Pippo\n" +
-                "numero Stelle: 4\n" +
-                "Bellissimo posto si mangia bene,personale cordiale");
-        arrayList.add("Pippo\n" +
-                "numero Stelle: 4\n" +
-                "Bellissimo posto si mangia bene,personale cordiale");
-        arrayList.add("Pippo\n" +
-                "numero Stelle: 4\n" +
-                "Bellissimo posto si mangia bene,personale cordiale");
-        arrayList.add("Pippo\n" +
-                "numero Stelle: 4\n" +
-                "Bellissimo posto si mangia bene,personale cordiale");
-        arrayList.add("Pippo\n" +
-                "numero Stelle: 4\n" +
-                "Bellissimo posto si mangia bene,personale cordiale");
-        arrayList.add("Pippo\n" +
-                "numero Stelle: 4\n" +
-                "Bellissimo posto si mangia bene,personale cordiale");
-
-        ArrayAdapter arrayAdapter = new ArrayAdapter(this,android.R.layout.simple_list_item_1,arrayList);
-
-        listView.setAdapter(arrayAdapter);
-
         mydialog=new Dialog(this);
+
+        recyclerView = findViewById(R.id.recycler_viewLoggato);
+
+        MyAdapter myAdapter = new MyAdapter(this, utentiRecensione, descrizioneTestuale, numero_stelle);
+        recyclerView.setAdapter(myAdapter);
+        recyclerView.setLayoutManager(new LinearLayoutManager(this));
     }
 
     public void ShowPopup (View v){

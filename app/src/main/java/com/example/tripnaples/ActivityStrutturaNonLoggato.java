@@ -2,7 +2,11 @@ package com.example.tripnaples;
 
 import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.core.widget.NestedScrollView;
+import androidx.recyclerview.widget.LinearLayoutManager;
+import androidx.recyclerview.widget.RecyclerView;
 
+import android.annotation.SuppressLint;
 import android.app.Dialog;
 import android.content.Context;
 import android.content.DialogInterface;
@@ -16,6 +20,7 @@ import android.view.View;
 import android.widget.ArrayAdapter;
 import android.widget.ImageView;
 import android.widget.ListView;
+import android.widget.ProgressBar;
 import android.widget.TextView;
 
 import com.bumptech.glide.Glide;
@@ -37,8 +42,14 @@ public class ActivityStrutturaNonLoggato extends AppCompatActivity implements On
     private TextView textCittàStruttura;
     private TextView textTipoStruttura;
     ImageView imageView;
+    RecyclerView recyclerView;
+
+    String utentiRecensione[]={"utente1","utente2","utente3","utente4","utente5","utente6"};
+    String descrizioneTestuale[]={"bellissima struttura","esperienza indimenticabile","Non lo consiglio a nessuno!","bellissima struttura","esperienza indimenticabile","Non lo consiglio a nessuno!"};
+    double numero_stelle[]={4,3.5,5,1,1.5,3.5};
 
 
+    @SuppressLint("WrongViewCast")
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -85,59 +96,20 @@ public class ActivityStrutturaNonLoggato extends AppCompatActivity implements On
         builder.setMessage(Check.link_immagine);
         builder.show();*/
 
-        ListView listView;
-        listView=(ListView)findViewById(R.id.listViewNonLoggato);
+        //RecyclerView
+        //nestedScrollView = findViewById(R.id.scroll_view);
+        //recyclerView = findViewById(R.id.recycler_view);
+        //progressBar = findViewById(R.id.progress_bar);
 
-        ArrayList<String> arrayList= new ArrayList<>();
-        arrayList.add("Pippo\n" +
-                "numero Stelle: 4\n" +
-                "Bellissimo posto si mangia bene,personale cordiale");
-        arrayList.add("Pippo\n" +
-                "numero Stelle: 4\n" +
-                "Bellissimo posto si mangia bene,personale cordiale");
-        arrayList.add("Pippo\n" +
-                "numero Stelle: 4\n" +
-                "Bellissimo posto si mangia bene,personale cordiale");
-        arrayList.add("Pippo\n" +
-                "numero Stelle: 4\n" +
-                "Bellissimo posto si mangia bene,personale cordiale");
-        arrayList.add("Pippo\n" +
-                "numero Stelle: 4\n" +
-                "Bellissimo posto si mangia bene,personale cordiale");
-        arrayList.add("Pippo\n" +
-                "numero Stelle: 4\n" +
-                "Bellissimo posto si mangia bene,personale cordiale");
-        arrayList.add("Pippo\n" +
-                "numero Stelle: 4\n" +
-                "Bellissimo posto si mangia bene,personale cordiale");
-        arrayList.add("Pippo\n" +
-                "numero Stelle: 4\n" +
-                "Bellissimo posto si mangia bene,personale cordiale");
-        arrayList.add("Pippo\n" +
-                "numero Stelle: 4\n" +
-                "Bellissimo posto si mangia bene,personale cordiale");
-        arrayList.add("Pippo\n" +
-                "numero Stelle: 4\n" +
-                "Bellissimo posto si mangia bene,personale cordiale");
-        arrayList.add("Pippo\n" +
-                "numero Stelle: 4\n" +
-                "Bellissimo posto si mangia bene,personale cordiale");
-        arrayList.add("Pippo\n" +
-                "numero Stelle: 4\n" +
-                "Bellissimo posto si mangia bene,personale cordiale");
-        arrayList.add("Pippo\n" +
-                "numero Stelle: 4\n" +
-                "Bellissimo posto si mangia bene,personale cordiale");
-        arrayList.add("Pippo\n" +
-                "numero Stelle: 4\n" +
-                "Bellissimo posto si mangia bene,personale cordiale");
-        arrayList.add("Pippo\n" +
-                "numero Stelle: 4\n" +
-                "Bellissimo posto si mangia bene,personale cordiale");
+        //utentiRecensione=getResources().getStringArray(R.array.spinnerStrutture);
+        //numero_stelle=getResources().getStringArray(R.array.interi);
+        //descrizioneTestuale=getResources().getStringArray(R.array.spinnerStrutture);
 
-        ArrayAdapter arrayAdapter = new ArrayAdapter(this,android.R.layout.simple_list_item_1,arrayList);
+        recyclerView = findViewById(R.id.recycler_viewNonLoggato);
 
-        listView.setAdapter(arrayAdapter);
+        MyAdapter myAdapter = new MyAdapter(this, utentiRecensione, descrizioneTestuale, numero_stelle);
+        recyclerView.setAdapter(myAdapter);
+        recyclerView.setLayoutManager(new LinearLayoutManager(this));
 
     }
 
