@@ -134,7 +134,6 @@ public class ActivityRicercaPerNome extends AppCompatActivity implements OnMapRe
     }
 
     public void jsonNomeStruttura (String url) {
-        final String[] stringhe = new String[1000];
         //array=null;
         mQueue = Volley.newRequestQueue(this);
         //final ArrayList<Struttura> arrayStrutture = new ArrayList<>();
@@ -210,6 +209,17 @@ public class ActivityRicercaPerNome extends AppCompatActivity implements OnMapRe
 
     }
 
+    @Override
+    public void onBackPressed() {
+        mMap.clear();
+        check_premuto=false;
+        Intent turnBenvenuto = new Intent(ActivityRicercaPerNome.this, ActivityBenvenuto.class);
+        turnBenvenuto.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
+        ActivityRicercaPerNome.this.startActivity(turnBenvenuto);
+    }
+
+
+
     public void genereteString (){
 
     }
@@ -269,6 +279,8 @@ public class ActivityRicercaPerNome extends AppCompatActivity implements OnMapRe
 
     @Override
     public void onLocationChanged(Location location) {
+
+        mMap.clear();
 
         mLastLocation = location;
         if (mCurrLocationMarker != null) {

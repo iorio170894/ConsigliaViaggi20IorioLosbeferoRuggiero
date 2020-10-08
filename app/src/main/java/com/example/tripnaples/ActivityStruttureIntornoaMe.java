@@ -9,6 +9,12 @@ import android.os.Build;
 import android.os.Bundle;
 
 
+import com.android.volley.Request;
+import com.android.volley.RequestQueue;
+import com.android.volley.Response;
+import com.android.volley.VolleyError;
+import com.android.volley.toolbox.JsonObjectRequest;
+import com.android.volley.toolbox.Volley;
 import com.google.android.gms.common.api.GoogleApiClient;
 import com.google.android.gms.maps.CameraUpdateFactory;
 import com.google.android.gms.maps.GoogleMap;
@@ -34,6 +40,9 @@ import com.google.android.gms.location.LocationListener;
 import com.google.android.gms.location.LocationRequest;
 
 
+import org.json.JSONArray;
+import org.json.JSONException;
+import org.json.JSONObject;
 
 import java.util.ArrayList;
 
@@ -53,7 +62,9 @@ public class ActivityStruttureIntornoaMe extends AppCompatActivity implements On
     Marker setLocation;
     GoogleApiClient mGoogleApiClient;
     LocationRequest mLocationRequest;
-
+    private RequestQueue mQueue;
+    SupportMapFragment mapFragment;
+    static boolean check_premuto=false;
 
     Dialog myDialogStruttura;
 
@@ -85,17 +96,67 @@ public class ActivityStruttureIntornoaMe extends AppCompatActivity implements On
         //jsonParse();
         //String input = Check.intornoaMe;
         //String url = "http://consigliaviaggi20.us-east-2.elasticbeanstalk.com/struttura/search_strutture.php?inputTipo="+input;
-        JsonClass jsonStrutturaVicinoaMe= new JsonClass();
-        arrayStrutture=jsonStrutturaVicinoaMe.jsonParse(Check.inputUrl);
+        //JsonClass jsonStrutturaVicinoaMe= new JsonClass();
+        //arrayStrutture=jsonStrutturaVicinoaMe.jsonParse(Check.inputUrl);
+
 
 
             //Ottieni SupportMapFragment e ricevi una notifica quando la mappa è pronta per essere utilizzata.
-            SupportMapFragment mapFragment = (SupportMapFragment) getSupportFragmentManager()
+            mapFragment = (SupportMapFragment) getSupportFragmentManager()
                     .findFragmentById(R.id.google_map);
             mapFragment.getMapAsync(this);
 
+        jsonParse(Check.inputUrl);
 
+    }
 
+    public void jsonParse(String url) {
+        //array=null;
+        mQueue = Volley.newRequestQueue(this);
+        //final ArrayList<Struttura> arrayStrutture = new ArrayList<>();
+        JsonObjectRequest request = new JsonObjectRequest(Request.Method.GET, url, null,
+                new Response.Listener<JSONObject>() {
+                    @Override
+                    public void onResponse(JSONObject response) {
+                        try {
+                            JSONArray jsonArray = response.getJSONArray("records");
+                            for (int i = 0; i < jsonArray.length(); i++) {
+                                JSONObject struttura = jsonArray.getJSONObject(i);
+                                int cod_struttura = struttura.getInt("cod_struttura");
+                                String indirizzo = struttura.getString("indirizzo");
+                                int range_prezzo = struttura.getInt("range_prezzo");
+                                double latitudine = struttura.getDouble("latitudine");
+                                double longitudine = struttura.getDouble("longitudine");
+                                String nome = struttura.getString("nome");
+                                String città = struttura.getString("città");
+                                String tipo_struttura = struttura.getString("tipo_struttura");
+                                String link_immagine = struttura.getString("link_immagine");
+                                /*mTextViewResult.append("cod_struttura:"+String.valueOf(cod_struttura)+"\nindirizzo:"+indirizzo+
+                                        "\nrange_prezzo:"+String.valueOf(range_prezzo)+"\nlatitudine:"+latitudine+
+                                        "\nlongitudine:"+longitudine+ "\ncittà:"+città+"\nnome:"+nome+
+                                        "\ntipo_struttura:"+tipo_struttura+"\n\n");*/
+                                Struttura strutturaClass = new Struttura(cod_struttura, indirizzo, range_prezzo, latitudine, longitudine,
+                                        nome, città, tipo_struttura,link_immagine);
+                                arrayStrutture.add(strutturaClass);
+
+                                /*mTextViewResult.append("cod_struttura:"+String.valueOf(strutturaClass.getCod_struttura())+"\nindirizzo:"+strutturaClass.getIndirizzo()+
+                                        "\nrange_prezzo:"+String.valueOf(strutturaClass.getRange_prezzo())+"\nlatitudine:"+strutturaClass.getLatitudine()+
+                                        "\nlongitudine:"+strutturaClass.getLongitudine()+ "\ncittà:"+strutturaClass.getCittà()+"\nnome:"+strutturaClass.getNome()+
+                                        "\ntipo_struttura:"+strutturaClass.getTipo_struttura()+"\n\n");*/
+                            }
+                            check_premuto=true;
+                            mapFragment.getMapAsync(ActivityStruttureIntornoaMe.this);
+                        } catch (JSONException e) {
+                            e.printStackTrace();
+                        }
+                    }
+                }, new Response.ErrorListener() {
+            @Override
+            public void onErrorResponse(VolleyError error) {
+                error.printStackTrace();
+            }
+        });
+        mQueue.add(request);
     }
 
 
@@ -224,43 +285,47 @@ public class ActivityStruttureIntornoaMe extends AppCompatActivity implements On
         markerOptions.icon(BitmapDescriptorFactory.defaultMarker(BitmapDescriptorFactory.HUE_GREEN));
         mCurrLocationMarker = mMap.addMarker(markerOptions);
 
-        if (arrayStrutture.isEmpty()) {
-            AlertDialog.Builder builder = new AlertDialog.Builder(ActivityStruttureIntornoaMe.this);
-            builder.setTitle("Errore nella ricerca:");
-            builder.setMessage("Non sono state trovate strutture!");
-            builder.show();
-        }
+        if (check_premuto) {
+            if (arrayStrutture.isEmpty()) {
+                AlertDialog.Builder builder = new AlertDialog.Builder(ActivityStruttureIntornoaMe.this);
+                builder.setTitle("Errore nella ricerca:");
+                builder.setMessage("Non sono state trovate strutture!");
+                builder.show();
+            }
 
        /* AlertDialog.Builder builder = new AlertDialog.Builder(ActivityStruttureIntornoaMe.this);
         builder.setTitle("Strutture trovate");
         builder.setMessage("Dimensione: "+arrayStrutture.size());
         builder.show();*/
 
-        for (int i=0; i<arrayStrutture.size(); i++){
-            final Struttura strutturaInserita=arrayStrutture.get(i);
-            LatLng latLngStrutture = new LatLng(strutturaInserita.getLatitudine(),strutturaInserita.getLongitudine());
-            MarkerOptions markerOptionsStrutture = new MarkerOptions();
-            markerOptionsStrutture.position(latLngStrutture);
-            markerOptionsStrutture.title(strutturaInserita.getNome());
-            //markerOptionsStrutture.snippet(strutturaInserita.getIndirizzo());
-            //markerOptionsStrutture.snippet(strutturaInserita.getCittà());
+            for (int i = 0; i < arrayStrutture.size(); i++) {
+                final Struttura strutturaInserita = arrayStrutture.get(i);
+                LatLng latLngStrutture = new LatLng(strutturaInserita.getLatitudine(), strutturaInserita.getLongitudine());
+                MarkerOptions markerOptionsStrutture = new MarkerOptions();
+                markerOptionsStrutture.position(latLngStrutture);
+                markerOptionsStrutture.title(strutturaInserita.getNome());
+                //markerOptionsStrutture.snippet(strutturaInserita.getIndirizzo());
+                //markerOptionsStrutture.snippet(strutturaInserita.getCittà());
 
-            //calcolo della distanza dalla posizione corrente
-            double distancetoCurrentPosition=getDistanceKm(latLng,latLngStrutture);
-            markerOptionsStrutture.snippet(String.valueOf("Distanza: "+distancetoCurrentPosition+" km."));
-            //markerOptionsStrutture.snippet(String.valueOf(strutturaInserita.getLatitudine())+String.valueOf(strutturaInserita.getLongitudine()));
-            markerOptionsStrutture.icon(BitmapDescriptorFactory.defaultMarker(BitmapDescriptorFactory.HUE_RED));
+                //calcolo della distanza dalla posizione corrente
+                double distancetoCurrentPosition = getDistanceKm(latLng, latLngStrutture);
+                markerOptionsStrutture.snippet(String.valueOf("Distanza: " + distancetoCurrentPosition + " km."));
+                //markerOptionsStrutture.snippet(String.valueOf(strutturaInserita.getLatitudine())+String.valueOf(strutturaInserita.getLongitudine()));
+                markerOptionsStrutture.icon(BitmapDescriptorFactory.defaultMarker(BitmapDescriptorFactory.HUE_RED));
 
-            mCurrLocationMarker = mMap.addMarker(markerOptionsStrutture);
-            //mMap.moveCamera(CameraUpdateFactory.newLatLng(latLngStrutture));
-            //mMap.animateCamera(CameraUpdateFactory.zoomTo(11));
+                mCurrLocationMarker = mMap.addMarker(markerOptionsStrutture);
+                //mMap.moveCamera(CameraUpdateFactory.newLatLng(latLngStrutture));
+                //mMap.animateCamera(CameraUpdateFactory.zoomTo(11));
 
+            }
         }
 
 
         //muovi la mappa
-        mMap.moveCamera(CameraUpdateFactory.newLatLng(latLng));
-        mMap.animateCamera(CameraUpdateFactory.zoomTo(11));
+        //if (!check_premuto) {
+            mMap.moveCamera(CameraUpdateFactory.newLatLng(latLng));
+            mMap.animateCamera(CameraUpdateFactory.zoomTo(11));
+        //}
 
         mMap.setOnMarkerClickListener(new GoogleMap.OnMarkerClickListener() {
             @Override

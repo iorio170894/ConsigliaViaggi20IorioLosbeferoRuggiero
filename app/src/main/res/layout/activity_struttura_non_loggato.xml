@@ -140,6 +140,7 @@
 
     </LinearLayout>
 
+
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
@@ -173,11 +174,15 @@
 
     </LinearLayout>
 
+
+
             <androidx.recyclerview.widget.RecyclerView
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
                 android:id="@+id/recycler_viewNonLoggato"
-                tools:listitem="@layout/my_row"/>
+                tools:listitem="@layout/my_row"
+                android:layout_marginTop="10dp"
+                android:nestedScrollingEnabled="false"/>
 
         </LinearLayout>
 

@@ -5,8 +5,7 @@ xmlns:android="http://schemas.android.com/apk/res/android"
 android:orientation="vertical"
 android:layout_width="match_parent"
 android:layout_height="match_parent"
-tools:context=".ActivityImpostazioni"
-android:background="@color/colorPrimaryDark">
+tools:context=".ActivityImpostazioni">
 
 <TextView
     android:layout_width="match_parent"
@@ -14,7 +13,7 @@ android:background="@color/colorPrimaryDark">
     android:drawableLeft="@drawable/ic_user"
     android:padding="12dp"
     android:text="Account"
-    android:textColor="@color/colordevider"
+    android:textColor="@color/colorPrimaryDark"
     android:textSize="25sp" />
 
 <LinearLayout
@@ -22,7 +21,6 @@ android:background="@color/colorPrimaryDark">
     android:layout_width="match_parent"
     android:layout_marginTop="20dp"
     android:layout_height="match_parent"
-    android:background="@color/colorPrimaryDark"
     android:orientation="vertical"
     tools:ignore="MissingConstraints"
     tools:layout_editor_absoluteX="-2dp"
@@ -41,7 +39,7 @@ android:background="@color/colorPrimaryDark">
             android:layout_height="wrap_content"
             android:text="Email:"
             android:textSize="16sp"
-            android:textColor="@color/colordevider"
+            android:textColor="@color/colorPrimaryDark"
             android:paddingTop="8dp"
             android:paddingLeft="16dp"
             android:paddingRight="16dp"
@@ -58,7 +56,7 @@ android:background="@color/colorPrimaryDark">
             android:paddingTop="8dp"
             android:paddingRight="16dp"
             android:paddingBottom="8dp"
-            android:textColor="@color/colordevider"
+            android:textColor="@color/colorPrimaryDark"
             android:textSize="16sp"
             android:textStyle="bold" />
 
@@ -67,7 +65,7 @@ android:background="@color/colorPrimaryDark">
     <View
         android:layout_width="match_parent"
         android:layout_height="1dp"
-        android:background="@color/colordevider"
+        android:background="@color/colorPrimaryDark"
         android:layout_marginLeft="16dp"
         android:layout_marginRight="16dp"/>
     <LinearLayout
@@ -83,7 +81,7 @@ android:background="@color/colorPrimaryDark">
             android:layout_height="wrap_content"
             android:text="Nome e Cognome:"
             android:textSize="16sp"
-            android:textColor="@color/colordevider"
+            android:textColor="@color/colorPrimaryDark"
             android:paddingTop="8dp"
             android:paddingLeft="16dp"
             android:paddingRight="16dp"
@@ -100,7 +98,7 @@ android:background="@color/colorPrimaryDark">
             android:paddingTop="8dp"
             android:paddingRight="16dp"
             android:paddingBottom="8dp"
-            android:textColor="@color/colordevider"
+            android:textColor="@color/colorPrimaryDark"
             android:textSize="16sp"
             android:textStyle="bold" />
 
@@ -108,7 +106,7 @@ android:background="@color/colorPrimaryDark">
     <View
         android:layout_width="match_parent"
         android:layout_height="1dp"
-        android:background="@color/colordevider"
+        android:background="@color/colorPrimaryDark"
         android:layout_marginLeft="16dp"
         android:layout_marginRight="16dp"/>
     <LinearLayout
@@ -124,7 +122,7 @@ android:background="@color/colorPrimaryDark">
             android:layout_height="wrap_content"
             android:text="Nickname:"
             android:textSize="16sp"
-            android:textColor="@color/colordevider"
+            android:textColor="@color/colorPrimaryDark"
             android:paddingTop="8dp"
             android:paddingLeft="16dp"
             android:paddingRight="16dp"
@@ -141,7 +139,7 @@ android:background="@color/colorPrimaryDark">
             android:paddingTop="8dp"
             android:paddingRight="16dp"
             android:paddingBottom="8dp"
-            android:textColor="@color/colordevider"
+            android:textColor="@color/colorPrimaryDark"
             android:textSize="16sp"
             android:textStyle="bold" />
 
@@ -156,24 +154,25 @@ android:background="@color/colorPrimaryDark">
         android:layout_height="wrap_content"
         android:layout_gravity="center"
         android:layout_marginTop="20dp"
-        android:background="@drawable/buttonsstyle2"
+        android:background="@drawable/bg_round"
         android:drawableLeft="@drawable/ic_exit"
         android:text="Logout"
-        android:textColor="@color/white"
+        android:textColor="@color/colorPrimaryDark"
         android:textSize="23dp" />
 
     <TextView
         android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:padding="12dp"
-        android:layout_marginTop="50dp"
-        android:text="Firma recensioni con:"
+        android:layout_height="57dp"
         android:layout_gravity="center"
-        android:textColor="@color/colordevider"
+        android:layout_marginTop="50dp"
+        android:padding="12dp"
         android:paddingLeft="16dp"
         android:paddingRight="16dp"
         android:paddingBottom="8dp"
-        android:textSize="15sp" />
+        android:text="Firma recensioni con:"
+        android:textStyle="bold"
+        android:textColor="@color/colorPrimaryDark"
+        android:textSize="16sp" />
 
     <Spinner
         android:id="@+id/Spinner01"

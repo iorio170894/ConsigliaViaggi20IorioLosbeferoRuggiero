@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 
-<LinearLayout xmlns:app="http://schemas.android.com/apk/res-auto"
+<LinearLayout
     xmlns:tools="http://schemas.android.com/tools"
     xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
@@ -171,31 +171,25 @@
 
     </LinearLayout>
 
-
-
-    <Button
-        android:onClick="ShowPopup"
-        android:id="@+id/buttonAddReview"
-        android:layout_width="220dp"
-        android:layout_height="wrap_content"
-        android:background="@drawable/buttonstylepink"
-        android:text="Aggiungi Recensione"
-        android:textColor="@color/white"
-        android:layout_gravity="center"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.517"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.486"
-        android:drawableLeft="@drawable/ic_review"/>
+            <Button
+                android:onClick="ShowPopup"
+                android:id="@+id/buttonAddReview"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:background="@drawable/bg_round"
+                android:text="Aggiungi Recensione"
+                android:textSize="16dp"
+                android:textColor="@color/colorPrimaryDark"
+                android:layout_gravity="center"
+                android:drawableLeft="@drawable/ic_review_primary_dark" />
 
             <androidx.recyclerview.widget.RecyclerView
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
                 android:id="@+id/recycler_viewLoggato"
                 android:layout_marginTop="10dp"
-                tools:listitem="@layout/my_row"/>
+                tools:listitem="@layout/my_row"
+                android:nestedScrollingEnabled="false"/>
 
         </LinearLayout>
     </ScrollView>
