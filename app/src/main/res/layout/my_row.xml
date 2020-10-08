@@ -53,8 +53,7 @@
                 android:text="descrizione testuale"
                 android:textColor="@color/colorPrimaryDark"
                 android:id="@+id/textViewDescrizioneTestualeRecensione"
-                android:padding="8dp"
-                android:gravity="center"/>
+                android:padding="8dp" />
 
         </LinearLayout>
     </LinearLayout>
