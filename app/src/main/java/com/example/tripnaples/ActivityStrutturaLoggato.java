@@ -420,8 +420,9 @@ public class ActivityStrutturaLoggato extends AppCompatActivity implements OnMap
                         .show();
             }
         };
-        CognitoUser corrente = CognitoSettings.getUserPool().getCurrentUser();
-        CognitoSettings.getUserPool().getUser(corrente.getUserId()).getDetailsInBackground(handler);
+        CognitoSettings cognitoSettings = new CognitoSettings(ActivityStrutturaLoggato.this);
+        CognitoUser corrente = cognitoSettings.getUserPool().getCurrentUser();
+        cognitoSettings.getUserPool().getUser(corrente.getUserId()).getDetailsInBackground(handler);
     }
 
     @Override

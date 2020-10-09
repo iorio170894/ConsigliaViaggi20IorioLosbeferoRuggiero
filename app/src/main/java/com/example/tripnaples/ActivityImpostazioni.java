@@ -3,6 +3,7 @@ package com.example.tripnaples;
 import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
 
+import android.app.Activity;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
@@ -113,15 +114,10 @@ public class ActivityImpostazioni extends AppCompatActivity implements AdapterVi
                 textNickname.setText(utenteCorrente.getNickname());
                 textNomeCognome.setText(utenteCorrente.getNomeCognome());
 
-                /*AlertDialog.Builder builder=new AlertDialog.Builder(ActivityImpostazioni.this);
-                builder.setTitle("Campi Utente:");
-                builder.setMessage("Email:"+emailSalvata+"\nNome e Cognome:"+nomeCognomeSalvato+"\nNickname:"+nicnknameSalvato);
-                builder.show();*/
             }
             @Override
             public void onFailure(final Exception exception) {
                 // Fallimento nel recupero dei dettagli dell'utente
-                Log.e("Eccezione dettagli utente:",exception.toString());
                 new android.app.AlertDialog.Builder(ActivityImpostazioni.this)
                         .setTitle("Errore nel recuper dei dettagli utente")
                         .setMessage("We're sorry but we are experiencing problems with your account. Try to exit and log in again. Error details: " + exception.getLocalizedMessage())
@@ -136,8 +132,9 @@ public class ActivityImpostazioni extends AppCompatActivity implements AdapterVi
                         .show();
             }
         };
-        CognitoUser corrente = CognitoSettings.getUserPool().getCurrentUser();
-        CognitoSettings.getUserPool().getUser(corrente.getUserId()).getDetailsInBackground(handler);
+        CognitoSettings cognitoSettings = new CognitoSettings(ActivityImpostazioni.this);
+        CognitoUser corrente = cognitoSettings.getUserPool().getCurrentUser();
+        cognitoSettings.getUserPool().getUser(corrente.getUserId()).getDetailsInBackground(handler);
     }
 
 }

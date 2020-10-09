@@ -1,5 +1,6 @@
 package com.example.tripnaples;
 
+import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
 
 import android.app.Dialog;
@@ -9,6 +10,10 @@ import android.graphics.drawable.ColorDrawable;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.Button;
+
+import com.amazonaws.mobileconnectors.cognitoidentityprovider.CognitoUser;
+import com.amazonaws.mobileconnectors.cognitoidentityprovider.CognitoUserDetails;
+import com.amazonaws.mobileconnectors.cognitoidentityprovider.handlers.GetDetailsHandler;
 
 public class MainActivity extends AppCompatActivity {
 
@@ -52,6 +57,7 @@ public class MainActivity extends AppCompatActivity {
 
             }
         });
+
 
     }
 }

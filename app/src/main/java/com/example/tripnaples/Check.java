@@ -11,7 +11,7 @@ import java.util.ArrayList;
 
 public class Check {
 
-    static boolean loggato;
+    static boolean loggato=true;
     static String firma;
     static String inputUrl;
     static LatLng coordinateStruttura;

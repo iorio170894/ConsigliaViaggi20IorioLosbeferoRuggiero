@@ -30,6 +30,7 @@ public class LoginActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_login);
 
+
         final EditText editTextEmail = findViewById(R.id.editTextTextEmailLogin);
         final EditText editTextPassword = findViewById(R.id.editTextTextPasswordLogin);
 
@@ -104,5 +105,7 @@ public class LoginActivity extends AppCompatActivity {
             }
         });
     }
+
+
     LoagindDialog loagindDialog = new LoagindDialog(LoginActivity.this);
 }

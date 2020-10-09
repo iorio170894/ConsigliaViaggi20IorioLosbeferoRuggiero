@@ -1,11 +1,11 @@
 package com.example.tripnaples;
 
+import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.view.GravityCompat;
 import androidx.drawerlayout.widget.DrawerLayout;
 
 import android.app.Activity;
-import android.app.AlertDialog;
 import android.app.Dialog;
 import android.content.DialogInterface;
 import android.content.Intent;
@@ -16,6 +16,10 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.RatingBar;
 import android.widget.TextView;
+
+import com.amazonaws.mobileconnectors.cognitoidentityprovider.CognitoUser;
+import com.amazonaws.mobileconnectors.cognitoidentityprovider.CognitoUserDetails;
+import com.amazonaws.mobileconnectors.cognitoidentityprovider.handlers.GetDetailsHandler;
 
 public class ActivityBenvenuto extends AppCompatActivity {
 
@@ -145,7 +149,7 @@ public class ActivityBenvenuto extends AppCompatActivity {
             if (Check.loggato) {
                 final androidx.appcompat.app.AlertDialog dialog = new androidx.appcompat.app.AlertDialog.Builder(ActivityBenvenuto.this)
                         .setTitle("Indietro")
-                        .setMessage("Confermi di tornare Indietro? sarà effettuato il Logout e tornerai alla schermata Iniziale")
+                        .setMessage("Confermi di tornare Indietro? sarà effettuato il Logout e verrà chiusa l'app")
                         .setPositiveButton("Conferma", null)
                         .setNegativeButton("Annulla", null)
                         .show();
@@ -154,11 +158,12 @@ public class ActivityBenvenuto extends AppCompatActivity {
                     @Override
                     public void onClick(View v) {
 
-                        CognitoSettings.logout();
-
-                        Intent turnMain = new Intent(ActivityBenvenuto.this, MainActivity.class);
-                        turnMain.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
-                        ActivityBenvenuto.this.startActivity(turnMain);
+                        //CognitoSettings.logout();
+                        Intent intent = new Intent(Intent.ACTION_MAIN);
+                        intent.addCategory(Intent.CATEGORY_HOME);
+                        startActivity(intent);
+                        int pid = android.os.Process.myPid();
+                        android.os.Process.killProcess(pid);
 
 
                     }
@@ -211,6 +216,7 @@ public class ActivityBenvenuto extends AppCompatActivity {
     }
 
     public void ClickImpostazioni (View view){
+
         if(Check.loggato)
             redirectActivity(this,ActivityImpostazioni.class);
         else

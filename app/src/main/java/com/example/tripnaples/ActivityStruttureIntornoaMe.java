@@ -64,7 +64,7 @@ public class ActivityStruttureIntornoaMe extends AppCompatActivity implements On
     LocationRequest mLocationRequest;
     private RequestQueue mQueue;
     SupportMapFragment mapFragment;
-    static boolean check_premuto=false;
+    static boolean check_premuto;
 
     Dialog myDialogStruttura;
 
@@ -78,6 +78,7 @@ public class ActivityStruttureIntornoaMe extends AppCompatActivity implements On
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_struttre_intornoa_me);
 
+        check_premuto=false;
         //Se il GPS non è attivo
         if (!isGPSEnabled()) {
             new AlertDialog.Builder(ActivityStruttureIntornoaMe.this)
@@ -100,13 +101,13 @@ public class ActivityStruttureIntornoaMe extends AppCompatActivity implements On
         //arrayStrutture=jsonStrutturaVicinoaMe.jsonParse(Check.inputUrl);
 
 
+        jsonParse(Check.inputUrl);
 
             //Ottieni SupportMapFragment e ricevi una notifica quando la mappa è pronta per essere utilizzata.
             mapFragment = (SupportMapFragment) getSupportFragmentManager()
                     .findFragmentById(R.id.google_map);
             mapFragment.getMapAsync(this);
 
-        jsonParse(Check.inputUrl);
 
     }
 
@@ -137,7 +138,9 @@ public class ActivityStruttureIntornoaMe extends AppCompatActivity implements On
                                         "\ntipo_struttura:"+tipo_struttura+"\n\n");*/
                                 Struttura strutturaClass = new Struttura(cod_struttura, indirizzo, range_prezzo, latitudine, longitudine,
                                         nome, città, tipo_struttura,link_immagine);
-                                arrayStrutture.add(strutturaClass);
+                                if (strutturaClass != null) {
+                                    arrayStrutture.add(strutturaClass);
+                                }
 
                                 /*mTextViewResult.append("cod_struttura:"+String.valueOf(strutturaClass.getCod_struttura())+"\nindirizzo:"+strutturaClass.getIndirizzo()+
                                         "\nrange_prezzo:"+String.valueOf(strutturaClass.getRange_prezzo())+"\nlatitudine:"+strutturaClass.getLatitudine()+
@@ -292,31 +295,30 @@ public class ActivityStruttureIntornoaMe extends AppCompatActivity implements On
                 builder.setMessage("Non sono state trovate strutture!");
                 builder.show();
             }
+            else {
 
-       /* AlertDialog.Builder builder = new AlertDialog.Builder(ActivityStruttureIntornoaMe.this);
-        builder.setTitle("Strutture trovate");
-        builder.setMessage("Dimensione: "+arrayStrutture.size());
-        builder.show();*/
 
-            for (int i = 0; i < arrayStrutture.size(); i++) {
-                final Struttura strutturaInserita = arrayStrutture.get(i);
-                LatLng latLngStrutture = new LatLng(strutturaInserita.getLatitudine(), strutturaInserita.getLongitudine());
-                MarkerOptions markerOptionsStrutture = new MarkerOptions();
-                markerOptionsStrutture.position(latLngStrutture);
-                markerOptionsStrutture.title(strutturaInserita.getNome());
-                //markerOptionsStrutture.snippet(strutturaInserita.getIndirizzo());
-                //markerOptionsStrutture.snippet(strutturaInserita.getCittà());
+                for (int i = 0; i < arrayStrutture.size(); i++) {
+                    final Struttura strutturaInserita = arrayStrutture.get(i);
+                    //if (arrayStrutture.get(i) != null) {
+                        LatLng latLngStrutture = new LatLng(strutturaInserita.getLatitudine(), strutturaInserita.getLongitudine());
+                        MarkerOptions markerOptionsStrutture = new MarkerOptions();
+                        markerOptionsStrutture.position(latLngStrutture);
+                        markerOptionsStrutture.title(strutturaInserita.getNome());
+                        //markerOptionsStrutture.snippet(strutturaInserita.getIndirizzo());
+                        //markerOptionsStrutture.snippet(strutturaInserita.getCittà());
 
-                //calcolo della distanza dalla posizione corrente
-                double distancetoCurrentPosition = getDistanceKm(latLng, latLngStrutture);
-                markerOptionsStrutture.snippet(String.valueOf("Distanza: " + distancetoCurrentPosition + " km."));
-                //markerOptionsStrutture.snippet(String.valueOf(strutturaInserita.getLatitudine())+String.valueOf(strutturaInserita.getLongitudine()));
-                markerOptionsStrutture.icon(BitmapDescriptorFactory.defaultMarker(BitmapDescriptorFactory.HUE_RED));
+                        //calcolo della distanza dalla posizione corrente
+                        double distancetoCurrentPosition = getDistanceKm(latLng, latLngStrutture);
+                        markerOptionsStrutture.snippet(String.valueOf("Distanza: " + distancetoCurrentPosition + " km."));
+                        //markerOptionsStrutture.snippet(String.valueOf(strutturaInserita.getLatitudine())+String.valueOf(strutturaInserita.getLongitudine()));
+                        markerOptionsStrutture.icon(BitmapDescriptorFactory.defaultMarker(BitmapDescriptorFactory.HUE_RED));
 
-                mCurrLocationMarker = mMap.addMarker(markerOptionsStrutture);
-                //mMap.moveCamera(CameraUpdateFactory.newLatLng(latLngStrutture));
-                //mMap.animateCamera(CameraUpdateFactory.zoomTo(11));
-
+                        mCurrLocationMarker = mMap.addMarker(markerOptionsStrutture);
+                        //mMap.moveCamera(CameraUpdateFactory.newLatLng(latLngStrutture));
+                        //mMap.animateCamera(CameraUpdateFactory.zoomTo(11));
+                    //}
+                }
             }
         }
 

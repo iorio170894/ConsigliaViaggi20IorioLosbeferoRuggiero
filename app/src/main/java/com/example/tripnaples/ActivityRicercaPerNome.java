@@ -15,6 +15,7 @@ import android.os.Build;
 import android.os.Bundle;
 import android.provider.Settings;
 import android.view.Gravity;
+import android.view.MotionEvent;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
@@ -66,7 +67,7 @@ public class ActivityRicercaPerNome extends AppCompatActivity implements OnMapRe
     //String[] strings = new String[50];
     private RequestQueue mQueue;
     ArrayList<Struttura> arrayStrutture=new ArrayList<>();
-    static boolean check_premuto=false;
+    static boolean check_premuto;
 
     //ArrayList<String> strings = new ArrayList<>();
 
@@ -76,6 +77,8 @@ public class ActivityRicercaPerNome extends AppCompatActivity implements OnMapRe
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_ricerca_per_nome);
+
+        check_premuto=false;
 
         if (!isGPSEnabled()) {
             new AlertDialog.Builder(ActivityRicercaPerNome.this)
@@ -160,8 +163,10 @@ public class ActivityRicercaPerNome extends AppCompatActivity implements OnMapRe
                                 String link_immagine = struttura.getString("link_immagine");
                                 Struttura strutturaClass = new Struttura(cod_struttura, indirizzo, range_prezzo, latitudine, longitudine,
                                         nome, città, tipo_struttura,link_immagine);
-                                arrayStrutture.add(strutturaClass);
-                                strings[i] = nome;
+                                if (strutturaClass != null) {
+                                    arrayStrutture.add(strutturaClass);
+                                    strings[i] = nome;
+                                }
                             }
 
                             /*AlertDialog.Builder builder = new AlertDialog.Builder(ActivityRicercaPerNome.this);
@@ -181,7 +186,7 @@ public class ActivityRicercaPerNome extends AppCompatActivity implements OnMapRe
 
                                         final Struttura strutturaCurr=arrayStrutture.get(i);
 
-                                        if (strutturaCurr.getNome()==adapter.getItem(s)){
+                                        if (strutturaCurr.getNome().equals(adapter.getItem(s))){
                                             LatLng latLngSelected= new LatLng(strutturaCurr.getLatitudine(),strutturaCurr.getLongitudine());
                                             Check.coordinateStrutturaPerNome=latLngSelected;
                                             Check.nomeStrutturaPerNome=adapter.getItem(s);
@@ -192,6 +197,25 @@ public class ActivityRicercaPerNome extends AppCompatActivity implements OnMapRe
                                     }
                                 }
                             });
+
+                            //Cancellare il contenuto scritto cliccando sul drawable X a destra
+                            autoCompleteTextView.setOnTouchListener(new View.OnTouchListener() {
+                                @Override
+                                public boolean onTouch(View v, MotionEvent event) {
+
+                                    final int DRAWABLE_RIGHT = 2;
+
+                                    if(event.getAction() == MotionEvent.ACTION_UP) {
+                                        if(event.getRawX() >= (autoCompleteTextView.getRight() - autoCompleteTextView.getCompoundDrawables()[DRAWABLE_RIGHT].getBounds().width())) {
+                                            autoCompleteTextView.setText("");
+                                            return true;
+                                        }
+                                    }
+                                    return false;
+                                }
+                            });
+
+
 
 
                         } catch (JSONException e) {
@@ -209,14 +233,14 @@ public class ActivityRicercaPerNome extends AppCompatActivity implements OnMapRe
 
     }
 
-    @Override
+    /*@Override
     public void onBackPressed() {
         mMap.clear();
         check_premuto=false;
         Intent turnBenvenuto = new Intent(ActivityRicercaPerNome.this, ActivityBenvenuto.class);
         turnBenvenuto.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
         ActivityRicercaPerNome.this.startActivity(turnBenvenuto);
-    }
+    }*/
 
 
 
