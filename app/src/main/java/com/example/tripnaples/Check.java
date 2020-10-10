@@ -19,6 +19,7 @@ public class Check {
     static String indirizzoStruttura;
     static String cittàStruttura;
     static String tipoStruttura;
+    static int rangePrezzo;
     static boolean controlloActivityImpostazioni;
     static int codiceStruttura;
     static String link_immagine;

@@ -74,18 +74,10 @@ public class JsonClass extends Context {
                                 String città = struttura.getString("città");
                                 String tipo_struttura = struttura.getString("tipo_struttura");
                                 String link_immagine = struttura.getString("link_immagine");
-                                /*mTextViewResult.append("cod_struttura:"+String.valueOf(cod_struttura)+"\nindirizzo:"+indirizzo+
-                                        "\nrange_prezzo:"+String.valueOf(range_prezzo)+"\nlatitudine:"+latitudine+
-                                        "\nlongitudine:"+longitudine+ "\ncittà:"+città+"\nnome:"+nome+
-                                        "\ntipo_struttura:"+tipo_struttura+"\n\n");*/
                                 Struttura strutturaClass = new Struttura(cod_struttura, indirizzo, range_prezzo, latitudine, longitudine,
                                         nome, città, tipo_struttura,link_immagine);
                                 array.add(strutturaClass);
 
-                                /*mTextViewResult.append("cod_struttura:"+String.valueOf(strutturaClass.getCod_struttura())+"\nindirizzo:"+strutturaClass.getIndirizzo()+
-                                        "\nrange_prezzo:"+String.valueOf(strutturaClass.getRange_prezzo())+"\nlatitudine:"+strutturaClass.getLatitudine()+
-                                        "\nlongitudine:"+strutturaClass.getLongitudine()+ "\ncittà:"+strutturaClass.getCittà()+"\nnome:"+strutturaClass.getNome()+
-                                        "\ntipo_struttura:"+strutturaClass.getTipo_struttura()+"\n\n");*/
                             }
                         } catch (JSONException e) {
                             e.printStackTrace();
