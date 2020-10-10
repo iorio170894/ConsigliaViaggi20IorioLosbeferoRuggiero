@@ -1,10 +1,20 @@
 <?xml version="1.0" encoding="utf-8"?>
-<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     tools:context=".ActivityRegistrazione">
+
+    <ScrollView
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:orientation="vertical">
+
 
     <LinearLayout
         android:layout_width="match_parent"
@@ -22,6 +32,7 @@
             android:text="Registrazione"
             android:textColor="#fff"
             android:textSize="48sp"
+            android:layout_gravity="center"
             tools:layout_editor_absoluteX="39dp"
             tools:layout_editor_absoluteY="-12dp"/>
 
@@ -31,18 +42,55 @@
             android:text="Registrati ora. È gratis!"
             android:textColor="#fff"
             android:textSize="20sp"
+            android:layout_gravity="center"
             tools:layout_editor_absoluteX="43dp"
             tools:layout_editor_absoluteY="91dp"/>
     </LinearLayout>
 
+        <EditText
+            android:drawableLeft="@drawable/ic_baseline_mail_24"
+            android:id="@+id/editTextMailRegistration"
+            android:layout_width="250dp"
+            android:layout_height="60dp"
+            android:ems="10"
+            android:layout_marginTop="50dp"
+            android:hint="EMAIL"
+            android:inputType="textEmailAddress"
+            android:layout_gravity="center"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintHorizontal_bias="0.497"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintVertical_bias="0.351" />
+
+        <EditText
+            android:drawableLeft="@drawable/ic_baseline_person_24"
+            android:id="@+id/editTextNicknameRegistration"
+            android:layout_width="250dp"
+            android:layout_height="60dp"
+            android:ems="10"
+            android:layout_marginTop="30dp"
+            android:hint="NICKNAME"
+            android:layout_gravity="center"
+            android:inputType="textPersonName"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintHorizontal_bias="0.497"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintVertical_bias="0.472" />
+
     <EditText
         android:drawableLeft="@drawable/ic_baseline_perm_contact_calendar_24"
         android:id="@+id/editTextNomeCognomeRegistration"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
+        android:layout_width="250dp"
+        android:layout_height="60dp"
         android:ems="10"
         android:hint="NOME E COGNOME"
+        android:layout_marginTop="30dp"
         android:inputType="textPersonName"
+        android:layout_gravity="center"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.497"
@@ -50,15 +98,33 @@
         app:layout_constraintTop_toTopOf="parent"
         app:layout_constraintVertical_bias="0.59" />
 
+        <EditText
+            android:drawableLeft="@drawable/ic_baseline_lock_24"
+            android:id="@+id/editTextTextPasswordRegistration"
+            android:layout_width="250dp"
+            android:layout_height="60dp"
+            android:ems="10"
+            android:layout_marginTop="30dp"
+            android:hint="PASSWORD"
+            android:inputType="textPassword"
+            android:layout_gravity="center"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintHorizontal_bias="0.497"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintVertical_bias="0.699" />
+
     <EditText
         android:id="@+id/editTextTextConfirmPasswordRegistration"
-        android:layout_width="211dp"
-        android:layout_height="48dp"
+        android:layout_width="250dp"
+        android:layout_height="60dp"
         android:drawableLeft="@drawable/ic_baseline_lock_24"
         android:ems="10"
+        android:layout_marginTop="30dp"
         android:hint="CONFERMA PASSWORD"
+        android:layout_gravity="center"
         android:inputType="textPassword"
-        android:textSize="15dp"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.497"
@@ -66,81 +132,55 @@
         app:layout_constraintTop_toTopOf="parent"
         app:layout_constraintVertical_bias="0.813" />
 
-    <Button
-        android:id="@+id/buttonIscritivi"
-        style="@android:style/Widget.Material.Light.Button.Inset"
-        android:layout_width="125dp"
-        android:layout_height="50dp"
-        android:background="@drawable/buttonstylepink"
-        android:text="Iscriviti"
-        android:textColor="@color/white"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.898"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.957"
-        android:drawableRight="@drawable/ic_baseline_send_24"/>
 
-    <Button
-        android:id="@+id/buttonAnnulla"
-        style="@android:style/Widget.Material.Light.Button.Inset"
-        android:layout_width="120dp"
-        android:layout_height="48dp"
-        android:background="@drawable/buttonstylepink"
-        android:drawableLeft="@drawable/ic_baseline_arrow_back_24"
-        android:text="Annulla"
-        android:textColor="@color/white"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.156"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.956" />
 
-    <EditText
-        android:drawableLeft="@drawable/ic_baseline_lock_24"
-        android:id="@+id/editTextTextPasswordRegistration"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:ems="10"
-        android:hint="PASSWORD"
-        android:inputType="textPassword"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.497"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.699" />
 
-    <EditText
-        android:drawableLeft="@drawable/ic_baseline_mail_24"
-        android:id="@+id/editTextMailRegistration"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:ems="10"
-        android:hint="EMAIL"
-        android:inputType="textEmailAddress"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.497"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.351" />
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:orientation="horizontal"
+            android:gravity="center"
+            android:layout_marginTop="50dp"
+            android:layout_marginBottom="50dp">
 
-    <EditText
-        android:drawableLeft="@drawable/ic_baseline_person_24"
-        android:id="@+id/editTextNicknameRegistration"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:ems="10"
-        android:hint="NICKNAME"
-        android:inputType="textPersonName"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.497"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.472" />
 
-</androidx.constraintlayout.widget.ConstraintLayout>
+            <Button
+                android:id="@+id/buttonAnnulla"
+                style="@android:style/Widget.Material.Light.Button.Inset"
+                android:layout_width="120dp"
+                android:layout_height="48dp"
+                android:background="@drawable/buttonstylepink"
+                android:drawableLeft="@drawable/ic_baseline_arrow_back_24"
+                android:text="Annulla"
+                android:layout_marginRight="100dp"
+                android:layout_gravity="start"
+                android:textColor="@color/white"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintHorizontal_bias="0.156"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent"
+                app:layout_constraintVertical_bias="0.956" />
+
+        <Button
+            android:id="@+id/buttonIscritivi"
+            style="@android:style/Widget.Material.Light.Button.Inset"
+            android:layout_width="125dp"
+            android:layout_height="50dp"
+            android:background="@drawable/buttonstylepink"
+            android:text="Iscriviti"
+            android:textColor="@color/white"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintHorizontal_bias="0.898"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintVertical_bias="0.957"
+            android:drawableRight="@drawable/ic_baseline_send_24"/>
+
+        </LinearLayout>
+
+    </LinearLayout>
+    </ScrollView>
+
+</LinearLayout>

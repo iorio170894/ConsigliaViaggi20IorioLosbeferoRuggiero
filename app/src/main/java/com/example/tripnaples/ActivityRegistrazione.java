@@ -99,51 +99,71 @@ public class ActivityRegistrazione extends AppCompatActivity {
 
         //Tasto avanti va avanti nella registrazione
 
-        Button avanti = (Button) findViewById(R.id.buttonIscritivi);
-        avanti.setOnClickListener(new View.OnClickListener() {
+        Button iscriviti = (Button) findViewById(R.id.buttonIscritivi);
+        iscriviti.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
 
                 if (!inputPassword.getText().toString().equals(inputConfermaPassword.getText().toString())) {
-                    AlertDialog.Builder builder=new AlertDialog.Builder(ActivityRegistrazione.this);
+                    /*AlertDialog.Builder builder=new AlertDialog.Builder(ActivityRegistrazione.this);
                     builder.setTitle("Errore nella Registrazione:");
                     builder.setMessage("Attenzione: Password e Conferma Password non coincidono");
-                    builder.show();
+                    builder.show();*/
+                    inputConfermaPassword.setError("Attenzione: Password e Conferma Password non coincidono!");
                 }
                 else {
-                    //custom dialog
-                    final AlertDialog dialog = new AlertDialog.Builder(ActivityRegistrazione.this)
-                            .setTitle("Registrazione")
-                            .setMessage("Conferma la Registrazione?")
-                            .setPositiveButton("Conferma", null)
-                            .setNegativeButton("Annulla", null)
-                            .show();
+                    if (controlCampiVuoti(inputEmail, inputNickname, inputNome) ){
+                        //custom dialog
+                        final AlertDialog dialog = new AlertDialog.Builder(ActivityRegistrazione.this)
+                                .setTitle("Registrazione")
+                                .setMessage("Conferma la Registrazione?")
+                                .setPositiveButton("Conferma", null)
+                                .setNegativeButton("Annulla", null)
+                                .show();
 
-                    //dialog.getWindow().setGravity(Gravity.BOTTOM);
+                        //dialog.getWindow().setGravity(Gravity.BOTTOM);
 
-                    Button positiveButton = dialog.getButton(AlertDialog.BUTTON_POSITIVE);
-                    positiveButton.setOnClickListener(new View.OnClickListener() {
-                        @Override
-                        public void onClick(View v) {
+                        Button positiveButton = dialog.getButton(AlertDialog.BUTTON_POSITIVE);
+                        positiveButton.setOnClickListener(new View.OnClickListener() {
+                            @Override
+                            public void onClick(View v) {
 
-                            userAttributes.addAttribute("email",String.valueOf(inputEmail.getText()));
-                            userAttributes.addAttribute("nickname",String.valueOf(inputNickname.getText()));
-                            userAttributes.addAttribute("name",String.valueOf(inputNome.getText()));
+                                userAttributes.addAttribute("email", String.valueOf(inputEmail.getText()));
+                                userAttributes.addAttribute("nickname", String.valueOf(inputNickname.getText()));
+                                userAttributes.addAttribute("name", String.valueOf(inputNome.getText()));
 
-                            CognitoSettings cognitoSettings = new CognitoSettings(ActivityRegistrazione.this);
-                            cognitoSettings.getUserPool().signUpInBackground(String.valueOf(inputEmail.getText())
-                                    , String.valueOf(inputPassword.getText()), userAttributes, null, signupCallback
-                            );
-                            dialog.dismiss();
-                        }
-                    });
+                                CognitoSettings cognitoSettings = new CognitoSettings(ActivityRegistrazione.this);
+                                cognitoSettings.getUserPool().signUpInBackground(String.valueOf(inputEmail.getText())
+                                        , String.valueOf(inputPassword.getText()), userAttributes, null, signupCallback
+                                );
+                                dialog.dismiss();
+                            }
+                        });
+                    }
+
+
                 }
 
             }
         });
     }
 
-
+    private boolean controlCampiVuoti(EditText inputEmail, EditText inputNickname, EditText inputNomeCognome) {
+        boolean ritorno=true;
+        if (String.valueOf(inputEmail.getText()).isEmpty()){
+            inputEmail.setError("Attenzione campo vuoto!");
+            ritorno=false;
+        }
+        if (String.valueOf(inputNickname.getText()).isEmpty()){
+            inputNickname.setError("Attenzione campo vuoto!");
+            ritorno=false;
+        }
+        if (String.valueOf(inputNomeCognome.getText()).isEmpty()){
+            inputNomeCognome.setError("Attenzione campo vuoto!");
+            ritorno=false;
+        }
+        return ritorno;
+    }
 
 
 }

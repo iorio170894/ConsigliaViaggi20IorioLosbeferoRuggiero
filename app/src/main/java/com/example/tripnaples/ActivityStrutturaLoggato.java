@@ -68,7 +68,7 @@ public class ActivityStrutturaLoggato extends AppCompatActivity implements OnMap
     EditText review;
     Button submit;
     RatingBar ratingBar;
-    float rateValue;
+    double rateValue;
     String temp;
 
     private RequestQueue requestQueue;
@@ -254,13 +254,25 @@ public class ActivityStrutturaLoggato extends AppCompatActivity implements OnMap
             }
             *
             * */
-                String data = "{\n"+
-                        "\"numero_stelle\":" + "\"" + rateValue + "\",\n"+
-                        "\"descrizione_testuale\":" + "\"" + String.valueOf(review.getText()) + "\",\n"+
-                        "\"codice_struttura\":" + "\"" + Check.codiceStruttura + "\",\n"+
-                        "\"utente\":" + "\"" + Check.firma + "\"\n"+
-                        "}";
-                JsonPost(data);
+                if ((String.valueOf(review.getText()).isEmpty()) || rateValue<0.5 || rateValue >5.0){
+                    if (String.valueOf(review.getText()).isEmpty())
+                        review.setError("Attenzione campo vuoto");
+                    if (rateValue<0.5 || rateValue >5.0) {
+                        AlertDialog.Builder builder = new AlertDialog.Builder(ActivityStrutturaLoggato.this);
+                        builder.setTitle("Errore");
+                        builder.setMessage("Attenzione seleziona un range di stelle!");
+                        builder.show();
+                    }
+                }
+                else {
+                    String data = "{\n" +
+                            "\"numero_stelle\":" + "\"" + rateValue + "\",\n" +
+                            "\"descrizione_testuale\":" + "\"" + String.valueOf(review.getText()) + "\",\n" +
+                            "\"codice_struttura\":" + "\"" + Check.codiceStruttura + "\",\n" +
+                            "\"utente\":" + "\"" + Check.firma + "\"\n" +
+                            "}";
+                    JsonPost(data);
+                }
 
             }
         });

@@ -176,16 +176,22 @@ public class ActivityRicerca extends AppCompatActivity implements AdapterView.On
                     range=Integer.parseInt(rangePrezzoSelected);
                 }
 
-                //if (check_premuto) {
-                Check.inputUrl = "http://consigliaviaggi20.us-east-2.elasticbeanstalk.com/struttura/search_filter_strutture.php?inputTipo=" + strutturaSelected + "&inputCitt%C3%A0=" + cittàSelected + "&inputRangePrezzo=" + range;
-                //String url = "http://consigliaviaggi20.us-east-2.elasticbeanstalk.com/struttura/search_strutture.php?inputTipo=teatro";
-                //JsonClass jsonStrutturaVicinoaMe = new JsonClass();
-                //arrayStrutture = jsonStrutturaVicinoaMe.jsonParse(url);
+                if (cittàSelected.isEmpty()){
+                    inputcittàSelected.setError("Attenzione campo vuoto!");
+                }
+                else {
 
-                startActivity(new Intent(ActivityRicerca.this, ActivityStruttureIntornoaMe.class));
-               // check_premuto=true;
+                    //if (check_premuto) {
+                    Check.inputUrl = "http://consigliaviaggi20.us-east-2.elasticbeanstalk.com/struttura/search_filter_strutture.php?inputTipo=" + strutturaSelected + "&inputCitt%C3%A0=" + cittàSelected + "&inputRangePrezzo=" + range;
+                    //String url = "http://consigliaviaggi20.us-east-2.elasticbeanstalk.com/struttura/search_strutture.php?inputTipo=teatro";
+                    //JsonClass jsonStrutturaVicinoaMe = new JsonClass();
+                    //arrayStrutture = jsonStrutturaVicinoaMe.jsonParse(url);
 
-               // mapFragment.getMapAsync(ActivityRicerca.this);
+                    startActivity(new Intent(ActivityRicerca.this, ActivityStruttureIntornoaMe.class));
+                    // check_premuto=true;
+
+                    // mapFragment.getMapAsync(ActivityRicerca.this);
+                }
 
 
             }
