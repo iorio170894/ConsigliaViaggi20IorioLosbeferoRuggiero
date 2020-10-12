@@ -53,7 +53,7 @@ public class ActivityStrutturaNonLoggato extends AppCompatActivity implements On
     private TextView textNomeStruttura;
     private TextView textIndirizzoStruttura;
     private TextView textCittàStruttura;
-    private TextView textTipoStruttura;
+    private TextView textRangeStruttura;
     ImageView imageView;
     RecyclerView recyclerView;
 
@@ -92,13 +92,22 @@ public class ActivityStrutturaNonLoggato extends AppCompatActivity implements On
         textNomeStruttura = findViewById(R.id.nomeStrutturaNonLoggato);
         textIndirizzoStruttura = findViewById(R.id.indirizzoStrutturaNonLoggato);
         textCittàStruttura= findViewById(R.id.cittàStrutturaNonLoggato);
-        textTipoStruttura= findViewById(R.id.tipoStrutturaNonLoggato);
+        textRangeStruttura= findViewById(R.id.rangeStrutturaNonLoggato);
         imageView=findViewById(R.id.imageViewStruttura2);
 
         textNomeStruttura.setText(Check.nomeStruttura);
         textIndirizzoStruttura.setText(Check.indirizzoStruttura);
         textCittàStruttura.setText(Check.cittàStruttura);
-        textTipoStruttura.setText(Check.tipoStruttura);
+
+        if (Check.rangePrezzo==1){
+            textRangeStruttura.setText("Range di prezzo basso");
+        }
+        else if (Check.rangePrezzo==2){
+            textRangeStruttura.setText("Range di prezzo medio");
+        }
+        else if (Check.rangePrezzo==3){
+            textRangeStruttura.setText("Range di prezzo alto");
+        }
 
         Glide.with(ActivityStrutturaNonLoggato.this)
                 .load(Check.link_immagine)
@@ -188,6 +197,11 @@ public class ActivityStrutturaNonLoggato extends AppCompatActivity implements On
             @Override
             public void onErrorResponse(VolleyError error) {
                 error.printStackTrace();
+                AlertDialog.Builder builder=new AlertDialog.Builder(ActivityStrutturaNonLoggato.this);
+                builder.setTitle("Errore:");
+                builder.setMessage("Attenzione:"+error.getLocalizedMessage());
+                builder.setIcon(android.R.drawable.ic_dialog_alert);
+                builder.show();
             }
         });
         mQueue.add(request);

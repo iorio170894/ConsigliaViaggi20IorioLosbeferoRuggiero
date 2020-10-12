@@ -86,6 +86,8 @@ public class LoginActivity extends AppCompatActivity {
                 builder.setTitle("Errore nel Login:");
                 builder.setMessage(" Attenzione:"+exception.getLocalizedMessage());
                 builder.show();
+
+
             }
         };
 

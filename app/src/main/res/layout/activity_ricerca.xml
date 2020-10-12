@@ -7,6 +7,15 @@
     android:layout_height="match_parent"
     tools:context=".ActivityRicerca">
 
+    <ScrollView
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:orientation="vertical">
+
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
@@ -41,7 +50,7 @@
         android:background="@drawable/bg_round"
         android:orientation="vertical"
         tools:ignore="MissingConstraints"
-        android:layout_marginTop="220dp"
+        android:layout_marginTop="120dp"
         android:layout_marginBottom="130dp"
         android:layout_marginLeft="30dp"
         android:layout_marginRight="30dp"
@@ -111,7 +120,7 @@
 
             <EditText
                 android:id="@+id/editTextCittàStruttura"
-                android:layout_width="243dp"
+                android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:ems="10"
                 android:paddingLeft="16dp"
@@ -190,6 +199,9 @@
 
 
     </LinearLayout>
+
+    </LinearLayout>
+    </ScrollView>
 
 
 

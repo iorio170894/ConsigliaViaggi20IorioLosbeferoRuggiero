@@ -94,6 +94,8 @@ public class ActivityRegistrazione extends AppCompatActivity {
                 builder.setTitle("Errore nella Registrazione:");
                 builder.setMessage("Attenzione:"+exception.getLocalizedMessage());
                 builder.show();
+
+
             }
         };
 

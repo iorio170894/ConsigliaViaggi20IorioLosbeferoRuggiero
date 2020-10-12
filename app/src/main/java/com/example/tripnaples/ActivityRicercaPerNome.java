@@ -5,6 +5,7 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.content.ContextCompat;
 
 import android.Manifest;
+import android.app.Activity;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
@@ -93,36 +94,6 @@ public class ActivityRicercaPerNome extends AppCompatActivity implements OnMapRe
                     .setNegativeButton("Cancella", null)
                     .show();
         }
-
-
-        //JsonClass jsonStrutture= new JsonClass();
-        //Check.arrayStrutture = jsonStrutture.jsonParse("http://consigliaviaggi20.us-east-2.elasticbeanstalk.com/struttura/read.php");
-
-
-        /*if (Check.arrayStrutture.isEmpty()) {
-            AlertDialog.Builder builder = new AlertDialog.Builder(ActivityRicercaPerNome.this);
-            builder.setTitle("Errore nella ricerca:");
-            builder.setMessage("Non sono state trovate strutture!");
-            builder.show();
-        }*/
-
-
-
-       /* for (int i=0; i<Check.arrayStrutture.size(); i++) {
-            Struttura strutturaInserita = Check.arrayStrutture.get(i);
-            strings[i]=strutturaInserita.getNome();
-        }*/
-
-        //genereteString();
-
-
-
-        /*AlertDialog.Builder builder = new AlertDialog.Builder(ActivityRicercaPerNome.this);
-        builder.setTitle("Stringa nome struttura:");
-        builder.setMessage(Arrays.toString(strings));
-        builder.show();*/
-
-        //prova=Check.strings;
 
         autoCompleteTextView=findViewById(R.id.ac_text_view);
 
@@ -220,12 +191,18 @@ public class ActivityRicercaPerNome extends AppCompatActivity implements OnMapRe
 
                         } catch (JSONException e) {
                             e.printStackTrace();
+
                         }
                     }
                 }, new Response.ErrorListener() {
             @Override
             public void onErrorResponse(VolleyError error) {
                 error.printStackTrace();
+                AlertDialog.Builder builder=new AlertDialog.Builder(ActivityRicercaPerNome.this);
+                builder.setTitle("Errore:");
+                builder.setMessage("Attenzione:"+error.getLocalizedMessage());
+                builder.setIcon(android.R.drawable.ic_dialog_alert);
+                builder.show();
             }
         });
         mQueue.add(request);
@@ -247,9 +224,8 @@ public class ActivityRicercaPerNome extends AppCompatActivity implements OnMapRe
     public void genereteString (){
 
     }
-
     private boolean isGPSEnabled() {
-        LocationManager cm = (LocationManager) getSystemService(Context.LOCATION_SERVICE);
+        LocationManager cm = (LocationManager)getSystemService(Context.LOCATION_SERVICE);
         return cm.isProviderEnabled(LocationManager.GPS_PROVIDER);
     }
 

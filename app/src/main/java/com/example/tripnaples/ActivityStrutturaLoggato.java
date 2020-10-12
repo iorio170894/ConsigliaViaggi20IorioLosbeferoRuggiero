@@ -60,7 +60,7 @@ public class ActivityStrutturaLoggato extends AppCompatActivity implements OnMap
     private TextView textNomeStruttura;
     private TextView textIndirizzoStruttura;
     private TextView textCittàStruttura;
-    private TextView textTipoStruttura;
+    private TextView textRangeStruttura;
     ImageView imageView;
     private TextView textFirma;
     String nicnknameSalvato;
@@ -112,13 +112,22 @@ public class ActivityStrutturaLoggato extends AppCompatActivity implements OnMap
         textNomeStruttura = findViewById(R.id.nomeStruttura);
         textIndirizzoStruttura = findViewById(R.id.indirizzoStruttura);
         textCittàStruttura= findViewById(R.id.cittàStruttura);
-        textTipoStruttura= findViewById(R.id.tipoStruttura);
+        textRangeStruttura= findViewById(R.id.rangeStruttura);
         imageView=findViewById(R.id.imageViewStruttura);
 
         textNomeStruttura.setText(Check.nomeStruttura);
         textIndirizzoStruttura.setText(Check.indirizzoStruttura);
         textCittàStruttura.setText(Check.cittàStruttura);
-        textTipoStruttura.setText(Check.tipoStruttura);
+
+        if (Check.rangePrezzo==1){
+            textRangeStruttura.setText("Range di prezzo basso");
+        }
+        else if (Check.rangePrezzo==2){
+            textRangeStruttura.setText("Range di prezzo medio");
+        }
+        else if (Check.rangePrezzo==3){
+            textRangeStruttura.setText("Range di prezzo alto");
+        }
 
         Glide.with(ActivityStrutturaLoggato.this)
                 .load(Check.link_immagine)
@@ -197,6 +206,11 @@ public class ActivityStrutturaLoggato extends AppCompatActivity implements OnMap
             @Override
             public void onErrorResponse(VolleyError error) {
                 error.printStackTrace();
+                AlertDialog.Builder builder=new AlertDialog.Builder(ActivityStrutturaLoggato.this);
+                builder.setTitle("Errore:");
+                builder.setMessage("Attenzione:"+error.getLocalizedMessage());
+                builder.setIcon(android.R.drawable.ic_dialog_alert);
+                builder.show();
             }
         });
         mQueue.add(request);
@@ -265,13 +279,18 @@ public class ActivityStrutturaLoggato extends AppCompatActivity implements OnMap
                     }
                 }
                 else {
-                    String data = "{\n" +
-                            "\"numero_stelle\":" + "\"" + rateValue + "\",\n" +
-                            "\"descrizione_testuale\":" + "\"" + String.valueOf(review.getText()) + "\",\n" +
-                            "\"codice_struttura\":" + "\"" + Check.codiceStruttura + "\",\n" +
-                            "\"utente\":" + "\"" + Check.firma + "\"\n" +
-                            "}";
-                    JsonPost(data);
+                    if (String.valueOf(review.getText()).length() < 8){
+                        review.setError("Inserisci almeno 8 caratteri");
+                    }
+                    else {
+                        String data = "{\n" +
+                                "\"numero_stelle\":" + "\"" + rateValue + "\",\n" +
+                                "\"descrizione_testuale\":" + "\"" + String.valueOf(review.getText()) + "\",\n" +
+                                "\"codice_struttura\":" + "\"" + Check.codiceStruttura + "\",\n" +
+                                "\"utente\":" + "\"" + Check.firma + "\"\n" +
+                                "}";
+                        JsonPost(data);
+                    }
                 }
 
             }
@@ -325,8 +344,9 @@ public class ActivityStrutturaLoggato extends AppCompatActivity implements OnMap
 
                 //Toast.makeText(getApplicationContext(), error.getMessage(), Toast.LENGTH_SHORT).show();
                 AlertDialog.Builder builder=new AlertDialog.Builder(ActivityStrutturaLoggato.this);
-                builder.setTitle("Json Response Error: "+error.getMessage());
-                builder.setMessage(error.getMessage());
+                builder.setTitle("Errore:");
+                builder.setMessage("Attenzione:"+error.getLocalizedMessage());
+                builder.setIcon(android.R.drawable.ic_dialog_alert);
                 builder.show();
 
                 //Log.v("VOLLEY", error.toString());

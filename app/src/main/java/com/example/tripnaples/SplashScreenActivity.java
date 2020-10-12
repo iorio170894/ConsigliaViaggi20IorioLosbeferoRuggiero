@@ -7,8 +7,11 @@ import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.SharedPreferences;
+import android.net.ConnectivityManager;
+import android.net.NetworkInfo;
 import android.os.Bundle;
 import android.os.Handler;
+import android.provider.Settings;
 import android.util.Log;
 import android.view.View;
 
@@ -26,16 +29,31 @@ public class SplashScreenActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_splash_screen);
 
+        if (!isConnectionInternetEnabled()) {
+            new AlertDialog.Builder(SplashScreenActivity.this)
+                    .setMessage("Attenzione, attiva la tua connessione dati")
+                    .setCancelable(false)
+                    .setPositiveButton("Opzioni", new DialogInterface.OnClickListener() {
+                        public void onClick(DialogInterface dialog, int id) {
+                            Intent i = new Intent(Settings.ACTION_WIFI_SETTINGS);
+                            startActivity(i);
+                        }
+                    })
+                    .setNegativeButton("Cancella", null)
+                    .show();
+        }
+
         isLogged();
 
     }
 
-    /*public boolean isLoggedIn() {
-        CognitoUser currentUser = CognitoSettings.getUserPool().getCurrentUser();
-        SharedPreferences prefs = getSharedPreferences("CognitoIdentityProviderCache", 0);
-        String csiIdTokenKey = "CognitoIdentityProvider." + "." + currentUser.getUserId() + ".idToken";
-        return prefs.contains(csiIdTokenKey);
-    }*/
+    public boolean isConnectionInternetEnabled(){
+        ConnectivityManager connectivityManager
+                = (ConnectivityManager) getSystemService(Context.CONNECTIVITY_SERVICE);
+        NetworkInfo activeNetworkInfo = connectivityManager.getActiveNetworkInfo();
+        return activeNetworkInfo != null && activeNetworkInfo.isConnected();
+    }
+
 
     public void isLogged() {
         new Handler().postDelayed(new Runnable() {

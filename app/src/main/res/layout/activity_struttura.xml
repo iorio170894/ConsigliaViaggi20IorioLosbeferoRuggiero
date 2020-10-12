@@ -20,7 +20,7 @@
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginTop="5dp"
+        android:layout_marginTop="20dp"
         android:paddingBottom="15dp"
         android:orientation="horizontal">
 
@@ -36,7 +36,6 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginLeft="7dp"
-            android:layout_marginTop="5dp"
             android:orientation="vertical">
 
             <LinearLayout
@@ -48,6 +47,7 @@
                 <TextView
                     android:id="@+id/nomeStruttura"
                     android:layout_width="match_parent"
+                    android:text="Nome Struttura"
                     android:layout_height="wrap_content"
                     android:paddingTop="8dp"
                     android:textColor="@color/colorPrimaryDark"
@@ -66,6 +66,7 @@
                     android:id="@+id/indirizzoStruttura"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
+                    android:text="Indirizzo"
                     android:labelFor="@+id/nomeStrutturaNonLoggato"
                     android:textColor="@color/colorPrimaryDark"
                     android:textSize="16sp" />
@@ -83,6 +84,7 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_weight="1"
+                    android:text="Città"
                     android:textColor="@color/colorPrimaryDark"
                     android:textSize="16sp" />
             </LinearLayout>
@@ -94,9 +96,10 @@
                 android:orientation="horizontal">
 
                 <TextView
-                    android:id="@+id/tipoStruttura"
+                    android:id="@+id/rangeStruttura"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
+                    android:text="Range"
                     android:textColor="@color/colorPrimaryDark"
                     android:textSize="16sp" />
             </LinearLayout>

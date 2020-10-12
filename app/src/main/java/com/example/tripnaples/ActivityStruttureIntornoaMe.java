@@ -132,8 +132,10 @@ public class ActivityStruttureIntornoaMe extends AppCompatActivity implements On
                                 AlertDialog.Builder builder = new AlertDialog.Builder(ActivityStruttureIntornoaMe.this);
                                 builder.setTitle("Errore nella ricerca:");
                                 builder.setMessage("Non sono state trovate strutture!");
+                                builder.setIcon(android.R.drawable.ic_dialog_alert);
                                 builder.show();
                             }
+
 
                         }
                     }
@@ -141,6 +143,11 @@ public class ActivityStruttureIntornoaMe extends AppCompatActivity implements On
             @Override
             public void onErrorResponse(VolleyError error) {
                 error.printStackTrace();
+                AlertDialog.Builder builder=new AlertDialog.Builder(ActivityStruttureIntornoaMe.this);
+                builder.setTitle("Errore:");
+                builder.setMessage("Attenzione:"+error.getLocalizedMessage());
+                builder.setIcon(android.R.drawable.ic_dialog_alert);
+                builder.show();
             }
         });
         mQueue.add(request);

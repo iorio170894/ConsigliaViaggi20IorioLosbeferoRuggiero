@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 
+
 <androidx.drawerlayout.widget.DrawerLayout
     xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
@@ -12,6 +13,7 @@
 
 
 
+
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
@@ -19,6 +21,15 @@
         >
         <include
             layout="@layout/main_toolbar"/>
+
+    <ScrollView
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:orientation="vertical">
 
         <LinearLayout
             android:id="@+id/linearLayout2"
@@ -69,6 +80,7 @@
             android:layout_height="wrap_content"
             android:orientation="horizontal"
             android:padding="30dp"
+            android:gravity="center"
             tools:ignore="MissingConstraints"
             tools:layout_editor_absoluteX="-6dp"
             tools:layout_editor_absoluteY="-6dp">
@@ -94,7 +106,7 @@
             <Button
                 android:id="@+id/buttonSearchBar"
                 android:layout_width="151dp"
-                android:layout_marginLeft="20dp"
+                android:layout_marginLeft="30dp"
                 android:layout_height="70dp"
                 android:gravity="center"
                 android:background="@drawable/buttonstylepink"
@@ -117,6 +129,7 @@
             android:layout_height="wrap_content"
             android:orientation="horizontal"
             android:padding="30dp"
+            android:gravity="center"
             tools:ignore="MissingConstraints"
             tools:layout_editor_absoluteX="-6dp"
             tools:layout_editor_absoluteY="-6dp">
@@ -144,7 +157,7 @@
                 android:id="@+id/buttonSearchParchi"
                 android:layout_width="151dp"
                 android:layout_height="70dp"
-                android:layout_marginLeft="20dp"
+                android:layout_marginLeft="30dp"
                 android:gravity="center"
                 android:background="@drawable/buttonstylepink"
                 android:drawableLeft="@drawable/ic_baseline_nature_people_24"
@@ -166,6 +179,7 @@
             android:layout_height="wrap_content"
             android:orientation="horizontal"
             android:padding="30dp"
+            android:gravity="center"
             tools:ignore="MissingConstraints"
             tools:layout_editor_absoluteX="-6dp"
             tools:layout_editor_absoluteY="-6dp">
@@ -192,7 +206,7 @@
                 android:id="@+id/buttonSearchMusei"
                 android:layout_width="151dp"
                 android:layout_height="70dp"
-                android:layout_marginLeft="20dp"
+                android:layout_marginLeft="30dp"
                 android:gravity="center"
                 android:background="@drawable/buttonstylepink"
                 android:drawableLeft="@drawable/ic_museum"
@@ -209,7 +223,8 @@
         </LinearLayout>
 
 
-
+    </LinearLayout>
+    </ScrollView>
 
 
 
@@ -227,4 +242,7 @@
     </RelativeLayout>
 
 
+
+
 </androidx.drawerlayout.widget.DrawerLayout>
+
