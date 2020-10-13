@@ -27,4 +27,5 @@ public class Check {
     static ArrayList<Struttura> arrayStrutture=new ArrayList<>();
     static LatLng coordinateStrutturaPerNome;
     static String nomeStrutturaPerNome;
+    static LatLng latLngCurrent;
 }

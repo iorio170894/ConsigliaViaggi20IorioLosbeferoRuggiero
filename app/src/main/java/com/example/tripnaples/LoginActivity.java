@@ -85,6 +85,7 @@ public class LoginActivity extends AppCompatActivity {
                 AlertDialog.Builder builder=new AlertDialog.Builder(LoginActivity.this);
                 builder.setTitle("Errore nel Login:");
                 builder.setMessage(" Attenzione:"+exception.getLocalizedMessage());
+                builder.setIcon(android.R.drawable.ic_dialog_alert);
                 builder.show();
 
 
@@ -97,13 +98,22 @@ public class LoginActivity extends AppCompatActivity {
             public void onClick(View view) {
                 CognitoSettings cognitoSettings = new CognitoSettings(LoginActivity.this);
 
-                CognitoUser thisUser = cognitoSettings.getUserPool().
-                        getUser(String.valueOf(editTextEmail.getText()));
+                if (String.valueOf(editTextEmail.getText()).isEmpty() || String.valueOf(editTextPassword.getText()).isEmpty()){
+                    if (String.valueOf(editTextEmail.getText()).isEmpty() )
+                        editTextEmail.setError("Attenzione campo vuoto!");
+                    if (String.valueOf(editTextPassword.getText()).isEmpty() )
+                        editTextPassword.setError("Attenzione campo vuoto!");
+                }
+                else {
 
-                //Sign in the user
-                Log.i("Cognito", "in button clicked..");
+                    CognitoUser thisUser = cognitoSettings.getUserPool().
+                            getUser(String.valueOf(editTextEmail.getText()));
 
-                thisUser.getSessionInBackground(authenticationHandler);
+                    //Sign in the user
+                    Log.i("Cognito", "in button clicked..");
+
+                    thisUser.getSessionInBackground(authenticationHandler);
+                }
             }
         });
     }

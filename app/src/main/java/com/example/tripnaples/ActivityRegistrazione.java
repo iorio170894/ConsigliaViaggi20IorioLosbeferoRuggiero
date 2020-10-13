@@ -93,6 +93,7 @@ public class ActivityRegistrazione extends AppCompatActivity {
                 AlertDialog.Builder builder=new AlertDialog.Builder(ActivityRegistrazione.this);
                 builder.setTitle("Errore nella Registrazione:");
                 builder.setMessage("Attenzione:"+exception.getLocalizedMessage());
+                builder.setIcon(android.R.drawable.ic_dialog_alert);
                 builder.show();
 
 

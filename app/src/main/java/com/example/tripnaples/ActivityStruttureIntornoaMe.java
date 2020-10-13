@@ -65,6 +65,9 @@ public class ActivityStruttureIntornoaMe extends AppCompatActivity implements On
     static boolean check_premuto;
     ArrayList<Struttura> arrayStrutture=new ArrayList<>();
 
+
+    int count=1;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
 
@@ -87,11 +90,13 @@ public class ActivityStruttureIntornoaMe extends AppCompatActivity implements On
                     .show();
         }
         //GET JSON per recuperare le strutture dato come input l'url
+
         jsonParse(Check.inputUrl);
 
         mapFragment = (SupportMapFragment) getSupportFragmentManager()
                 .findFragmentById(R.id.google_map);
         mapFragment.getMapAsync(this);
+
 
     }
 
@@ -119,11 +124,14 @@ public class ActivityStruttureIntornoaMe extends AppCompatActivity implements On
                                 String link_immagine = struttura.getString("link_immagine");
                                 Struttura strutturaClass = new Struttura(cod_struttura, indirizzo, range_prezzo, latitudine, longitudine,
                                         nome, città, tipo_struttura,link_immagine);
-                                arrayStrutture.add(strutturaClass);
+                                if (strutturaClass != null) {
+                                    arrayStrutture.add(strutturaClass);
+                                }
                             }
 
-                            check_premuto=true;//variabile statica, se è true significa che ha trovato qualche struttura
-                            mapFragment.getMapAsync(ActivityStruttureIntornoaMe.this);
+                            //check_premuto=true;//variabile statica, se è true significa che ha trovato qualche struttura
+                            //mapFragment.getMapAsync(ActivityStruttureIntornoaMe.this);
+                           addOnMarker(arrayStrutture);
 
                         } catch (JSONException e) {
                             e.printStackTrace();
@@ -151,6 +159,26 @@ public class ActivityStruttureIntornoaMe extends AppCompatActivity implements On
             }
         });
         mQueue.add(request);
+    }
+
+    public void addOnMarker(ArrayList<Struttura> arrayStrutture){
+
+        for (int i = 0; i < arrayStrutture.size(); i++) {
+            final Struttura strutturaInserita = arrayStrutture.get(i);
+            LatLng latLngStrutture = new LatLng(strutturaInserita.getLatitudine(), strutturaInserita.getLongitudine());
+            MarkerOptions markerOptionsStrutture = new MarkerOptions();
+            markerOptionsStrutture.position(latLngStrutture);
+            markerOptionsStrutture.title(strutturaInserita.getNome());
+
+            //calcolo della distanza della struttura dalla posizione corrente
+            double distancetoCurrentPosition = getDistanceKm(Check.latLngCurrent, latLngStrutture);
+
+            markerOptionsStrutture.snippet("Distanza: " + distancetoCurrentPosition + " km.");
+            markerOptionsStrutture.icon(BitmapDescriptorFactory.defaultMarker(BitmapDescriptorFactory.HUE_RED));
+
+            mCurrLocationMarker = mMap.addMarker(markerOptionsStrutture);
+
+        }
     }
 
     private boolean isGPSEnabled() {
@@ -217,37 +245,24 @@ public class ActivityStruttureIntornoaMe extends AppCompatActivity implements On
 
         final LatLng latLng = new LatLng(location.getLatitude(), location.getLongitude());
         final MarkerOptions markerOptions = new MarkerOptions();
+        //Aggiungi marker di colore verde con posizione corrente
+        markerOptions.position(latLng);
+        markerOptions.title("Posizione Corrente");
+        markerOptions.icon(BitmapDescriptorFactory.defaultMarker(BitmapDescriptorFactory.HUE_GREEN));
+        mCurrLocationMarker = mMap.addMarker(markerOptions);
 
+        //Set current position
+        Check.latLngCurrent=latLng;
 
-        if (check_premuto) {
+        //mMap.moveCamera(CameraUpdateFactory.newLatLng(latLng));
+       // mMap.animateCamera(CameraUpdateFactory.zoomTo(11));
+        mMap.animateCamera(CameraUpdateFactory.newLatLngZoom(latLng,13));
 
-            //Aggiungi marker di colore verde con posizione corrente
-            markerOptions.position(latLng);
-            markerOptions.title("Posizione Corrente");
-            markerOptions.icon(BitmapDescriptorFactory.defaultMarker(BitmapDescriptorFactory.HUE_GREEN));
-            mCurrLocationMarker = mMap.addMarker(markerOptions);
-
-            //aggiungi i marker delle strutture trovate
-            for (int i = 0; i < arrayStrutture.size(); i++) {
-                final Struttura strutturaInserita = arrayStrutture.get(i);
-                LatLng latLngStrutture = new LatLng(strutturaInserita.getLatitudine(), strutturaInserita.getLongitudine());
-                MarkerOptions markerOptionsStrutture = new MarkerOptions();
-                markerOptionsStrutture.position(latLngStrutture);
-                markerOptionsStrutture.title(strutturaInserita.getNome());
-
-                //calcolo della distanza della struttura dalla posizione corrente
-                double distancetoCurrentPosition = getDistanceKm(latLng, latLngStrutture);
-
-                markerOptionsStrutture.snippet("Distanza: " + distancetoCurrentPosition + " km.");
-                markerOptionsStrutture.icon(BitmapDescriptorFactory.defaultMarker(BitmapDescriptorFactory.HUE_RED));
-
-                mCurrLocationMarker = mMap.addMarker(markerOptionsStrutture);
-
-                mMap.moveCamera(CameraUpdateFactory.newLatLng(latLng));
-                mMap.animateCamera(CameraUpdateFactory.zoomTo(11));
-            }
-
-        }
+        /*AlertDialog.Builder builder = new AlertDialog.Builder(ActivityStruttureIntornoaMe.this);
+        builder.setTitle("Check_premuto:");
+        builder.setMessage("Count: "+ count +" , Check_premuto: "+check_premuto);
+        count++;
+        builder.show();*/
 
 
 
@@ -272,6 +287,7 @@ public class ActivityStruttureIntornoaMe extends AppCompatActivity implements On
                                 .setTitle(strutturaCurr.getTipo_struttura()+": \n"+strutturaCurr.getNome())
                                 .setMessage(strutturaCurr.getIndirizzo()+", "+strutturaCurr.getCittà()+"\nDistanza: "+distancetoCurrentPosition+" km.")
                                 //.setMessage(latitudineCurr+", "+longitudineCurr)
+                                .setIcon(R.drawable.ic_location)
                                 .setPositiveButton("Visualizza dettagli Struttura", null)
                                 .show();
 

@@ -60,6 +60,7 @@ public class ActivityRicercaPerNome extends AppCompatActivity implements OnMapRe
     GoogleMap mMap;
     Location mLastLocation;
     Marker mCurrLocationMarker;
+    Marker marketToRemove;
     Marker setLocation;
     GoogleApiClient mGoogleApiClient;
     LocationRequest mLocationRequest;
@@ -69,6 +70,9 @@ public class ActivityRicercaPerNome extends AppCompatActivity implements OnMapRe
     private RequestQueue mQueue;
     ArrayList<Struttura> arrayStrutture=new ArrayList<>();
     static boolean check_premuto;
+
+
+    int count=1;
 
     //ArrayList<String> strings = new ArrayList<>();
 
@@ -140,11 +144,6 @@ public class ActivityRicercaPerNome extends AppCompatActivity implements OnMapRe
                                 }
                             }
 
-                            /*AlertDialog.Builder builder = new AlertDialog.Builder(ActivityRicercaPerNome.this);
-                            builder.setTitle("Stringa nome struttura:");
-                            builder.setMessage(Arrays.toString(strings));
-                            builder.show();*/
-
                             adapter=new ArrayAdapter<>(ActivityRicercaPerNome.this
                                     ,android.R.layout.simple_list_item_1,strings);
                             autoCompleteTextView.setThreshold(1);
@@ -153,19 +152,8 @@ public class ActivityRicercaPerNome extends AppCompatActivity implements OnMapRe
                                 @Override
                                 public void onItemClick(AdapterView<?> adapterView, View view, int s, long l) {
 
-                                    for (int i=0; i<arrayStrutture.size(); i++){
+                                    addMarkerSelected(arrayStrutture,adapter.getItem(s));
 
-                                        final Struttura strutturaCurr=arrayStrutture.get(i);
-
-                                        if (strutturaCurr.getNome().equals(adapter.getItem(s))){
-                                            LatLng latLngSelected= new LatLng(strutturaCurr.getLatitudine(),strutturaCurr.getLongitudine());
-                                            Check.coordinateStrutturaPerNome=latLngSelected;
-                                            Check.nomeStrutturaPerNome=adapter.getItem(s);
-
-                                            check_premuto=true;
-                                            mapFragment.getMapAsync(ActivityRicercaPerNome.this);
-                                        }
-                                    }
                                 }
                             });
 
@@ -210,20 +198,38 @@ public class ActivityRicercaPerNome extends AppCompatActivity implements OnMapRe
 
     }
 
-    /*@Override
-    public void onBackPressed() {
-        mMap.clear();
-        check_premuto=false;
-        Intent turnBenvenuto = new Intent(ActivityRicercaPerNome.this, ActivityBenvenuto.class);
-        turnBenvenuto.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
-        ActivityRicercaPerNome.this.startActivity(turnBenvenuto);
-    }*/
+    public void addMarkerSelected(ArrayList<Struttura> arrayStrutture, String nomeStruttura ){
 
+        for (int i=0; i<arrayStrutture.size(); i++){
 
+            final Struttura strutturaCurr=arrayStrutture.get(i);
 
-    public void genereteString (){
+            if (strutturaCurr.getNome().equals(nomeStruttura)){
+                LatLng latLngSelected= new LatLng(strutturaCurr.getLatitudine(),strutturaCurr.getLongitudine());
+
+                if (marketToRemove!=null){
+                    marketToRemove.remove();
+                }
+
+                //check_premuto=true;
+                MarkerOptions markerOptionsStrutture = new MarkerOptions();
+                markerOptionsStrutture.position(latLngSelected);
+                markerOptionsStrutture.title(nomeStruttura);
+
+                //calcolo della distanza dalla posizione corrente
+                double distancetoCurrentPosition=getDistanceKm(Check.latLngCurrent,latLngSelected);
+                markerOptionsStrutture.snippet(String.valueOf("Distanza: "+distancetoCurrentPosition+" km."));
+                //markerOptionsStrutture.snippet(String.valueOf(strutturaInserita.getLatitudine())+String.valueOf(strutturaInserita.getLongitudine()));
+                markerOptionsStrutture.icon(BitmapDescriptorFactory.defaultMarker(BitmapDescriptorFactory.HUE_RED));
+
+                mCurrLocationMarker = mMap.addMarker(markerOptionsStrutture);
+                marketToRemove = mCurrLocationMarker;
+                mMap.animateCamera(CameraUpdateFactory.newLatLngZoom(latLngSelected,13));
+            }
+        }
 
     }
+
     private boolean isGPSEnabled() {
         LocationManager cm = (LocationManager)getSystemService(Context.LOCATION_SERVICE);
         return cm.isProviderEnabled(LocationManager.GPS_PROVIDER);
@@ -287,6 +293,12 @@ public class ActivityRicercaPerNome extends AppCompatActivity implements OnMapRe
             mCurrLocationMarker.remove();
         }
 
+        /*AlertDialog.Builder builder = new AlertDialog.Builder(ActivityRicercaPerNome.this);
+        builder.setTitle("Check_premuto:");
+        builder.setMessage("Count: "+ count +" , Check_premuto: "+check_premuto);
+        count++;
+        builder.show();*/
+
         final LatLng latLng = new LatLng(location.getLatitude(), location.getLongitude());
         final MarkerOptions markerOptions = new MarkerOptions();
         markerOptions.position(latLng);
@@ -294,7 +306,10 @@ public class ActivityRicercaPerNome extends AppCompatActivity implements OnMapRe
         markerOptions.icon(BitmapDescriptorFactory.defaultMarker(BitmapDescriptorFactory.HUE_GREEN));
         mCurrLocationMarker = mMap.addMarker(markerOptions);
 
-        if (check_premuto){
+        //Set current position
+        Check.latLngCurrent=latLng;
+
+       /* if (check_premuto){
 
             MarkerOptions markerOptionsStrutture = new MarkerOptions();
             markerOptionsStrutture.position(Check.coordinateStrutturaPerNome);
@@ -311,13 +326,12 @@ public class ActivityRicercaPerNome extends AppCompatActivity implements OnMapRe
             mCurrLocationMarker = mMap.addMarker(markerOptionsStrutture);
             mMap.animateCamera(CameraUpdateFactory.newLatLngZoom(Check.coordinateStrutturaPerNome,13));
 
-        }
+        }*/
 
         //muovi la mappa
-        if (!check_premuto) {
-            mMap.moveCamera(CameraUpdateFactory.newLatLng(latLng));
-            mMap.animateCamera(CameraUpdateFactory.zoomTo(11));
-        }
+        //if (!check_premuto) {
+            mMap.animateCamera(CameraUpdateFactory.newLatLngZoom(latLng,13));
+       // }
 
         mMap.setOnMarkerClickListener(new GoogleMap.OnMarkerClickListener() {
             @Override
@@ -339,6 +353,7 @@ public class ActivityRicercaPerNome extends AppCompatActivity implements OnMapRe
                                 .setMessage(strutturaCurr.getIndirizzo()+", "+strutturaCurr.getCittà()+"\nDistanza: "+distancetoCurrentPosition+" km.")
                                 //.setMessage(latitudineCurr+", "+longitudineCurr)
                                 .setPositiveButton("Visualizza dettagli Struttura", null)
+                                .setIcon(R.drawable.ic_location)
                                 .show();
 
                         dialog.getWindow().setGravity(Gravity.BOTTOM);

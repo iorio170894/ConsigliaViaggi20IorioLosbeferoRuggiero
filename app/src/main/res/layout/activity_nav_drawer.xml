@@ -29,6 +29,13 @@
         android:layout_height="wrap_content"
         android:onClick="ClickHome"/>
 
+            <View
+                android:layout_width="match_parent"
+                android:layout_height="1dp"
+                android:background="@color/colorPrimaryDark"
+                android:layout_marginLeft="16dp"
+                android:layout_marginRight="16dp"/>
+
 
     <LinearLayout
         android:layout_width="match_parent"
@@ -50,31 +57,62 @@
             android:layout_height="wrap_content"
             android:onClick="ClickHome"/>
 
+        <View
+            android:layout_width="match_parent"
+            android:layout_height="1dp"
+            android:background="@color/colorPrimaryDark"
+            android:layout_marginLeft="16dp"
+            android:layout_marginRight="16dp"/>
+
 
     <LinearLayout
         android:layout_width="match_parent"
-        android:layout_height="465dp"
-        android:orientation="horizontal"
-        android:gravity="center_vertical"
-        android:onClick="ClickRicerca">
+        android:layout_height="match_parent"
+        android:orientation="vertical"
+        android:onClick="ShowPopupRicerca">
 
         <TextView
+            android:onClick="ShowPopupRicerca"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginBottom="200dp"
             android:drawableLeft="@drawable/ic_search23"
             android:padding="12dp"
             android:text="Ricerca"
             android:textColor="@color/colorPrimaryDark"
             android:textSize="30sp" />
 
+
         <ImageView
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:onClick="ClickRicerca"/>
 
+
+
     </LinearLayout>
 
+        <View
+            android:layout_width="match_parent"
+            android:layout_height="1dp"
+            android:background="@color/colorPrimaryDark"
+            android:layout_marginLeft="16dp"
+            android:layout_marginRight="16dp"/>
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="400dp"
+            android:orientation="horizontal"
+            android:gravity="center_vertical">
+
+        </LinearLayout>
+
+
+        <View
+            android:layout_width="match_parent"
+            android:layout_height="1dp"
+            android:background="@color/colorPrimaryDark"
+            android:layout_marginLeft="16dp"
+            android:layout_marginRight="16dp"/>
 
     <LinearLayout
         android:layout_width="match_parent"
@@ -82,6 +120,7 @@
         android:orientation="horizontal"
         android:gravity="center_vertical"
         android:onClick="ClickImpostazioni">
+
 
         <TextView
             android:layout_width="wrap_content"
@@ -92,12 +131,22 @@
             android:text="Impostazioni"
             android:padding="12dp" />
 
+
+
         <ImageView
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:onClick="ClickImpostazioni"/>
 
+
+
     </LinearLayout>
+        <View
+            android:layout_width="match_parent"
+            android:layout_height="1dp"
+            android:background="@color/colorPrimaryDark"
+            android:layout_marginLeft="16dp"
+            android:layout_marginRight="16dp"/>
     </LinearLayout>
 
         </LinearLayout>

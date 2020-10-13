@@ -275,6 +275,7 @@ public class ActivityStrutturaLoggato extends AppCompatActivity implements OnMap
                         AlertDialog.Builder builder = new AlertDialog.Builder(ActivityStrutturaLoggato.this);
                         builder.setTitle("Errore");
                         builder.setMessage("Attenzione seleziona un range di stelle!");
+                        builder.setIcon(android.R.drawable.ic_dialog_alert);
                         builder.show();
                     }
                 }
@@ -317,6 +318,7 @@ public class ActivityStrutturaLoggato extends AppCompatActivity implements OnMap
                             .setTitle("Invio Recensione da approvare")
                             .setMessage("Recensione da approvare inviata al BackOffice con successo!")
                             .setPositiveButton("OK", null)
+                            .setIcon(R.drawable.ic_review_primary_dark)
                             .show();
                     Button positiveButton = dialog.getButton(AlertDialog.BUTTON_POSITIVE);
                     positiveButton.setOnClickListener(new View.OnClickListener() {
@@ -333,6 +335,7 @@ public class ActivityStrutturaLoggato extends AppCompatActivity implements OnMap
                     AlertDialog.Builder builder=new AlertDialog.Builder(ActivityStrutturaLoggato.this);
                     builder.setTitle("Json Response:");
                     builder.setMessage("Server Error");
+                    builder.setIcon(android.R.drawable.ic_dialog_alert);
                     builder.show();
 
                 }
