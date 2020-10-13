@@ -87,7 +87,6 @@ public class ActivityStrutturaLoggato extends AppCompatActivity implements OnMap
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_struttura);
 
-        getNicknameUtente();
 
         if (!isGPSEnabled()) {
             new AlertDialog.Builder(ActivityStrutturaLoggato.this)
@@ -219,19 +218,23 @@ public class ActivityStrutturaLoggato extends AppCompatActivity implements OnMap
     }
 
     public void ShowPopup (View v){
-        TextView textFirma;
         mydialog.setContentView(R.layout.custompopuprecensione);
         textFirma= mydialog.findViewById(R.id.firmaRecensione);
         mydialog.getWindow().setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
         mydialog.show();
-        /*AlertDialog.Builder builder=new AlertDialog.Builder(ActivityStrutturaLoggato.this);
-        builder.setTitle("Firma:");
-        builder.setMessage("Utente: "+nicnknameSalvato);
-        builder.show();*/
+
+
         if (!Check.controlloActivityImpostazioni) {
-            Check.firma = nicnknameSalvato;
+            getNicknameUtente();
+            /*AlertDialog.Builder builder = new AlertDialog.Builder(ActivityStrutturaLoggato.this);
+            builder.setTitle("Dettagli utente:");
+            builder.setMessage("Nickname: "+nicnknameSalvato);
+            builder.show();
+            textFirma.setText(nicnknameSalvato);*/
         }
-        textFirma.setText(Check.firma);
+        else
+            textFirma.setText(Check.firma);
+
         rateCount=mydialog.findViewById(R.id.rateCount);
         ratingBar=mydialog.findViewById(R.id.ratingBar);
         review=mydialog.findViewById(R.id.review);
@@ -288,7 +291,7 @@ public class ActivityStrutturaLoggato extends AppCompatActivity implements OnMap
                                 "\"numero_stelle\":" + "\"" + rateValue + "\",\n" +
                                 "\"descrizione_testuale\":" + "\"" + String.valueOf(review.getText()) + "\",\n" +
                                 "\"codice_struttura\":" + "\"" + Check.codiceStruttura + "\",\n" +
-                                "\"utente\":" + "\"" + Check.firma + "\"\n" +
+                                "\"utente\":" + "\"" + String.valueOf(textFirma.getText())+ "\"\n" +
                                 "}";
                         JsonPost(data);
                     }
@@ -374,71 +377,15 @@ public class ActivityStrutturaLoggato extends AppCompatActivity implements OnMap
         requestQueue.add(stringRequest);
     }
 
-/*
-    private void postRequest() {
-        RequestQueue requestQueue= Volley.newRequestQueue(ActivityStrutturaLoggato.this);
-        String url="http://consigliaviaggi20.us-east-2.elasticbeanstalk.com/recensione_da_approvare/insert_recensione_da_approvare.php";
-        StringRequest stringRequest=new StringRequest(Request.Method.POST, url, new Response.Listener<String>() {
-            @Override
-            public void onResponse(String response) {
-                //let's parse json data
-                try {
-                    JSONObject jsonObject = new JSONObject(response);
-                    //post_response_text.setText("Data 1 : " + jsonObject.getString("data_1_post")+"\n");
-                    //post_response_text.append("Data 2 : " + jsonObject.getString("data_2_post")+"\n");
-                    //post_response_text.append("Data 3 : " + jsonObject.getString("data_3_post")+"\n");
-                    //post_response_text.append("Data 4 : " + jsonObject.getString("data_4_post")+"\n");
-                }
-                catch (Exception e){
-                    e.printStackTrace();
-                    //post_response_text.setText("POST DATA : unable to Parse Json");
-                }
-            }
-        }, new Response.ErrorListener() {
-            @Override
-            public void onErrorResponse(VolleyError error) {
-                //post_response_text.setText("Post Data : Response Failed");
-            }
-        }){
-
-            /*
-            * {
-                    "numero_stelle": "5",
-                    "descrizione_testuale": "Ottima struttura, da consigliare. Ci tornerò!",
-                    "codice_struttura": "1",
-                    "utente": "iorio170894"
-            }
-            *
-            * *//*
-            @Override
-            protected Map<String,String> getParams(){
-                Map<String,String> params=new HashMap<String, String>();
-                params.put("numero_stelle",String.valueOf(rateValue));
-                params.put("descrizione_testuale",String.valueOf(review.getText()));
-                params.put("codice_struttura",String.valueOf(Check.codiceStruttura));
-                params.put("utente",Check.firma);
-                return params;
-            }
-
-            @Override
-            public Map<String,String> getHeaders() throws AuthFailureError {
-                Map<String,String> params=new HashMap<String, String>();
-                params.put("Content-Type","application/x-www-form-urlencoded");
-                return params;
-            }
-        };
-
-        requestQueue.add(stringRequest);
-
-    }*/
 
     public void getNicknameUtente(){
+        final String[] returnNome = new String[1];
         GetDetailsHandler handler = new GetDetailsHandler() {
             @Override
             public void onSuccess(final CognitoUserDetails list) {
                 //trovi dettagli utente con successo
-                nicnknameSalvato = String.valueOf(list.getAttributes().getAttributes().get("nickname"));
-
+                returnNome[0] = String.valueOf(list.getAttributes().getAttributes().get("nickname"));
+                textFirma.setText(returnNome[0]);
                 /*AlertDialog.Builder builder=new AlertDialog.Builder(ActivityImpostazioni.this);
                 builder.setTitle("Campi Utente:");
                 builder.setMessage("Email:"+emailSalvata+"\nNome e Cognome:"+nomeCognomeSalvato+"\nNickname:"+nicnknameSalvato);
@@ -458,6 +405,7 @@ public class ActivityStrutturaLoggato extends AppCompatActivity implements OnMap
         CognitoSettings cognitoSettings = new CognitoSettings(ActivityStrutturaLoggato.this);
         CognitoUser corrente = cognitoSettings.getUserPool().getCurrentUser();
         cognitoSettings.getUserPool().getUser(corrente.getUserId()).getDetailsInBackground(handler);
+
     }
 
     @Override
