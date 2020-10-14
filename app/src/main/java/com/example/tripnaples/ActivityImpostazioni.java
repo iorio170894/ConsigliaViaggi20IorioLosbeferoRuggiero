@@ -87,7 +87,7 @@ public class ActivityImpostazioni extends AppCompatActivity implements AdapterVi
         String text = adapterView.getItemAtPosition(i).toString();
         Toast.makeText(adapterView.getContext(), text, Toast.LENGTH_SHORT).show();
         //Check.firma=text;
-        Check.controlloActivityImpostazioni=true;
+        //Check.controlloActivityImpostazioni=true;
         if (text.equals("Nome e Cognome")){
             Check.firma=nomeCognomeSalvato;
         }

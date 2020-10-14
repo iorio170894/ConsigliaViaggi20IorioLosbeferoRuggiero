@@ -256,7 +256,7 @@ public class ActivityStruttureIntornoaMe extends AppCompatActivity implements On
 
         //mMap.moveCamera(CameraUpdateFactory.newLatLng(latLng));
        // mMap.animateCamera(CameraUpdateFactory.zoomTo(11));
-        mMap.animateCamera(CameraUpdateFactory.newLatLngZoom(latLng,13));
+        mMap.animateCamera(CameraUpdateFactory.newLatLngZoom(latLng,11));
 
         /*AlertDialog.Builder builder = new AlertDialog.Builder(ActivityStruttureIntornoaMe.this);
         builder.setTitle("Check_premuto:");

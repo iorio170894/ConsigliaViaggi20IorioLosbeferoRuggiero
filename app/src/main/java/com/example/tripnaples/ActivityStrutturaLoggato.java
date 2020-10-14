@@ -223,8 +223,13 @@ public class ActivityStrutturaLoggato extends AppCompatActivity implements OnMap
         mydialog.getWindow().setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
         mydialog.show();
 
+        /*AlertDialog.Builder builder = new AlertDialog.Builder(ActivityStrutturaLoggato.this);
+        builder.setTitle("Dettagli utente:");
+        builder.setMessage("Check.controlloActivityImpostazioni: "+Check.controlloActivityImpostazioni+", \n" +
+                "Check.firma: "+Check.firma);
+        builder.show();*/
 
-        if (!Check.controlloActivityImpostazioni) {
+        if (Check.firma==null) {
             getNicknameUtente();
             /*AlertDialog.Builder builder = new AlertDialog.Builder(ActivityStrutturaLoggato.this);
             builder.setTitle("Dettagli utente:");
