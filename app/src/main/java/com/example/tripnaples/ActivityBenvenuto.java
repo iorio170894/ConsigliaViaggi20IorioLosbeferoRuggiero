@@ -43,8 +43,10 @@ public class ActivityBenvenuto extends AppCompatActivity {
         ristoranti.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                tipoStruttura="ristorante";
-                Check.inputUrl = "http://consigliaviaggi20.us-east-2.elasticbeanstalk.com/struttura/search_strutture.php?inputTipo="+tipoStruttura;
+                //tipoStruttura="ristorante";
+                //Check.inputUrl = "http://consigliaviaggi20.us-east-2.elasticbeanstalk.com/struttura/search_strutture.php?inputTipo="+tipoStruttura;
+                Check.tipoRicerca="intorno a me";
+                Check.inputTipoStrutturaForSearch="ristorante";
                 startActivity(new Intent(ActivityBenvenuto.this, ActivityStruttureIntornoaMe.class));
             }
         });
@@ -54,8 +56,10 @@ public class ActivityBenvenuto extends AppCompatActivity {
         parchi.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                tipoStruttura="parco";
-                Check.inputUrl = "http://consigliaviaggi20.us-east-2.elasticbeanstalk.com/struttura/search_strutture.php?inputTipo="+tipoStruttura;
+                //tipoStruttura="parco";
+                //Check.inputUrl = "http://consigliaviaggi20.us-east-2.elasticbeanstalk.com/struttura/search_strutture.php?inputTipo="+tipoStruttura;
+                Check.tipoRicerca="intorno a me";
+                Check.inputTipoStrutturaForSearch="parco";
                 startActivity(new Intent(ActivityBenvenuto.this, ActivityStruttureIntornoaMe.class));
             }
         });
@@ -65,8 +69,10 @@ public class ActivityBenvenuto extends AppCompatActivity {
         hotel.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                tipoStruttura="hotel";
-                Check.inputUrl = "http://consigliaviaggi20.us-east-2.elasticbeanstalk.com/struttura/search_strutture.php?inputTipo="+tipoStruttura;
+                //tipoStruttura="hotel";
+                //Check.inputUrl = "http://consigliaviaggi20.us-east-2.elasticbeanstalk.com/struttura/search_strutture.php?inputTipo="+tipoStruttura;
+                Check.tipoRicerca="intorno a me";
+                Check.inputTipoStrutturaForSearch="hotel";
                 startActivity(new Intent(ActivityBenvenuto.this, ActivityStruttureIntornoaMe.class));
             }
         });
@@ -76,8 +82,10 @@ public class ActivityBenvenuto extends AppCompatActivity {
         bar.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                tipoStruttura="bar";
-                Check.inputUrl = "http://consigliaviaggi20.us-east-2.elasticbeanstalk.com/struttura/search_strutture.php?inputTipo="+tipoStruttura;
+                //tipoStruttura="bar";
+                //Check.inputUrl = "http://consigliaviaggi20.us-east-2.elasticbeanstalk.com/struttura/search_strutture.php?inputTipo="+tipoStruttura;
+                Check.tipoRicerca="intorno a me";
+                Check.inputTipoStrutturaForSearch="bar";
                 startActivity(new Intent(ActivityBenvenuto.this, ActivityStruttureIntornoaMe.class));
             }
         });
@@ -87,8 +95,10 @@ public class ActivityBenvenuto extends AppCompatActivity {
         teatri.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                tipoStruttura="teatro";
-                Check.inputUrl = "http://consigliaviaggi20.us-east-2.elasticbeanstalk.com/struttura/search_strutture.php?inputTipo="+tipoStruttura;
+                //tipoStruttura="teatro";
+                //Check.inputUrl = "http://consigliaviaggi20.us-east-2.elasticbeanstalk.com/struttura/search_strutture.php?inputTipo="+tipoStruttura;
+                Check.tipoRicerca="intorno a me";
+                Check.inputTipoStrutturaForSearch="teatro";
                 startActivity(new Intent(ActivityBenvenuto.this, ActivityStruttureIntornoaMe.class));
             }
         });
@@ -98,8 +108,10 @@ public class ActivityBenvenuto extends AppCompatActivity {
         musei.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                tipoStruttura="museo";
-                Check.inputUrl = "http://consigliaviaggi20.us-east-2.elasticbeanstalk.com/struttura/search_strutture.php?inputTipo="+tipoStruttura;
+                //tipoStruttura="museo";
+                //Check.inputUrl = "http://consigliaviaggi20.us-east-2.elasticbeanstalk.com/struttura/search_strutture.php?inputTipo="+tipoStruttura;
+                Check.tipoRicerca="intorno a me";
+                Check.inputTipoStrutturaForSearch="museo";
                 startActivity(new Intent(ActivityBenvenuto.this, ActivityStruttureIntornoaMe.class));
             }
         });

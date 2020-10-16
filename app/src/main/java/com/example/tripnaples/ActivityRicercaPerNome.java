@@ -65,14 +65,13 @@ public class ActivityRicercaPerNome extends AppCompatActivity implements OnMapRe
     GoogleApiClient mGoogleApiClient;
     LocationRequest mLocationRequest;
     SupportMapFragment mapFragment;
+    public StrutturaDAO StruttDAO;
 
     //String[] strings = new String[50];
     private RequestQueue mQueue;
     ArrayList<Struttura> arrayStrutture=new ArrayList<>();
     static boolean check_premuto;
 
-
-    int count=1;
 
     //ArrayList<String> strings = new ArrayList<>();
 
@@ -101,8 +100,44 @@ public class ActivityRicercaPerNome extends AppCompatActivity implements OnMapRe
 
         autoCompleteTextView=findViewById(R.id.ac_text_view);
 
-        jsonNomeStruttura("http://consigliaviaggi20.us-east-2.elasticbeanstalk.com/struttura/read.php");
+        //Ricevi un Arraylist con tutte le strutture
+        DAOFactory DF = DAOFactory.getDAOInstance(ActivityRicercaPerNome.this);
+        StruttDAO = DF.getServerStrutturaDAO();
+        StruttDAO.getAllStrutture(new onResultList() {
+            @Override
+            public void getResult(Object object) {
+                arrayStrutture.add((Struttura) object);
+            }
 
+            @Override
+            public void onFinish() {
+                String[] stringNomi = new String[arrayStrutture.size()];
+                for (int i=0; i<arrayStrutture.size(); i++){
+                    stringNomi[i]=arrayStrutture.get(i).getNome();
+                }
+
+                //Setta l'array di Stringhe contenente i nomi delle strutture nell'adapter
+                setAdapter(stringNomi);
+
+            }
+        },ActivityRicercaPerNome.this);
+
+        //Cancellare il contenuto scritto cliccando sul drawable X a destra
+        autoCompleteTextView.setOnTouchListener(new View.OnTouchListener() {
+            @Override
+            public boolean onTouch(View v, MotionEvent event) {
+
+                final int DRAWABLE_RIGHT = 2;
+
+                if(event.getAction() == MotionEvent.ACTION_UP) {
+                    if(event.getRawX() >= (autoCompleteTextView.getRight() - autoCompleteTextView.getCompoundDrawables()[DRAWABLE_RIGHT].getBounds().width())) {
+                        autoCompleteTextView.setText("");
+                        return true;
+                    }
+                }
+                return false;
+            }
+        });
 
         mapFragment = (SupportMapFragment) getSupportFragmentManager()
                 .findFragmentById(R.id.map_per_nome);
@@ -111,6 +146,24 @@ public class ActivityRicercaPerNome extends AppCompatActivity implements OnMapRe
 
     }
 
+    public void setAdapter(String[] strings){
+
+        adapter=new ArrayAdapter<>(ActivityRicercaPerNome.this
+                ,android.R.layout.simple_list_item_1,strings);
+        autoCompleteTextView.setThreshold(1);
+        autoCompleteTextView.setAdapter(adapter);
+        autoCompleteTextView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+            @Override
+            public void onItemClick(AdapterView<?> adapterView, View view, int s, long l) {
+
+                addMarkerSelected(arrayStrutture,adapter.getItem(s));
+
+            }
+        });
+
+    }
+
+    /*
     public void jsonNomeStruttura (String url) {
         //array=null;
         mQueue = Volley.newRequestQueue(this);
@@ -197,6 +250,8 @@ public class ActivityRicercaPerNome extends AppCompatActivity implements OnMapRe
 
 
     }
+
+     */
 
     public void addMarkerSelected(ArrayList<Struttura> arrayStrutture, String nomeStruttura ){
 

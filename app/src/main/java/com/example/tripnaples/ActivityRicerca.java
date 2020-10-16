@@ -182,11 +182,14 @@ public class ActivityRicerca extends AppCompatActivity implements AdapterView.On
                 else {
 
                     //if (check_premuto) {
-                    Check.inputUrl = "http://consigliaviaggi20.us-east-2.elasticbeanstalk.com/struttura/search_filter_strutture.php?inputTipo=" + strutturaSelected + "&inputCitt%C3%A0=" + cittàSelected + "&inputRangePrezzo=" + range;
+                    //Check.inputUrl = "http://consigliaviaggi20.us-east-2.elasticbeanstalk.com/struttura/search_filter_strutture.php?inputTipo=" + strutturaSelected + "&inputCitt%C3%A0=" + cittàSelected + "&inputRangePrezzo=" + range;
                     //String url = "http://consigliaviaggi20.us-east-2.elasticbeanstalk.com/struttura/search_strutture.php?inputTipo=teatro";
                     //JsonClass jsonStrutturaVicinoaMe = new JsonClass();
                     //arrayStrutture = jsonStrutturaVicinoaMe.jsonParse(url);
-
+                    Check.tipoRicerca="filtrata";
+                    Check.inputTipoStrutturaForSearch=strutturaSelected;
+                    Check.inputCittàStrutturaForSearch=cittàSelected;
+                    Check.inputRangeStrutturaForSearch=range;
                     startActivity(new Intent(ActivityRicerca.this, ActivityStruttureIntornoaMe.class));
                     // check_premuto=true;
 

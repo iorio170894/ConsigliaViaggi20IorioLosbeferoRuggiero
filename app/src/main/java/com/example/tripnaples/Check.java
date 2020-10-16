@@ -28,4 +28,9 @@ public class Check {
     static LatLng coordinateStrutturaPerNome;
     static String nomeStrutturaPerNome;
     static LatLng latLngCurrent;
+    static String inputTipoStrutturaForSearch;
+    static String inputCittàStrutturaForSearch;
+    static int inputRangeStrutturaForSearch;
+    static String tipoRicerca;
+
 }
