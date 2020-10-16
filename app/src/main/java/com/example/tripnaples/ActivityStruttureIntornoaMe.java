@@ -4,6 +4,9 @@ import android.app.Dialog;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.graphics.Bitmap;
+import android.graphics.Canvas;
+import android.graphics.drawable.Drawable;
 import android.location.LocationManager;
 import android.os.Build;
 import android.os.Bundle;
@@ -20,6 +23,7 @@ import com.google.android.gms.maps.CameraUpdateFactory;
 import com.google.android.gms.maps.GoogleMap;
 import com.google.android.gms.maps.OnMapReadyCallback;
 import com.google.android.gms.maps.SupportMapFragment;
+import com.google.android.gms.maps.model.BitmapDescriptor;
 import com.google.android.gms.maps.model.BitmapDescriptorFactory;
 import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.Marker;
@@ -150,11 +154,43 @@ public class ActivityStruttureIntornoaMe extends AppCompatActivity implements On
             double distancetoCurrentPosition = getDistanceKm(Check.latLngCurrent, latLngStrutture);
 
             markerOptionsStrutture.snippet("Distanza: " + distancetoCurrentPosition + " km.");
-            markerOptionsStrutture.icon(BitmapDescriptorFactory.defaultMarker(BitmapDescriptorFactory.HUE_RED));
-
+            //markerOptionsStrutture.icon(BitmapDescriptorFactory.defaultMarker(BitmapDescriptorFactory.HUE_RED));
+            //markerOptionsStrutture.icon(bitmapDescriptorFromVector(this, R.drawable.ic_restaurant_marker));
+            chooseTypeMarker(markerOptionsStrutture);
             mCurrLocationMarker = mMap.addMarker(markerOptionsStrutture);
 
         }
+    }
+
+    private void chooseTypeMarker(MarkerOptions markerOptionsStrutture) {
+        if ((Check.inputTipoStrutturaForSearch).equals("ristorante")){
+            markerOptionsStrutture.icon(bitmapDescriptorFromVector(this, R.drawable.ic_restaurant_marker));
+        }
+        else if ((Check.inputTipoStrutturaForSearch).equals("bar")){
+            markerOptionsStrutture.icon(bitmapDescriptorFromVector(this, R.drawable.ic_bar_prova_marker));
+        }
+        else if ((Check.inputTipoStrutturaForSearch).equals("hotel")){
+            markerOptionsStrutture.icon(bitmapDescriptorFromVector(this, R.drawable.ic_hotel_marker));
+        }
+        else if ((Check.inputTipoStrutturaForSearch).equals("parco")){
+            markerOptionsStrutture.icon(bitmapDescriptorFromVector(this, R.drawable.ic_park_marker));
+        }
+        else if ((Check.inputTipoStrutturaForSearch).equals("teatro")){
+            markerOptionsStrutture.icon(bitmapDescriptorFromVector(this, R.drawable.ic_theatre_marker));
+        }
+        else if ((Check.inputTipoStrutturaForSearch).equals("museo")){
+            markerOptionsStrutture.icon(bitmapDescriptorFromVector(this, R.drawable.ic_museo_marker));
+        }
+    }
+
+
+    private BitmapDescriptor bitmapDescriptorFromVector(Context context, int vectorResId) {
+        Drawable vectorDrawable = ContextCompat.getDrawable(context, vectorResId);
+        vectorDrawable.setBounds(0, 0, vectorDrawable.getIntrinsicWidth(), vectorDrawable.getIntrinsicHeight());
+        Bitmap bitmap = Bitmap.createBitmap(vectorDrawable.getIntrinsicWidth(), vectorDrawable.getIntrinsicHeight(), Bitmap.Config.ARGB_8888);
+        Canvas canvas = new Canvas(bitmap);
+        vectorDrawable.draw(canvas);
+        return BitmapDescriptorFactory.fromBitmap(bitmap);
     }
 
     private boolean isGPSEnabled() {

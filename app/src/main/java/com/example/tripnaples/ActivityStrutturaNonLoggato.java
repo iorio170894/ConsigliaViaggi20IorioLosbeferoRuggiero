@@ -45,6 +45,7 @@ import org.json.JSONObject;
 import org.w3c.dom.Text;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 
 public class ActivityStrutturaNonLoggato extends AppCompatActivity implements OnMapReadyCallback {
 
@@ -61,6 +62,7 @@ public class ActivityStrutturaNonLoggato extends AppCompatActivity implements On
     ArrayList<RecensioneApprovata> arrayRecensioni=new ArrayList<>();
     TextView textViewMediaRecensioni;
     double mediaRecensioni;
+    public RecensioneApprovataDAO recDAO;
 
 
     @SuppressLint("WrongViewCast")
@@ -114,98 +116,63 @@ public class ActivityStrutturaNonLoggato extends AppCompatActivity implements On
                 .diskCacheStrategy(DiskCacheStrategy.NONE)
                 .into(imageView);
 
-        /*AlertDialog.Builder builder=new AlertDialog.Builder(ActivityStrutturaNonLoggato.this);
-        builder.setTitle("Link Immagine");
-        builder.setMessage(Check.link_immagine);
-        builder.show();*/
+        DAOFactory DF = DAOFactory.getDAOInstance(ActivityStrutturaNonLoggato.this);
+        recDAO = DF.getServerRecensioniDAO();
+        recDAO.getRecensioneByCodStruttura(new onResultList() {
+            @Override
+            public void getResult(Object object) {
+                //arrayStrutture.add((Struttura) object);
+                arrayRecensioni.add((RecensioneApprovata)object);
+            }
 
-        //RecyclerView
-        //nestedScrollView = findViewById(R.id.scroll_view);
-        //recyclerView = findViewById(R.id.recycler_view);
-        //progressBar = findViewById(R.id.progress_bar);
-
-        //utentiRecensione=getResources().getStringArray(R.array.spinnerStrutture);
-        //numero_stelle=getResources().getStringArray(R.array.interi);
-        //descrizioneTestuale=getResources().getStringArray(R.array.spinnerStrutture);
-        jsonRecensioniApprovate("http://consigliaviaggi20.us-east-2.elasticbeanstalk.com/recensione_approvata/read_for_cod_struttura.php?inputCodStruttura="+Check.codiceStruttura);
+            @Override
+            public void onFinish() {
+                //Aggiungi le recensione sulla RecyclerView
+                addReviewOnRecyclerView(arrayRecensioni);
+            }
+        }, Check.codiceStruttura, ActivityStrutturaNonLoggato.this);
 
     }
 
-    public void jsonRecensioniApprovate (String url) {
-        mQueue = Volley.newRequestQueue(this);
-        //final ArrayList<Struttura> arrayStrutture = new ArrayList<>();
-        JsonObjectRequest request = new JsonObjectRequest(Request.Method.GET, url, null,
-                new Response.Listener<JSONObject>() {
-                    @Override
-                    public void onResponse(JSONObject response) {
-                        try {
-                            JSONArray jsonArray = response.getJSONArray("records");
+    private void addReviewOnRecyclerView(ArrayList<RecensioneApprovata> arrayRecensioni) {
 
-                            for (int i = 0; i < jsonArray.length(); i++) {
-                                JSONObject recensione_approvata = jsonArray.getJSONObject(i);
+        String[] utentiRecensione= new String[arrayRecensioni.size()];
+        String[] descrizioneTestuale= new String [arrayRecensioni.size()];
+        double[] numero_stelle= new double[arrayRecensioni.size()];
 
-                                int codRecensione = recensione_approvata.getInt("cod_recensione");
-                                double numeroStelle = recensione_approvata.getDouble("numero_stelle");
-                                String descrizioneTestuale = recensione_approvata.getString("descrizione_testuale");
-                                String codiceStruttura = recensione_approvata.getString("codice_struttura");
-                                String utente = recensione_approvata.getString("utente");
-                                RecensioneApprovata recensioneApprovata = new RecensioneApprovata(codRecensione, numeroStelle, descrizioneTestuale, codiceStruttura, utente);
-                                arrayRecensioni.add(recensioneApprovata);
-                            }
-
-                            /*AlertDialog.Builder builder = new AlertDialog.Builder(ActivityRicercaPerNome.this);
-                            builder.setTitle("Stringa nome struttura:");
-                            builder.setMessage(Arrays.toString(strings));
-                            builder.show();*/
-
-                            String[] utentiRecensione= new String[jsonArray.length()];
-                            String[] descrizioneTestuale= new String [jsonArray.length()];
-                            double[] numero_stelle= new double[jsonArray.length()];
-
-                            for (int i=0; i<arrayRecensioni.size(); i++){
-                                RecensioneApprovata recensioneApprovataSelected=arrayRecensioni.get(i);
-                                utentiRecensione[i]=recensioneApprovataSelected.getUtente();
-                                descrizioneTestuale[i]=recensioneApprovataSelected.getDescrizioneTestuale();
-                                numero_stelle[i]=recensioneApprovataSelected.getNumeroStelle();
-                            }
-
-                            //Media recensioni
-                            for (int i=0; i<numero_stelle.length;i++){
-                                mediaRecensioni+=numero_stelle[i];
-                            }
-                            mediaRecensioni=mediaRecensioni/numero_stelle.length;
-                            //per avere solo 2 cifre dopo la virgola
-                            mediaRecensioni = Math.round(mediaRecensioni * 100);
-                            mediaRecensioni = mediaRecensioni/100;
-
-                            textViewMediaRecensioni=findViewById(R.id.mediaRecensioniNonLoggato);
-                            textViewMediaRecensioni.setText(Double.toString(mediaRecensioni));
+        for (int i=0; i<arrayRecensioni.size(); i++){
+            RecensioneApprovata recensioneApprovataSelected=arrayRecensioni.get(i);
+            utentiRecensione[i]=recensioneApprovataSelected.getUtente();
+            descrizioneTestuale[i]=recensioneApprovataSelected.getDescrizioneTestuale();
+            numero_stelle[i]=recensioneApprovataSelected.getNumeroStelle();
+        }
 
 
-                            recyclerView = findViewById(R.id.recycler_viewNonLoggato);
 
-                            MyAdapter myAdapter = new MyAdapter(ActivityStrutturaNonLoggato.this, utentiRecensione, descrizioneTestuale, numero_stelle);
-                            recyclerView.setAdapter(myAdapter);
-                            recyclerView.setLayoutManager(new LinearLayoutManager(ActivityStrutturaNonLoggato.this));
+        //Calcola la media delle recensioni e aggiungila alla textView
+        setMediaRecensioni(numero_stelle);
 
+        recyclerView = findViewById(R.id.recycler_viewNonLoggato);
 
-                        } catch (JSONException e) {
-                            e.printStackTrace();
-                        }
-                    }
-                }, new Response.ErrorListener() {
-            @Override
-            public void onErrorResponse(VolleyError error) {
-                error.printStackTrace();
-                AlertDialog.Builder builder=new AlertDialog.Builder(ActivityStrutturaNonLoggato.this);
-                builder.setTitle("Errore:");
-                builder.setMessage("Attenzione:"+error.getLocalizedMessage());
-                builder.setIcon(android.R.drawable.ic_dialog_alert);
-                builder.show();
-            }
-        });
-        mQueue.add(request);
+        MyAdapter myAdapter = new MyAdapter(ActivityStrutturaNonLoggato.this, utentiRecensione, descrizioneTestuale, numero_stelle);
+        recyclerView.setAdapter(myAdapter);
+        recyclerView.setLayoutManager(new LinearLayoutManager(ActivityStrutturaNonLoggato.this));
 
+    }
+
+    private void setMediaRecensioni(double[] numero_stelle) {
+
+        //Media recensioni
+        for (int i=0; i<numero_stelle.length;i++){
+            mediaRecensioni+=numero_stelle[i];
+        }
+        mediaRecensioni=mediaRecensioni/numero_stelle.length;
+        //per avere solo 2 cifre dopo la virgola
+        mediaRecensioni = Math.round(mediaRecensioni * 100);
+        mediaRecensioni = mediaRecensioni/100;
+
+        textViewMediaRecensioni=findViewById(R.id.mediaRecensioniNonLoggato);
+        textViewMediaRecensioni.setText(Double.toString(mediaRecensioni));
 
     }
 

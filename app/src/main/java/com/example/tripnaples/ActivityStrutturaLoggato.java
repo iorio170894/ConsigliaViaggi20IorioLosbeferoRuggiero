@@ -49,7 +49,9 @@ import org.json.JSONException;
 import org.json.JSONObject;
 
 import java.io.UnsupportedEncodingException;
+import java.lang.reflect.Array;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -81,6 +83,8 @@ public class ActivityStrutturaLoggato extends AppCompatActivity implements OnMap
     ArrayList<RecensioneApprovata> arrayRecensioni=new ArrayList<>();
     TextView textViewMediaRecensioni;
     double mediaRecensioni;
+
+    public RecensioneApprovataDAO recDAO;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -135,87 +139,65 @@ public class ActivityStrutturaLoggato extends AppCompatActivity implements OnMap
 
         mydialog=new Dialog(this);
 
-        jsonRecensioniApprovate("http://consigliaviaggi20.us-east-2.elasticbeanstalk.com/recensione_approvata/read_for_cod_struttura.php?inputCodStruttura="+Check.codiceStruttura);
-
-    }
-
-    public void jsonRecensioniApprovate (String url) {
-        mQueue = Volley.newRequestQueue(this);
-        //final ArrayList<Struttura> arrayStrutture = new ArrayList<>();
-        JsonObjectRequest request = new JsonObjectRequest(Request.Method.GET, url, null,
-                new Response.Listener<JSONObject>() {
-                    @Override
-                    public void onResponse(JSONObject response) {
-                        try {
-                            JSONArray jsonArray = response.getJSONArray("records");
-
-                            for (int i = 0; i < jsonArray.length(); i++) {
-                                JSONObject recensione_approvata = jsonArray.getJSONObject(i);
-
-                                int codRecensione = recensione_approvata.getInt("cod_recensione");
-                                double numeroStelle = recensione_approvata.getDouble("numero_stelle");
-                                String descrizioneTestuale = recensione_approvata.getString("descrizione_testuale");
-                                String codiceStruttura = recensione_approvata.getString("codice_struttura");
-                                String utente = recensione_approvata.getString("utente");
-                                RecensioneApprovata recensioneApprovata = new RecensioneApprovata(codRecensione, numeroStelle, descrizioneTestuale, codiceStruttura, utente);
-                                arrayRecensioni.add(recensioneApprovata);
-                            }
-
-                            /*AlertDialog.Builder builder = new AlertDialog.Builder(ActivityRicercaPerNome.this);
-                            builder.setTitle("Stringa nome struttura:");
-                            builder.setMessage(Arrays.toString(strings));
-                            builder.show();*/
-
-                            String[] utentiRecensione= new String[jsonArray.length()];
-                            String[] descrizioneTestuale= new String [jsonArray.length()];
-                            double[] numero_stelle= new double[jsonArray.length()];
-
-                            for (int i=0; i<arrayRecensioni.size(); i++){
-                                RecensioneApprovata recensioneApprovataSelected=arrayRecensioni.get(i);
-                                utentiRecensione[i]=recensioneApprovataSelected.getUtente();
-                                descrizioneTestuale[i]=recensioneApprovataSelected.getDescrizioneTestuale();
-                                numero_stelle[i]=recensioneApprovataSelected.getNumeroStelle();
-                            }
-
-                            //Media recensioni
-                            for (int i=0; i<numero_stelle.length;i++){
-                                mediaRecensioni+=numero_stelle[i];
-                            }
-                            mediaRecensioni=mediaRecensioni/numero_stelle.length;
-                            //per avere solo 2 cifre dopo la virgola
-                            mediaRecensioni = Math.round(mediaRecensioni * 100);
-                            mediaRecensioni = mediaRecensioni/100;
-
-                            textViewMediaRecensioni=findViewById(R.id.mediaRecensioniLoggato);
-                            textViewMediaRecensioni.setText(Double.toString(mediaRecensioni));
-
-
-                            recyclerView = findViewById(R.id.recycler_viewLoggato);
-
-                            MyAdapter myAdapter = new MyAdapter(ActivityStrutturaLoggato.this, utentiRecensione, descrizioneTestuale, numero_stelle);
-                            recyclerView.setAdapter(myAdapter);
-                            recyclerView.setLayoutManager(new LinearLayoutManager(ActivityStrutturaLoggato.this));
-
-
-                        } catch (JSONException e) {
-                            e.printStackTrace();
-                        }
-                    }
-                }, new Response.ErrorListener() {
+        DAOFactory DF = DAOFactory.getDAOInstance(ActivityStrutturaLoggato.this);
+        recDAO = DF.getServerRecensioniDAO();
+        recDAO.getRecensioneByCodStruttura(new onResultList() {
             @Override
-            public void onErrorResponse(VolleyError error) {
-                error.printStackTrace();
-                AlertDialog.Builder builder=new AlertDialog.Builder(ActivityStrutturaLoggato.this);
-                builder.setTitle("Errore:");
-                builder.setMessage("Attenzione:"+error.getLocalizedMessage());
-                builder.setIcon(android.R.drawable.ic_dialog_alert);
-                builder.show();
+            public void getResult(Object object) {
+                //arrayStrutture.add((Struttura) object);
+                arrayRecensioni.add((RecensioneApprovata)object);
             }
-        });
-        mQueue.add(request);
 
+            @Override
+            public void onFinish() {
+                //Aggiungi le recensione sulla RecyclerView
+                addReviewOnRecyclerView(arrayRecensioni);
+            }
+        }, Check.codiceStruttura, ActivityStrutturaLoggato.this);
 
     }
+
+    private void addReviewOnRecyclerView(ArrayList<RecensioneApprovata> arrayRecensioni) {
+
+        String[] utentiRecensione= new String[arrayRecensioni.size()];
+        String[] descrizioneTestuale= new String [arrayRecensioni.size()];
+        double[] numero_stelle= new double[arrayRecensioni.size()];
+
+        for (int i=0; i<arrayRecensioni.size(); i++){
+            RecensioneApprovata recensioneApprovataSelected=arrayRecensioni.get(i);
+            utentiRecensione[i]=recensioneApprovataSelected.getUtente();
+            descrizioneTestuale[i]=recensioneApprovataSelected.getDescrizioneTestuale();
+            numero_stelle[i]=recensioneApprovataSelected.getNumeroStelle();
+        }
+
+
+        //Calcola la media delle recensioni e aggiungila alla textView
+        setMediaRecensioni(numero_stelle);
+
+        recyclerView = findViewById(R.id.recycler_viewLoggato);
+
+        MyAdapter myAdapter = new MyAdapter(ActivityStrutturaLoggato.this, utentiRecensione, descrizioneTestuale, numero_stelle);
+        recyclerView.setAdapter(myAdapter);
+        recyclerView.setLayoutManager(new LinearLayoutManager(ActivityStrutturaLoggato.this));
+
+    }
+
+    private void setMediaRecensioni(double[] numero_stelle) {
+
+        //Media recensioni
+        for (int i=0; i<numero_stelle.length;i++){
+            mediaRecensioni+=numero_stelle[i];
+        }
+        mediaRecensioni=mediaRecensioni/numero_stelle.length;
+        //per avere solo 2 cifre dopo la virgola
+        mediaRecensioni = Math.round(mediaRecensioni * 100);
+        mediaRecensioni = mediaRecensioni/100;
+
+        textViewMediaRecensioni=findViewById(R.id.mediaRecensioniLoggato);
+        textViewMediaRecensioni.setText(Double.toString(mediaRecensioni));
+
+    }
+
 
     public void ShowPopup (View v){
         mydialog.setContentView(R.layout.custompopuprecensione);

@@ -113,6 +113,52 @@ public class JsonClass {
         });
         mQueue.add(request);
 
+    }
+
+    public void getJsonRecensioniByCodStruttura  (final onResultList onResultList, final Context context, String url) {
+
+        mQueue = Volley.newRequestQueue(context);
+        //final ArrayList<Struttura> arrayStrutture = new ArrayList<>();
+        JsonObjectRequest request = new JsonObjectRequest(Request.Method.GET, url, null,
+                new Response.Listener<JSONObject>() {
+                    @Override
+                    public void onResponse(JSONObject response) {
+                        try {
+                            JSONArray jsonArray = response.getJSONArray("records");
+
+                            for (int i = 0; i < jsonArray.length(); i++) {
+                                JSONObject recensione_approvata = jsonArray.getJSONObject(i);
+
+                                int codRecensione = recensione_approvata.getInt("cod_recensione");
+                                double numeroStelle = recensione_approvata.getDouble("numero_stelle");
+                                String descrizioneTestuale = recensione_approvata.getString("descrizione_testuale");
+                                String codiceStruttura = recensione_approvata.getString("codice_struttura");
+                                String utente = recensione_approvata.getString("utente");
+                                RecensioneApprovata recensioneApprovata = new RecensioneApprovata(codRecensione, numeroStelle, descrizioneTestuale, codiceStruttura, utente);
+                                if (recensioneApprovata != null) {
+                                    onResultList.getResult(recensioneApprovata);
+                                }
+                            }
+
+                            onResultList.onFinish();
+
+                        } catch (JSONException e) {
+                            e.printStackTrace();
+                        }
+                    }
+                }, new Response.ErrorListener() {
+            @Override
+            public void onErrorResponse(VolleyError error) {
+                error.printStackTrace();
+                AlertDialog.Builder builder=new AlertDialog.Builder(context);
+                builder.setTitle("Errore:");
+                builder.setMessage("Attenzione:"+error.getLocalizedMessage());
+                builder.setIcon(android.R.drawable.ic_dialog_alert);
+                builder.show();
+            }
+        });
+        mQueue.add(request);
 
     }
+
 }

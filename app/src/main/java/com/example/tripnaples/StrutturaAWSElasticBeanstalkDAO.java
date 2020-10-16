@@ -15,6 +15,7 @@ import org.json.JSONException;
 import org.json.JSONObject;
 
 import java.util.ArrayList;
+import java.util.List;
 
 import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
@@ -22,7 +23,9 @@ import androidx.appcompat.app.AppCompatActivity;
 public class StrutturaAWSElasticBeanstalkDAO extends AppCompatActivity implements StrutturaDAO {
 
     @Override
-    public void getStrutturaByTipo(final onResultList onResultList, String inputTipoStruttura, final Context context) {
+    public void getStrutturaByTipo(onResultList onResultList, String inputTipoStruttura, final Context context) {
+
+
 
         String url="http://consigliaviaggi20.us-east-2.elasticbeanstalk.com/struttura/search_strutture.php?inputTipo="+inputTipoStruttura;
         JsonClass jsonClass= new JsonClass();

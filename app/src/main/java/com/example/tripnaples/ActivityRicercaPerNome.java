@@ -10,6 +10,9 @@ import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.pm.PackageManager;
+import android.graphics.Bitmap;
+import android.graphics.Canvas;
+import android.graphics.drawable.Drawable;
 import android.location.Location;
 import android.location.LocationManager;
 import android.os.Build;
@@ -39,6 +42,7 @@ import com.google.android.gms.maps.CameraUpdateFactory;
 import com.google.android.gms.maps.GoogleMap;
 import com.google.android.gms.maps.OnMapReadyCallback;
 import com.google.android.gms.maps.SupportMapFragment;
+import com.google.android.gms.maps.model.BitmapDescriptor;
 import com.google.android.gms.maps.model.BitmapDescriptorFactory;
 import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.Marker;
@@ -163,95 +167,6 @@ public class ActivityRicercaPerNome extends AppCompatActivity implements OnMapRe
 
     }
 
-    /*
-    public void jsonNomeStruttura (String url) {
-        //array=null;
-        mQueue = Volley.newRequestQueue(this);
-        //final ArrayList<Struttura> arrayStrutture = new ArrayList<>();
-        JsonObjectRequest request = new JsonObjectRequest(Request.Method.GET, url, null,
-                new Response.Listener<JSONObject>() {
-                    @Override
-                    public void onResponse(JSONObject response) {
-                        try {
-                            JSONArray jsonArray = response.getJSONArray("records");
-
-                            String[] strings = new String[jsonArray.length()];
-
-                            for (int i = 0; i < jsonArray.length(); i++) {
-                                JSONObject struttura = jsonArray.getJSONObject(i);
-
-                                int cod_struttura = struttura.getInt("cod_struttura");
-                                String indirizzo = struttura.getString("indirizzo");
-                                int range_prezzo = struttura.getInt("range_prezzo");
-                                double latitudine = struttura.getDouble("latitudine");
-                                double longitudine = struttura.getDouble("longitudine");
-                                String nome = struttura.getString("nome");
-                                String città = struttura.getString("città");
-                                String tipo_struttura = struttura.getString("tipo_struttura");
-                                String link_immagine = struttura.getString("link_immagine");
-                                Struttura strutturaClass = new Struttura(cod_struttura, indirizzo, range_prezzo, latitudine, longitudine,
-                                        nome, città, tipo_struttura,link_immagine);
-                                if (strutturaClass != null) {
-                                    arrayStrutture.add(strutturaClass);
-                                    strings[i] = nome;
-                                }
-                            }
-
-                            adapter=new ArrayAdapter<>(ActivityRicercaPerNome.this
-                                    ,android.R.layout.simple_list_item_1,strings);
-                            autoCompleteTextView.setThreshold(1);
-                            autoCompleteTextView.setAdapter(adapter);
-                            autoCompleteTextView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
-                                @Override
-                                public void onItemClick(AdapterView<?> adapterView, View view, int s, long l) {
-
-                                    addMarkerSelected(arrayStrutture,adapter.getItem(s));
-
-                                }
-                            });
-
-                            //Cancellare il contenuto scritto cliccando sul drawable X a destra
-                            autoCompleteTextView.setOnTouchListener(new View.OnTouchListener() {
-                                @Override
-                                public boolean onTouch(View v, MotionEvent event) {
-
-                                    final int DRAWABLE_RIGHT = 2;
-
-                                    if(event.getAction() == MotionEvent.ACTION_UP) {
-                                        if(event.getRawX() >= (autoCompleteTextView.getRight() - autoCompleteTextView.getCompoundDrawables()[DRAWABLE_RIGHT].getBounds().width())) {
-                                            autoCompleteTextView.setText("");
-                                            return true;
-                                        }
-                                    }
-                                    return false;
-                                }
-                            });
-
-
-
-
-                        } catch (JSONException e) {
-                            e.printStackTrace();
-
-                        }
-                    }
-                }, new Response.ErrorListener() {
-            @Override
-            public void onErrorResponse(VolleyError error) {
-                error.printStackTrace();
-                AlertDialog.Builder builder=new AlertDialog.Builder(ActivityRicercaPerNome.this);
-                builder.setTitle("Errore:");
-                builder.setMessage("Attenzione:"+error.getLocalizedMessage());
-                builder.setIcon(android.R.drawable.ic_dialog_alert);
-                builder.show();
-            }
-        });
-        mQueue.add(request);
-
-
-    }
-
-     */
 
     public void addMarkerSelected(ArrayList<Struttura> arrayStrutture, String nomeStruttura ){
 
@@ -261,6 +176,7 @@ public class ActivityRicercaPerNome extends AppCompatActivity implements OnMapRe
 
             if (strutturaCurr.getNome().equals(nomeStruttura)){
                 LatLng latLngSelected= new LatLng(strutturaCurr.getLatitudine(),strutturaCurr.getLongitudine());
+                Check.tipoStruttura=strutturaCurr.getTipo_struttura();
 
                 if (marketToRemove!=null){
                     marketToRemove.remove();
@@ -275,7 +191,14 @@ public class ActivityRicercaPerNome extends AppCompatActivity implements OnMapRe
                 double distancetoCurrentPosition=getDistanceKm(Check.latLngCurrent,latLngSelected);
                 markerOptionsStrutture.snippet(String.valueOf("Distanza: "+distancetoCurrentPosition+" km."));
                 //markerOptionsStrutture.snippet(String.valueOf(strutturaInserita.getLatitudine())+String.valueOf(strutturaInserita.getLongitudine()));
-                markerOptionsStrutture.icon(BitmapDescriptorFactory.defaultMarker(BitmapDescriptorFactory.HUE_RED));
+                //markerOptionsStrutture.icon(BitmapDescriptorFactory.defaultMarker(BitmapDescriptorFactory.HUE_RED));
+                //markerOptionsStrutture.icon(bitmapDescriptorFromVector(this, R.drawable.ic_restaurant_marker));
+                /*AlertDialog.Builder builder=new AlertDialog.Builder(ActivityRicercaPerNome.this);
+                builder.setTitle("Tipo Struttura: ");
+                builder.setMessage(Check.tipoStruttura);
+                //builder.setIcon(android.R.drawable.ic_dialog_alert);
+                builder.show();*/
+                chooseTypeMarker(markerOptionsStrutture);
 
                 mCurrLocationMarker = mMap.addMarker(markerOptionsStrutture);
                 marketToRemove = mCurrLocationMarker;
@@ -283,6 +206,37 @@ public class ActivityRicercaPerNome extends AppCompatActivity implements OnMapRe
             }
         }
 
+    }
+
+    private void chooseTypeMarker(MarkerOptions markerOptionsStrutture) {
+        if ((Check.tipoStruttura).equals("Ristorante")){
+            markerOptionsStrutture.icon(bitmapDescriptorFromVector(this, R.drawable.ic_restaurant_marker));
+        }
+        else if ((Check.tipoStruttura).equals("Bar")){
+            markerOptionsStrutture.icon(bitmapDescriptorFromVector(this, R.drawable.ic_bar_prova_marker));
+        }
+        else if ((Check.tipoStruttura).equals("Hotel")){
+            markerOptionsStrutture.icon(bitmapDescriptorFromVector(this, R.drawable.ic_hotel_marker));
+        }
+        else if ((Check.tipoStruttura).equals("Parco")){
+            markerOptionsStrutture.icon(bitmapDescriptorFromVector(this, R.drawable.ic_park_marker));
+        }
+        else if ((Check.tipoStruttura).equals("Teatro")){
+            markerOptionsStrutture.icon(bitmapDescriptorFromVector(this, R.drawable.ic_theatre_marker));
+        }
+        else if ((Check.tipoStruttura).equals("Museo")){
+            markerOptionsStrutture.icon(bitmapDescriptorFromVector(this, R.drawable.ic_museo_marker));
+        }
+    }
+
+
+    private BitmapDescriptor bitmapDescriptorFromVector(Context context, int vectorResId) {
+        Drawable vectorDrawable = ContextCompat.getDrawable(context, vectorResId);
+        vectorDrawable.setBounds(0, 0, vectorDrawable.getIntrinsicWidth(), vectorDrawable.getIntrinsicHeight());
+        Bitmap bitmap = Bitmap.createBitmap(vectorDrawable.getIntrinsicWidth(), vectorDrawable.getIntrinsicHeight(), Bitmap.Config.ARGB_8888);
+        Canvas canvas = new Canvas(bitmap);
+        vectorDrawable.draw(canvas);
+        return BitmapDescriptorFactory.fromBitmap(bitmap);
     }
 
     private boolean isGPSEnabled() {

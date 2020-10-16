@@ -12,7 +12,6 @@ import java.util.Properties;
 
 public class DAOFactory {
 
-    //String server="AWS Elastic Beanstalk";
     String server;
 
     private static DAOFactory theDAO;
@@ -50,6 +49,19 @@ public class DAOFactory {
 
         if (server.equals("AWS Elastic Beanstalk"))
             return new StrutturaAWSElasticBeanstalkDAO();
+
+
+        return null;
+    }
+
+    public RecensioneApprovataDAO getServerRecensioniDAO() {
+
+        /*if (server.equals("postgres"))
+            return new SrutturaPostgresDAO();*/
+
+
+        if (server.equals("AWS Elastic Beanstalk"))
+            return new RecensioneApprovataAWSElasticBeanstalkDAO();
 
 
         return null;
