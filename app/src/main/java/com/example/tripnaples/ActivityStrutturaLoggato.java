@@ -42,6 +42,7 @@ import com.google.android.gms.maps.CameraUpdateFactory;
 import com.google.android.gms.maps.GoogleMap;
 import com.google.android.gms.maps.OnMapReadyCallback;
 import com.google.android.gms.maps.SupportMapFragment;
+import com.google.android.gms.maps.model.BitmapDescriptorFactory;
 import com.google.android.gms.maps.model.MarkerOptions;
 
 import org.json.JSONArray;
@@ -85,26 +86,12 @@ public class ActivityStrutturaLoggato extends AppCompatActivity implements OnMap
     double mediaRecensioni;
 
     public RecensioneApprovataDAO recDAO;
+    public RecensioneDaApprovareDAO recDaApprovareDAO;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_struttura);
-
-
-        if (!isGPSEnabled()) {
-            new AlertDialog.Builder(ActivityStrutturaLoggato.this)
-                    .setMessage("Attenzione, attiva il GPS!")
-                    .setCancelable(false)
-                    .setPositiveButton("Opzioni", new DialogInterface.OnClickListener() {
-                        public void onClick(DialogInterface dialog, int id) {
-                            Intent i = new Intent(Settings.ACTION_LOCATION_SOURCE_SETTINGS);
-                            startActivity(i);
-                        }
-                    })
-                    .setNegativeButton("Cancella", null)
-                    .show();
-        }
 
         SupportMapFragment mapFragment = (SupportMapFragment) getSupportFragmentManager()
                 .findFragmentById(R.id.map_struttura);
@@ -280,7 +267,10 @@ public class ActivityStrutturaLoggato extends AppCompatActivity implements OnMap
                                 "\"codice_struttura\":" + "\"" + Check.codiceStruttura + "\",\n" +
                                 "\"utente\":" + "\"" + String.valueOf(textFirma.getText())+ "\"\n" +
                                 "}";
-                        JsonPost(data);
+                        //JsonPost(data);
+                        DAOFactory DF = DAOFactory.getDAOInstance(ActivityStrutturaLoggato.this);
+                        recDaApprovareDAO = DF. getServerPutRecensioniDAO();
+                        recDaApprovareDAO.putRecensioneByCodStruttura(data,ActivityStrutturaLoggato.this,mydialog);
                     }
                 }
 
@@ -288,7 +278,7 @@ public class ActivityStrutturaLoggato extends AppCompatActivity implements OnMap
         });
     }
 
-    private void JsonPost(String data)
+    /*private void JsonPost(String data)
     {
         final String savedata= data;
         String URL="http://consigliaviaggi20.us-east-2.elasticbeanstalk.com/recensione_da_approvare/insert_recensione_da_approvare.php";
@@ -300,10 +290,7 @@ public class ActivityStrutturaLoggato extends AppCompatActivity implements OnMap
                 try {
                     JSONObject objres=new JSONObject(response);
                     //Toast.makeText(getApplicationContext(),objres.toString(),Toast.LENGTH_LONG).show();
-                    /*AlertDialog.Builder builder=new AlertDialog.Builder(ActivityStrutturaLoggato.this);
-                    builder.setTitle("Json Response:");
-                    builder.setMessage(objres.toString());
-                    builder.show();*/
+
                     final AlertDialog dialog = new AlertDialog.Builder(ActivityStrutturaLoggato.this)
                             .setTitle("Invio Recensione da approvare")
                             .setMessage("Recensione da approvare inviata al BackOffice con successo!")
@@ -362,7 +349,7 @@ public class ActivityStrutturaLoggato extends AppCompatActivity implements OnMap
 
         };
         requestQueue.add(stringRequest);
-    }
+    }*/
 
 
     public void getNicknameUtente(){
@@ -400,18 +387,24 @@ public class ActivityStrutturaLoggato extends AppCompatActivity implements OnMap
         mMap = googleMap;
 
         // Add a marker in Sydney and move the camera
-        mMap.addMarker(new MarkerOptions()
+       /* mMap.addMarker(new MarkerOptions()
                 .position(Check.coordinateStruttura)
                 .title(Check.nomeStruttura))
                 .setSnippet(Check.tipoStruttura);
         //mMap.moveCamera(CameraUpdateFactory.newLatLng(Check.coordinateStruttura));
         //mMap.animateCamera(CameraUpdateFactory.zoomTo(6));
-        mMap.animateCamera(CameraUpdateFactory.newLatLngZoom(Check.coordinateStruttura,13));
-    }
+        mMap.animateCamera(CameraUpdateFactory.newLatLngZoom(Check.coordinateStruttura,13));*/
 
-    private boolean isGPSEnabled() {
-        LocationManager cm = (LocationManager) getSystemService(Context.LOCATION_SERVICE);
-        return cm.isProviderEnabled(LocationManager.GPS_PROVIDER);
+        final MarkerOptions markerOptions = new MarkerOptions();
+        //Aggiungi marker di colore verde con posizione corrente
+        markerOptions.position(Check.coordinateStruttura);
+        markerOptions.title(Check.nomeStruttura);
+        markerOptions.snippet(Check.tipoStruttura);
+        //Scegli il tipo di marker
+        MapsClass.chooseTypeMarker(markerOptions,Check.tipoStruttura,ActivityStrutturaLoggato.this);
+
+        mMap.addMarker(markerOptions);
+        mMap.animateCamera(CameraUpdateFactory.newLatLngZoom(Check.coordinateStruttura,13));
     }
 
 }

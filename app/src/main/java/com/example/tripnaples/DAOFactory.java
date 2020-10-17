@@ -67,4 +67,17 @@ public class DAOFactory {
         return null;
     }
 
+    public RecensioneDaApprovareDAO getServerPutRecensioniDAO() {
+
+        /*if (server.equals("postgres"))
+            return new SrutturaPostgresDAO();*/
+
+
+        if (server.equals("AWS Elastic Beanstalk"))
+            return new RecensioneDaApprovareAWSElasticBeanstalkDAO();
+
+
+        return null;
+    }
+
 }

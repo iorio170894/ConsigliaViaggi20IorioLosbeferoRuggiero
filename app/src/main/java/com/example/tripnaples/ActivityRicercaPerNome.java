@@ -88,7 +88,7 @@ public class ActivityRicercaPerNome extends AppCompatActivity implements OnMapRe
 
         check_premuto=false;
 
-        if (!isGPSEnabled()) {
+        if (!MapsClass.isGPSEnabled(ActivityRicercaPerNome.this)) {
             new AlertDialog.Builder(ActivityRicercaPerNome.this)
                     .setMessage("Attenzione, attiva il GPS!")
                     .setCancelable(false)
@@ -198,7 +198,8 @@ public class ActivityRicercaPerNome extends AppCompatActivity implements OnMapRe
                 builder.setMessage(Check.tipoStruttura);
                 //builder.setIcon(android.R.drawable.ic_dialog_alert);
                 builder.show();*/
-                chooseTypeMarker(markerOptionsStrutture);
+                //Scegli il tipo di marker
+                MapsClass.chooseTypeMarker(markerOptionsStrutture,Check.tipoStruttura,ActivityRicercaPerNome.this);
 
                 mCurrLocationMarker = mMap.addMarker(markerOptionsStrutture);
                 marketToRemove = mCurrLocationMarker;
@@ -208,6 +209,7 @@ public class ActivityRicercaPerNome extends AppCompatActivity implements OnMapRe
 
     }
 
+    /*
     private void chooseTypeMarker(MarkerOptions markerOptionsStrutture) {
         if ((Check.tipoStruttura).equals("Ristorante")){
             markerOptionsStrutture.icon(bitmapDescriptorFromVector(this, R.drawable.ic_restaurant_marker));
@@ -242,7 +244,7 @@ public class ActivityRicercaPerNome extends AppCompatActivity implements OnMapRe
     private boolean isGPSEnabled() {
         LocationManager cm = (LocationManager)getSystemService(Context.LOCATION_SERVICE);
         return cm.isProviderEnabled(LocationManager.GPS_PROVIDER);
-    }
+    }*/
 
     @Override
     public void onMapReady(GoogleMap googleMap) {

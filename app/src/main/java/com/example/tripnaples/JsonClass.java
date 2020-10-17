@@ -1,5 +1,6 @@
 package com.example.tripnaples;
 
+import android.app.Dialog;
 import android.content.BroadcastReceiver;
 import android.content.ComponentName;
 import android.content.ContentResolver;
@@ -24,12 +25,16 @@ import android.os.Handler;
 import android.os.Looper;
 import android.os.UserHandle;
 import android.view.Display;
+import android.view.View;
+import android.widget.Button;
 
+import com.android.volley.AuthFailureError;
 import com.android.volley.Request;
 import com.android.volley.RequestQueue;
 import com.android.volley.Response;
 import com.android.volley.VolleyError;
 import com.android.volley.toolbox.JsonObjectRequest;
+import com.android.volley.toolbox.StringRequest;
 import com.android.volley.toolbox.Volley;
 
 import org.json.JSONArray;
@@ -42,6 +47,7 @@ import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
+import java.io.UnsupportedEncodingException;
 import java.util.ArrayList;
 
 import androidx.annotation.NonNull;
@@ -159,6 +165,79 @@ public class JsonClass {
         });
         mQueue.add(request);
 
+    }
+
+    public void putJsonRecensioniByCodStruttura(String data, final Context context, String URL, final Dialog myDialog)
+    {
+        final String savedata= data;
+        //String URL="http://consigliaviaggi20.us-east-2.elasticbeanstalk.com/recensione_da_approvare/insert_recensione_da_approvare.php";
+
+        mQueue = Volley.newRequestQueue(context.getApplicationContext());
+        StringRequest stringRequest = new StringRequest(Request.Method.POST, URL, new Response.Listener<String>() {
+            @Override
+            public void onResponse(String response) {
+                try {
+                    JSONObject objres=new JSONObject(response);
+                    //Toast.makeText(getApplicationContext(),objres.toString(),Toast.LENGTH_LONG).show();
+
+                    final AlertDialog dialog = new AlertDialog.Builder(context)
+                            .setTitle("Invio Recensione da approvare")
+                            .setMessage("Recensione da approvare inviata al BackOffice con successo!")
+                            .setPositiveButton("OK", null)
+                            .setIcon(R.drawable.ic_review_primary_dark)
+                            .show();
+                    Button positiveButton = dialog.getButton(AlertDialog.BUTTON_POSITIVE);
+                    positiveButton.setOnClickListener(new View.OnClickListener() {
+                        @Override
+                        public void onClick(View v) {
+                            dialog.dismiss();
+                            myDialog.dismiss();
+                        }
+                    });
+
+
+                } catch (JSONException e) {
+                    //Toast.makeText(getApplicationContext(),"Server Error",Toast.LENGTH_LONG).show();
+                    AlertDialog.Builder builder=new AlertDialog.Builder(context);
+                    builder.setTitle("Json Response:");
+                    builder.setMessage("Server Error");
+                    builder.setIcon(android.R.drawable.ic_dialog_alert);
+                    builder.show();
+
+                }
+                //Log.i("VOLLEY", response);
+            }
+        }, new Response.ErrorListener() {
+            @Override
+            public void onErrorResponse(VolleyError error) {
+
+                //Toast.makeText(getApplicationContext(), error.getMessage(), Toast.LENGTH_SHORT).show();
+                AlertDialog.Builder builder=new AlertDialog.Builder(context);
+                builder.setTitle("Errore:");
+                builder.setMessage("Attenzione:"+error.getLocalizedMessage());
+                builder.setIcon(android.R.drawable.ic_dialog_alert);
+                builder.show();
+
+                //Log.v("VOLLEY", error.toString());
+            }
+        }) {
+            @Override
+            public String getBodyContentType() {
+                return "application/json; charset=utf-8";
+            }
+
+            @Override
+            public byte[] getBody() throws AuthFailureError {
+                try {
+                    return savedata == null ? null : savedata.getBytes("utf-8");
+                } catch (UnsupportedEncodingException uee) {
+                    //Log.v("Unsupported Encoding while trying to get the bytes", data);
+                    return null;
+                }
+            }
+
+        };
+        mQueue.add(stringRequest);
     }
 
 }

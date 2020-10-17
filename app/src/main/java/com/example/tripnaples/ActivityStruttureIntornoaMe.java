@@ -80,7 +80,7 @@ public class ActivityStruttureIntornoaMe extends AppCompatActivity implements On
 
         check_premuto=false;
         //Se il GPS non è attivo
-        if (!isGPSEnabled()) {
+        if (!MapsClass.isGPSEnabled(ActivityStruttureIntornoaMe.this)) {
             new AlertDialog.Builder(ActivityStruttureIntornoaMe.this)
                     .setMessage("Attenzione, attiva il GPS!")
                     .setCancelable(false)
@@ -151,18 +151,21 @@ public class ActivityStruttureIntornoaMe extends AppCompatActivity implements On
             markerOptionsStrutture.title(strutturaInserita.getNome());
 
             //calcolo della distanza della struttura dalla posizione corrente
-            double distancetoCurrentPosition = getDistanceKm(Check.latLngCurrent, latLngStrutture);
+            //double distancetoCurrentPosition = getDistanceKm(Check.latLngCurrent, latLngStrutture);
 
-            markerOptionsStrutture.snippet("Distanza: " + distancetoCurrentPosition + " km.");
+            //markerOptionsStrutture.snippet("Distanza: " + distancetoCurrentPosition + " km.");
+            markerOptionsStrutture.snippet(Check.inputTipoStrutturaForSearch);
             //markerOptionsStrutture.icon(BitmapDescriptorFactory.defaultMarker(BitmapDescriptorFactory.HUE_RED));
             //markerOptionsStrutture.icon(bitmapDescriptorFromVector(this, R.drawable.ic_restaurant_marker));
-            chooseTypeMarker(markerOptionsStrutture);
+            //Scegli il tipo di marker
+            MapsClass.chooseTypeMarker(markerOptionsStrutture,Check.inputTipoStrutturaForSearch,ActivityStruttureIntornoaMe.this);
+
             mCurrLocationMarker = mMap.addMarker(markerOptionsStrutture);
 
         }
     }
 
-    private void chooseTypeMarker(MarkerOptions markerOptionsStrutture) {
+    /*private void chooseTypeMarker(MarkerOptions markerOptionsStrutture) {
         if ((Check.inputTipoStrutturaForSearch).equals("ristorante")){
             markerOptionsStrutture.icon(bitmapDescriptorFromVector(this, R.drawable.ic_restaurant_marker));
         }
@@ -191,12 +194,13 @@ public class ActivityStruttureIntornoaMe extends AppCompatActivity implements On
         Canvas canvas = new Canvas(bitmap);
         vectorDrawable.draw(canvas);
         return BitmapDescriptorFactory.fromBitmap(bitmap);
-    }
+    }*/
 
+    /*
     private boolean isGPSEnabled() {
         LocationManager cm = (LocationManager) getSystemService(Context.LOCATION_SERVICE);
         return cm.isProviderEnabled(LocationManager.GPS_PROVIDER);
-    }
+    }*/
 
     @Override
     public void onMapReady(GoogleMap googleMap) {

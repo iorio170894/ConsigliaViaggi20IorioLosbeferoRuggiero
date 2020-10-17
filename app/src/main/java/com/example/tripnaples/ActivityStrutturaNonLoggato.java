@@ -71,20 +71,6 @@ public class ActivityStrutturaNonLoggato extends AppCompatActivity implements On
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_struttura_non_loggato);
 
-        if (!isGPSEnabled()) {
-            new AlertDialog.Builder(ActivityStrutturaNonLoggato.this)
-                    .setMessage("Attenzione, attiva il GPS!")
-                    .setCancelable(false)
-                    .setPositiveButton("Opzioni", new DialogInterface.OnClickListener() {
-                        public void onClick(DialogInterface dialog, int id) {
-                            Intent i = new Intent(Settings.ACTION_LOCATION_SOURCE_SETTINGS);
-                            startActivity(i);
-                        }
-                    })
-                    .setNegativeButton("Cancella", null)
-                    .show();
-        }
-
         SupportMapFragment mapFragment = (SupportMapFragment) getSupportFragmentManager()
                 .findFragmentById(R.id.map_struttura_non_loggato);
         mapFragment.getMapAsync(this);
@@ -182,19 +168,24 @@ public class ActivityStrutturaNonLoggato extends AppCompatActivity implements On
         mMap = googleMap;
 
         // Add a marker in Sydney and move the camera
-        mMap.addMarker(new MarkerOptions()
+       /* mMap.addMarker(new MarkerOptions()
                 .position(Check.coordinateStruttura)
                 .title(Check.nomeStruttura))
                 .setSnippet(Check.tipoStruttura);
         //mMap.moveCamera(CameraUpdateFactory.newLatLng(Check.coordinateStruttura));
-        //mMap.moveCamera(CameraUpdateFactory.newLatLngZoom(Check.coordinateStruttura,11));
-        mMap.animateCamera(CameraUpdateFactory.newLatLngZoom(Check.coordinateStruttura,13));
         //mMap.animateCamera(CameraUpdateFactory.zoomTo(6));
-    }
+        mMap.animateCamera(CameraUpdateFactory.newLatLngZoom(Check.coordinateStruttura,13));*/
 
-    private boolean isGPSEnabled() {
-        LocationManager cm = (LocationManager) getSystemService(Context.LOCATION_SERVICE);
-        return cm.isProviderEnabled(LocationManager.GPS_PROVIDER);
+        final MarkerOptions markerOptions = new MarkerOptions();
+        //Aggiungi marker di colore verde con posizione corrente
+        markerOptions.position(Check.coordinateStruttura);
+        markerOptions.title(Check.nomeStruttura);
+        markerOptions.snippet(Check.tipoStruttura);
+        //Scegli il tipo di marker
+        MapsClass.chooseTypeMarker(markerOptions,Check.tipoStruttura,ActivityStrutturaNonLoggato.this);
+
+        mMap.addMarker(markerOptions);
+        mMap.animateCamera(CameraUpdateFactory.newLatLngZoom(Check.coordinateStruttura,13));
     }
 
 }

@@ -46,7 +46,7 @@ public class ActivityBenvenuto extends AppCompatActivity {
                 //tipoStruttura="ristorante";
                 //Check.inputUrl = "http://consigliaviaggi20.us-east-2.elasticbeanstalk.com/struttura/search_strutture.php?inputTipo="+tipoStruttura;
                 Check.tipoRicerca="intorno a me";
-                Check.inputTipoStrutturaForSearch="ristorante";
+                Check.inputTipoStrutturaForSearch="Ristorante";
                 startActivity(new Intent(ActivityBenvenuto.this, ActivityStruttureIntornoaMe.class));
             }
         });
@@ -59,7 +59,7 @@ public class ActivityBenvenuto extends AppCompatActivity {
                 //tipoStruttura="parco";
                 //Check.inputUrl = "http://consigliaviaggi20.us-east-2.elasticbeanstalk.com/struttura/search_strutture.php?inputTipo="+tipoStruttura;
                 Check.tipoRicerca="intorno a me";
-                Check.inputTipoStrutturaForSearch="parco";
+                Check.inputTipoStrutturaForSearch="Parco";
                 startActivity(new Intent(ActivityBenvenuto.this, ActivityStruttureIntornoaMe.class));
             }
         });
@@ -72,7 +72,7 @@ public class ActivityBenvenuto extends AppCompatActivity {
                 //tipoStruttura="hotel";
                 //Check.inputUrl = "http://consigliaviaggi20.us-east-2.elasticbeanstalk.com/struttura/search_strutture.php?inputTipo="+tipoStruttura;
                 Check.tipoRicerca="intorno a me";
-                Check.inputTipoStrutturaForSearch="hotel";
+                Check.inputTipoStrutturaForSearch="Hotel";
                 startActivity(new Intent(ActivityBenvenuto.this, ActivityStruttureIntornoaMe.class));
             }
         });
@@ -85,7 +85,7 @@ public class ActivityBenvenuto extends AppCompatActivity {
                 //tipoStruttura="bar";
                 //Check.inputUrl = "http://consigliaviaggi20.us-east-2.elasticbeanstalk.com/struttura/search_strutture.php?inputTipo="+tipoStruttura;
                 Check.tipoRicerca="intorno a me";
-                Check.inputTipoStrutturaForSearch="bar";
+                Check.inputTipoStrutturaForSearch="Bar";
                 startActivity(new Intent(ActivityBenvenuto.this, ActivityStruttureIntornoaMe.class));
             }
         });
@@ -98,7 +98,7 @@ public class ActivityBenvenuto extends AppCompatActivity {
                 //tipoStruttura="teatro";
                 //Check.inputUrl = "http://consigliaviaggi20.us-east-2.elasticbeanstalk.com/struttura/search_strutture.php?inputTipo="+tipoStruttura;
                 Check.tipoRicerca="intorno a me";
-                Check.inputTipoStrutturaForSearch="teatro";
+                Check.inputTipoStrutturaForSearch="Teatro";
                 startActivity(new Intent(ActivityBenvenuto.this, ActivityStruttureIntornoaMe.class));
             }
         });
@@ -111,7 +111,7 @@ public class ActivityBenvenuto extends AppCompatActivity {
                 //tipoStruttura="museo";
                 //Check.inputUrl = "http://consigliaviaggi20.us-east-2.elasticbeanstalk.com/struttura/search_strutture.php?inputTipo="+tipoStruttura;
                 Check.tipoRicerca="intorno a me";
-                Check.inputTipoStrutturaForSearch="museo";
+                Check.inputTipoStrutturaForSearch="Museo";
                 startActivity(new Intent(ActivityBenvenuto.this, ActivityStruttureIntornoaMe.class));
             }
         });
