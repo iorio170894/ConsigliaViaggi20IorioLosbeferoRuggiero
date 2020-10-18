@@ -3,6 +3,7 @@ package com.example.tripnaples;
 import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
 
+import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
 import android.os.Handler;
@@ -25,6 +26,8 @@ import com.amazonaws.mobileconnectors.cognitoidentityprovider.handlers.GenericHa
 
 public class LoginActivity extends AppCompatActivity {
 
+    private loginDAO loginDAO;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -33,91 +36,14 @@ public class LoginActivity extends AppCompatActivity {
 
         final EditText editTextEmail = findViewById(R.id.editTextTextEmailLogin);
         final EditText editTextPassword = findViewById(R.id.editTextTextPasswordLogin);
-
-        final AuthenticationHandler authenticationHandler = new AuthenticationHandler() {
-            @Override
-            public void onSuccess(CognitoUserSession userSession, CognitoDevice newDevice) {
-                // L'accesso è riuscito, cognitoUserSession conterrà i token per l'utente
-                Log.i("Cognito", "Login succesfull");
-                Check.controlloActivityImpostazioni=false;
-                loagindDialog.startLoadingDialog();
-                Handler handler = new Handler();
-                handler.postDelayed(new Runnable() {
-                    @Override
-                    public void run() {
-                        loagindDialog.dismissDialog();
-                        Check.loggato=true;
-                        startActivity(new Intent(LoginActivity.this, ActivityBenvenuto.class));
-                    }
-                }, 2000);
-            }
-
-            @Override
-            public void getAuthenticationDetails(AuthenticationContinuation authenticationContinuation, String userId) {
-                Log.i("Cognito", "in getAuthenticationDetails()...");
-                // L'API necessita delle credenziali di accesso dell'utente per continuare
-                // bisogna aver password e userId per continuare
-                AuthenticationDetails authenticationDetails = new AuthenticationDetails(userId
-                        , String.valueOf(editTextPassword.getText()), null);
-
-                // Passa le credenziali di accesso dell'utente alla continuazione
-                authenticationContinuation.setAuthenticationDetails(authenticationDetails);
-
-                // Consenti all'accesso per continuare
-                authenticationContinuation.continueTask();
-            }
-
-            @Override
-            public void getMFACode(MultiFactorAuthenticationContinuation continuation) {
-
-            }
-
-            @Override
-            public void authenticationChallenge(ChallengeContinuation continuation) {
-                Log.i("Cognito", "in AuthenticationChallenge.");
-            }
-
-            @Override
-            public void onFailure(Exception exception) {
-                // Accesso non riuscito, controlla l'eccezione per la causa
-                Log.i("Cognito", "Login faildes:"+exception.getLocalizedMessage());
-
-                AlertDialog.Builder builder=new AlertDialog.Builder(LoginActivity.this);
-                builder.setTitle("Errore nel Login:");
-                builder.setMessage(" Attenzione:"+exception.getLocalizedMessage());
-                builder.setIcon(android.R.drawable.ic_dialog_alert);
-                builder.show();
-
-
-            }
-        };
-
         Button buttonLogin = findViewById(R.id.buttonAccediLogin);
-        buttonLogin.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                CognitoSettings cognitoSettings = new CognitoSettings(LoginActivity.this);
 
-                if (String.valueOf(editTextEmail.getText()).isEmpty() || String.valueOf(editTextPassword.getText()).isEmpty()){
-                    if (String.valueOf(editTextEmail.getText()).isEmpty() )
-                        editTextEmail.setError("Attenzione campo vuoto!");
-                    if (String.valueOf(editTextPassword.getText()).isEmpty() )
-                        editTextPassword.setError("Attenzione campo vuoto!");
-                }
-                else {
+        //Login
+        DAOFactory DF = DAOFactory.getDAOInstance(LoginActivity.this);
+        loginDAO = DF.getAuthenticationForLoginDAO();
+        loginDAO.login(LoginActivity.this,buttonLogin,editTextPassword,editTextEmail,new LoagindDialog(LoginActivity.this));
 
-                    CognitoUser thisUser = cognitoSettings.getUserPool().
-                            getUser(String.valueOf(editTextEmail.getText()));
 
-                    //Sign in the user
-                    Log.i("Cognito", "in button clicked..");
-
-                    thisUser.getSessionInBackground(authenticationHandler);
-                }
-            }
-        });
     }
 
-
-    LoagindDialog loagindDialog = new LoagindDialog(LoginActivity.this);
 }

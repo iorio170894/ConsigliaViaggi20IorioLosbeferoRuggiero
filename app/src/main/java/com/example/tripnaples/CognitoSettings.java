@@ -13,7 +13,6 @@ public class CognitoSettings {
     private static String clientId="44958qqvjntk6kr1k533jetpeg";
     private static String clientSecret="8v3rdc8q822itbfdqmrts127pg0huqs44uhb4psq1oimdqivs91";
     private static Regions cognitoRegion=Regions.US_EAST_2;
-    //private static CognitoSettings INSTANCE = new CognitoSettings();
 
     private static Context context;
 
@@ -27,13 +26,6 @@ public class CognitoSettings {
     }
 
     public static void logout(){
-        /*
-        CognitoUserPool pool=CognitoSettings.getUserPool();
-        if (pool != null) {
-            CognitoUser user = pool.getCurrentUser();
-                user.signOut();
-            }
-*/
         CognitoSettings.getUserPool().getCurrentUser().signOut();
     }
 

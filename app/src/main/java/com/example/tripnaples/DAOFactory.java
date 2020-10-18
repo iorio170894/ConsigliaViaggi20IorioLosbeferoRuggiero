@@ -13,6 +13,7 @@ import java.util.Properties;
 public class DAOFactory {
 
     String server;
+    String authentication;
 
     private static DAOFactory theDAO;
 
@@ -34,6 +35,7 @@ public class DAOFactory {
             props.load(is);
 
            server =  props.getProperty("server");
+           authentication = props.getProperty("authentication");
 
             is.close();
         } catch (Exception e) {
@@ -45,7 +47,6 @@ public class DAOFactory {
 
         /*if (server.equals("postgres"))
             return new SrutturaPostgresDAO();*/
-
 
         if (server.equals("AWS Elastic Beanstalk"))
             return new StrutturaAWSElasticBeanstalkDAO();
@@ -59,7 +60,6 @@ public class DAOFactory {
         /*if (server.equals("postgres"))
             return new SrutturaPostgresDAO();*/
 
-
         if (server.equals("AWS Elastic Beanstalk"))
             return new RecensioneApprovataAWSElasticBeanstalkDAO();
 
@@ -72,9 +72,32 @@ public class DAOFactory {
         /*if (server.equals("postgres"))
             return new SrutturaPostgresDAO();*/
 
-
         if (server.equals("AWS Elastic Beanstalk"))
             return new RecensioneDaApprovareAWSElasticBeanstalkDAO();
+
+
+        return null;
+    }
+
+    public signUpDAO getAuthenticationForSignUpDAO() {
+
+        /*if (server.equals("postgres"))
+            return new SrutturaPostgresDAO();*/
+
+        if (authentication.equals("Cognito"))
+            return new signUpCognitoDAO();
+
+
+        return null;
+    }
+
+    public loginDAO getAuthenticationForLoginDAO() {
+
+        /*if (server.equals("postgres"))
+            return new SrutturaPostgresDAO();*/
+
+        if (authentication.equals("Cognito"))
+            return new loginCognitoDAO();
 
 
         return null;

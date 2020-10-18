@@ -4,6 +4,7 @@ import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
 
 import android.app.Dialog;
+import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
 import android.os.Handler;
@@ -23,12 +24,34 @@ import com.amazonaws.services.cognitoidentityprovider.model.SignUpResult;
 
 public class ActivityRegistrazione extends AppCompatActivity {
 
+    EditText inputEmail;
+    EditText inputPassword;
+    EditText inputConfermaPassword;
+    EditText inputNickname;
+    EditText inputNome;
+
+    signUpDAO signUpDAO;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_registrazione);
 
-        registerUser();
+        inputEmail = findViewById(R.id.editTextMailRegistration);
+        inputPassword = findViewById(R.id.editTextTextPasswordRegistration);
+        inputConfermaPassword = findViewById(R.id.editTextTextConfirmPasswordRegistration);
+        inputNickname = findViewById(R.id.editTextNicknameRegistration);
+        inputNome = findViewById(R.id.editTextNomeCognomeRegistration);
+
+        Button iscriviti = (Button) findViewById(R.id.buttonIscritivi);
+
+        //register user;
+        DAOFactory DF = DAOFactory.getDAOInstance(ActivityRegistrazione.this);
+        signUpDAO = DF.getAuthenticationForSignUpDAO();
+        signUpDAO.signUp(ActivityRegistrazione.this,iscriviti,inputPassword,inputConfermaPassword,
+                            inputEmail,inputNickname,inputNome);
+
+
 
         Button annulla = (Button) findViewById(R.id.buttonAnnulla);
         annulla.setOnClickListener(new View.OnClickListener() {
@@ -40,118 +63,7 @@ public class ActivityRegistrazione extends AppCompatActivity {
         });
     }
 
-    private void registerUser() {
-        final EditText inputEmail = findViewById(R.id.editTextMailRegistration);
-        final EditText inputPassword = findViewById(R.id.editTextTextPasswordRegistration);
-        final EditText inputConfermaPassword = findViewById(R.id.editTextTextConfirmPasswordRegistration);
-        final EditText inputNickname = findViewById(R.id.editTextNicknameRegistration);
-        final EditText inputNome = findViewById(R.id.editTextNomeCognomeRegistration);
-        //  final EditText inputCognome = findViewById(R.id.editTextCognome);
-
-
-        //Crea un CognitoUserAttributes e un user Attributes
-
-        final CognitoUserAttributes userAttributes = new CognitoUserAttributes();
-
-        //userAttributes.addAttribute("family name",String.valueOf(inputCognome.getText()));
-
-        final SignUpHandler signupCallback = new SignUpHandler() {
-
-            public void onSuccess(CognitoUser user, boolean signUpConfirmationState, CognitoUserCodeDeliveryDetails cognitoUserCodeDeliveryDetails) {
-                //Registrazione riuscita
-                Log.i("Tag", "Registrazione avvenuta con successo" + signUpConfirmationState);
-                //Controlla se user (cognitoUser) deve essere confermato
-                if (!signUpConfirmationState) {
-                    Log.i("Tag", "Registrazione avvenuta con successo, codice di verifica inviato a" + cognitoUserCodeDeliveryDetails.getDestination());
-                } else {
-                    //user è stato confermato
-                    Log.i("Tag", "Registrazione avvenuta con successo... confermata");
-                }
-
-                //custom dialog
-                final AlertDialog dialog = new AlertDialog.Builder(ActivityRegistrazione.this)
-                        .setTitle("Registrazione")
-                        .setMessage("Registrazione avvenuta con successo")
-                        .setPositiveButton("OK", null)
-                        .show();
-                Button positiveButton = dialog.getButton(AlertDialog.BUTTON_POSITIVE);
-                positiveButton.setOnClickListener(new View.OnClickListener() {
-                    @Override
-                    public void onClick(View v) {
-                        //Check.firma=String.valueOf(inputNickname.getText());
-                        startActivity(new Intent(ActivityRegistrazione.this, MainActivity.class));
-                        dialog.dismiss();
-                    }
-                });
-            }
-
-
-            @Override
-            public void onFailure(Exception exception) {
-                //registrazione fallita controlla l'eccezione
-                Log.i( "Tag","Registrazione fallita" + exception.getLocalizedMessage());
-                AlertDialog.Builder builder=new AlertDialog.Builder(ActivityRegistrazione.this);
-                builder.setTitle("Errore nella Registrazione:");
-                builder.setMessage("Attenzione:"+exception.getLocalizedMessage());
-                builder.setIcon(android.R.drawable.ic_dialog_alert);
-                builder.show();
-
-
-            }
-        };
-
-        //Tasto avanti va avanti nella registrazione
-
-        Button iscriviti = (Button) findViewById(R.id.buttonIscritivi);
-        iscriviti.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-
-                if (!inputPassword.getText().toString().equals(inputConfermaPassword.getText().toString())) {
-                    /*AlertDialog.Builder builder=new AlertDialog.Builder(ActivityRegistrazione.this);
-                    builder.setTitle("Errore nella Registrazione:");
-                    builder.setMessage("Attenzione: Password e Conferma Password non coincidono");
-                    builder.show();*/
-                    inputConfermaPassword.setError("Attenzione: Password e Conferma Password non coincidono!");
-                }
-                else {
-                    if (controlCampiVuoti(inputEmail, inputNickname, inputNome) ){
-                        //custom dialog
-                        final AlertDialog dialog = new AlertDialog.Builder(ActivityRegistrazione.this)
-                                .setTitle("Registrazione")
-                                .setMessage("Conferma la Registrazione?")
-                                .setPositiveButton("Conferma", null)
-                                .setNegativeButton("Annulla", null)
-                                .show();
-
-                        //dialog.getWindow().setGravity(Gravity.BOTTOM);
-
-                        Button positiveButton = dialog.getButton(AlertDialog.BUTTON_POSITIVE);
-                        positiveButton.setOnClickListener(new View.OnClickListener() {
-                            @Override
-                            public void onClick(View v) {
-
-                                userAttributes.addAttribute("email", String.valueOf(inputEmail.getText()));
-                                userAttributes.addAttribute("nickname", String.valueOf(inputNickname.getText()));
-                                userAttributes.addAttribute("name", String.valueOf(inputNome.getText()));
-
-                                CognitoSettings cognitoSettings = new CognitoSettings(ActivityRegistrazione.this);
-                                cognitoSettings.getUserPool().signUpInBackground(String.valueOf(inputEmail.getText())
-                                        , String.valueOf(inputPassword.getText()), userAttributes, null, signupCallback
-                                );
-                                dialog.dismiss();
-                            }
-                        });
-                    }
-
-
-                }
-
-            }
-        });
-    }
-
-    private boolean controlCampiVuoti(EditText inputEmail, EditText inputNickname, EditText inputNomeCognome) {
+    public static boolean controlCampiVuoti(EditText inputEmail, EditText inputNickname, EditText inputNomeCognome) {
         boolean ritorno=true;
         if (String.valueOf(inputEmail.getText()).isEmpty()){
             inputEmail.setError("Attenzione campo vuoto!");
