@@ -11,6 +11,8 @@ import java.util.ArrayList;
 
 public class Check {
 
+    static String nicnknameSpinner;
+    static String nomeCognomeSpinner;
     static boolean loggato=true;
     static String firma;
     static String inputUrl;

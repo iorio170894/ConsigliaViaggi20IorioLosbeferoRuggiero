@@ -26,14 +26,12 @@ public class ActivityBenvenuto extends AppCompatActivity {
     //variabili
     DrawerLayout drawerLayout;
     Dialog mydialog;
-    String tipoStruttura;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_benvenuto);
 
-        //Assegna variabili
 
         drawerLayout=findViewById(R.id.drawer_layout);
 
@@ -43,8 +41,6 @@ public class ActivityBenvenuto extends AppCompatActivity {
         ristoranti.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                //tipoStruttura="ristorante";
-                //Check.inputUrl = "http://consigliaviaggi20.us-east-2.elasticbeanstalk.com/struttura/search_strutture.php?inputTipo="+tipoStruttura;
                 Check.tipoRicerca="intorno a me";
                 Check.inputTipoStrutturaForSearch="Ristorante";
                 startActivity(new Intent(ActivityBenvenuto.this, ActivityStruttureIntornoaMe.class));
@@ -56,8 +52,6 @@ public class ActivityBenvenuto extends AppCompatActivity {
         parchi.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                //tipoStruttura="parco";
-                //Check.inputUrl = "http://consigliaviaggi20.us-east-2.elasticbeanstalk.com/struttura/search_strutture.php?inputTipo="+tipoStruttura;
                 Check.tipoRicerca="intorno a me";
                 Check.inputTipoStrutturaForSearch="Parco";
                 startActivity(new Intent(ActivityBenvenuto.this, ActivityStruttureIntornoaMe.class));
@@ -69,8 +63,6 @@ public class ActivityBenvenuto extends AppCompatActivity {
         hotel.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                //tipoStruttura="hotel";
-                //Check.inputUrl = "http://consigliaviaggi20.us-east-2.elasticbeanstalk.com/struttura/search_strutture.php?inputTipo="+tipoStruttura;
                 Check.tipoRicerca="intorno a me";
                 Check.inputTipoStrutturaForSearch="Hotel";
                 startActivity(new Intent(ActivityBenvenuto.this, ActivityStruttureIntornoaMe.class));
@@ -82,8 +74,6 @@ public class ActivityBenvenuto extends AppCompatActivity {
         bar.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                //tipoStruttura="bar";
-                //Check.inputUrl = "http://consigliaviaggi20.us-east-2.elasticbeanstalk.com/struttura/search_strutture.php?inputTipo="+tipoStruttura;
                 Check.tipoRicerca="intorno a me";
                 Check.inputTipoStrutturaForSearch="Bar";
                 startActivity(new Intent(ActivityBenvenuto.this, ActivityStruttureIntornoaMe.class));
@@ -95,8 +85,6 @@ public class ActivityBenvenuto extends AppCompatActivity {
         teatri.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                //tipoStruttura="teatro";
-                //Check.inputUrl = "http://consigliaviaggi20.us-east-2.elasticbeanstalk.com/struttura/search_strutture.php?inputTipo="+tipoStruttura;
                 Check.tipoRicerca="intorno a me";
                 Check.inputTipoStrutturaForSearch="Teatro";
                 startActivity(new Intent(ActivityBenvenuto.this, ActivityStruttureIntornoaMe.class));
@@ -108,8 +96,6 @@ public class ActivityBenvenuto extends AppCompatActivity {
         musei.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                //tipoStruttura="museo";
-                //Check.inputUrl = "http://consigliaviaggi20.us-east-2.elasticbeanstalk.com/struttura/search_strutture.php?inputTipo="+tipoStruttura;
                 Check.tipoRicerca="intorno a me";
                 Check.inputTipoStrutturaForSearch="Museo";
                 startActivity(new Intent(ActivityBenvenuto.this, ActivityStruttureIntornoaMe.class));
@@ -122,6 +108,7 @@ public class ActivityBenvenuto extends AppCompatActivity {
 
     }
 
+    //Popup on click su Ricerca Struttura
     public void ShowPopupRicerca (View v){
         mydialog.setContentView(R.layout.custompopupricerca);
         mydialog.getWindow().setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
@@ -145,23 +132,14 @@ public class ActivityBenvenuto extends AppCompatActivity {
 
     }
 
-     /*   @Override
-        public  void onDestroy(){
-            if (Check.loggato) {
-                super.onStop();
-                CognitoSettings.logout();
-                //Check.loggato=false;
-            }
-            else
-                super.onStop();
-        }*/
+
 
         @Override
         public void onBackPressed() {
             if (Check.loggato) {
                 final androidx.appcompat.app.AlertDialog dialog = new androidx.appcompat.app.AlertDialog.Builder(ActivityBenvenuto.this)
                         .setTitle("Indietro")
-                        .setMessage("Confermi di tornare Indietro? sarà effettuato il Logout e verrà chiusa l'app")
+                        .setMessage("Confermi di tornare Indietro? verrà chiusa l'app")
                         .setPositiveButton("Conferma", null)
                         .setNegativeButton("Annulla", null)
                         .show();
@@ -170,7 +148,6 @@ public class ActivityBenvenuto extends AppCompatActivity {
                     @Override
                     public void onClick(View v) {
 
-                        //CognitoSettings.logout();
                         Intent intent = new Intent(Intent.ACTION_MAIN);
                         intent.addCategory(Intent.CATEGORY_HOME);
                         startActivity(intent);
@@ -180,7 +157,6 @@ public class ActivityBenvenuto extends AppCompatActivity {
 
                     }
                 });
-               // Check.loggato=false;
             }
             else {
                 Intent turnMain = new Intent(ActivityBenvenuto.this, MainActivity.class);
@@ -201,10 +177,6 @@ public class ActivityBenvenuto extends AppCompatActivity {
         drawerLayout.openDrawer(GravityCompat.START);
     }
 
-    public void ClickLogo (View view){
-        //chiudi drawer
-        //    closeDrawer(drawerLayout);
-    }
 
     public static void closeDrawer(DrawerLayout drawerLayout) {
         //chiudi drawer layout
@@ -235,10 +207,6 @@ public class ActivityBenvenuto extends AppCompatActivity {
             redirectActivity(this,ActivityImpostazioniOspite.class);
     }
 
-    public void ClickLogout (View view){
-        //chiudi app
-        //  logout(this);
-    }
 
     public static void redirectActivity(Activity activity, Class aClass) {
         //inizializza Intent

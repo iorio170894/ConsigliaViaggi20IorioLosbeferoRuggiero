@@ -29,7 +29,7 @@ public class loginCognitoDAO implements loginDAO {
             public void onSuccess(CognitoUserSession userSession, CognitoDevice newDevice) {
                 // L'accesso è riuscito, cognitoUserSession conterrà i token per l'utente
                 Log.i("Cognito", "Login succesfull");
-                Check.controlloActivityImpostazioni=false;
+                //Check.controlloActivityImpostazioni=false;
                 loagindDialog.startLoadingDialog();
                 Handler handler = new Handler();
                 handler.postDelayed(new Runnable() {

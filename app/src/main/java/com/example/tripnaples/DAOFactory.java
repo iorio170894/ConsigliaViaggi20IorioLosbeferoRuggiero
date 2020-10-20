@@ -103,4 +103,12 @@ public class DAOFactory {
         return null;
     }
 
+    public dettagliUtenteDao getAuthenticationForGetDettagliUtente(){
+
+        if (authentication.equals("Cognito"))
+            return new dettagliUtenteCognitoDao();
+
+        return null;
+    }
+
 }

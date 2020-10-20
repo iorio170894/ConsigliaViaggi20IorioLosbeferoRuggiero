@@ -160,6 +160,7 @@ public class ActivityRicercaPerNome extends AppCompatActivity implements OnMapRe
             @Override
             public void onItemClick(AdapterView<?> adapterView, View view, int s, long l) {
 
+                //Aggiungi martker alla mappa
                 addMarkerSelected(arrayStrutture,adapter.getItem(s));
 
             }
@@ -188,8 +189,9 @@ public class ActivityRicercaPerNome extends AppCompatActivity implements OnMapRe
                 markerOptionsStrutture.title(nomeStruttura);
 
                 //calcolo della distanza dalla posizione corrente
-                double distancetoCurrentPosition=getDistanceKm(Check.latLngCurrent,latLngSelected);
-                markerOptionsStrutture.snippet(String.valueOf("Distanza: "+distancetoCurrentPosition+" km."));
+                //double distancetoCurrentPosition=getDistanceKm(Check.latLngCurrent,latLngSelected);
+                markerOptionsStrutture.snippet(Check.tipoStruttura);
+                //markerOptionsStrutture.snippet(String.valueOf("Distanza: "+distancetoCurrentPosition+" km."));
                 //markerOptionsStrutture.snippet(String.valueOf(strutturaInserita.getLatitudine())+String.valueOf(strutturaInserita.getLongitudine()));
                 //markerOptionsStrutture.icon(BitmapDescriptorFactory.defaultMarker(BitmapDescriptorFactory.HUE_RED));
                 //markerOptionsStrutture.icon(bitmapDescriptorFromVector(this, R.drawable.ic_restaurant_marker));
@@ -304,11 +306,6 @@ public class ActivityRicercaPerNome extends AppCompatActivity implements OnMapRe
             mCurrLocationMarker.remove();
         }
 
-        /*AlertDialog.Builder builder = new AlertDialog.Builder(ActivityRicercaPerNome.this);
-        builder.setTitle("Check_premuto:");
-        builder.setMessage("Count: "+ count +" , Check_premuto: "+check_premuto);
-        count++;
-        builder.show();*/
 
         final LatLng latLng = new LatLng(location.getLatitude(), location.getLongitude());
         final MarkerOptions markerOptions = new MarkerOptions();
@@ -381,6 +378,7 @@ public class ActivityRicercaPerNome extends AppCompatActivity implements OnMapRe
                                 Check.tipoStruttura=strutturaCurr.getTipo_struttura();
                                 Check.codiceStruttura=strutturaCurr.getCod_struttura();
                                 Check.link_immagine=strutturaCurr.getLink_immagine();
+                                Check.rangePrezzo=strutturaCurr.getRange_prezzo();
 
                                 if (Check.loggato)
                                     startActivity(new Intent(ActivityRicercaPerNome.this, ActivityStrutturaLoggato.class));

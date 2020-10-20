@@ -93,6 +93,7 @@ public class ActivityStruttureIntornoaMe extends AppCompatActivity implements On
                     .setNegativeButton("Cancella", null)
                     .show();
         }
+
         //GET JSON per recuperare le strutture dato come input l'url
 
         //Ricerca di strutture intorno a me per tipo
@@ -138,7 +139,6 @@ public class ActivityStruttureIntornoaMe extends AppCompatActivity implements On
                 .findFragmentById(R.id.google_map);
         mapFragment.getMapAsync(this);
 
-
     }
 
     public void addOnMarker(ArrayList<Struttura> arrayStrutture){
@@ -164,43 +164,6 @@ public class ActivityStruttureIntornoaMe extends AppCompatActivity implements On
 
         }
     }
-
-    /*private void chooseTypeMarker(MarkerOptions markerOptionsStrutture) {
-        if ((Check.inputTipoStrutturaForSearch).equals("ristorante")){
-            markerOptionsStrutture.icon(bitmapDescriptorFromVector(this, R.drawable.ic_restaurant_marker));
-        }
-        else if ((Check.inputTipoStrutturaForSearch).equals("bar")){
-            markerOptionsStrutture.icon(bitmapDescriptorFromVector(this, R.drawable.ic_bar_prova_marker));
-        }
-        else if ((Check.inputTipoStrutturaForSearch).equals("hotel")){
-            markerOptionsStrutture.icon(bitmapDescriptorFromVector(this, R.drawable.ic_hotel_marker));
-        }
-        else if ((Check.inputTipoStrutturaForSearch).equals("parco")){
-            markerOptionsStrutture.icon(bitmapDescriptorFromVector(this, R.drawable.ic_park_marker));
-        }
-        else if ((Check.inputTipoStrutturaForSearch).equals("teatro")){
-            markerOptionsStrutture.icon(bitmapDescriptorFromVector(this, R.drawable.ic_theatre_marker));
-        }
-        else if ((Check.inputTipoStrutturaForSearch).equals("museo")){
-            markerOptionsStrutture.icon(bitmapDescriptorFromVector(this, R.drawable.ic_museo_marker));
-        }
-    }
-
-
-    private BitmapDescriptor bitmapDescriptorFromVector(Context context, int vectorResId) {
-        Drawable vectorDrawable = ContextCompat.getDrawable(context, vectorResId);
-        vectorDrawable.setBounds(0, 0, vectorDrawable.getIntrinsicWidth(), vectorDrawable.getIntrinsicHeight());
-        Bitmap bitmap = Bitmap.createBitmap(vectorDrawable.getIntrinsicWidth(), vectorDrawable.getIntrinsicHeight(), Bitmap.Config.ARGB_8888);
-        Canvas canvas = new Canvas(bitmap);
-        vectorDrawable.draw(canvas);
-        return BitmapDescriptorFactory.fromBitmap(bitmap);
-    }*/
-
-    /*
-    private boolean isGPSEnabled() {
-        LocationManager cm = (LocationManager) getSystemService(Context.LOCATION_SERVICE);
-        return cm.isProviderEnabled(LocationManager.GPS_PROVIDER);
-    }*/
 
     @Override
     public void onMapReady(GoogleMap googleMap) {
@@ -270,17 +233,7 @@ public class ActivityStruttureIntornoaMe extends AppCompatActivity implements On
         //Set current position
         Check.latLngCurrent=latLng;
 
-        //mMap.moveCamera(CameraUpdateFactory.newLatLng(latLng));
-       // mMap.animateCamera(CameraUpdateFactory.zoomTo(11));
         mMap.animateCamera(CameraUpdateFactory.newLatLngZoom(latLng,11));
-
-        /*AlertDialog.Builder builder = new AlertDialog.Builder(ActivityStruttureIntornoaMe.this);
-        builder.setTitle("Check_premuto:");
-        builder.setMessage("Count: "+ count +" , Check_premuto: "+check_premuto);
-        count++;
-        builder.show();*/
-
-
 
         //azione sul click di un marker
         mMap.setOnMarkerClickListener(new GoogleMap.OnMarkerClickListener() {
@@ -302,7 +255,6 @@ public class ActivityStruttureIntornoaMe extends AppCompatActivity implements On
                         final AlertDialog dialog = new AlertDialog.Builder(ActivityStruttureIntornoaMe.this)
                                 .setTitle(strutturaCurr.getTipo_struttura()+": \n"+strutturaCurr.getNome())
                                 .setMessage(strutturaCurr.getIndirizzo()+", "+strutturaCurr.getCittà()+"\nDistanza: "+distancetoCurrentPosition+" km.")
-                                //.setMessage(latitudineCurr+", "+longitudineCurr)
                                 .setIcon(R.drawable.ic_location)
                                 .setPositiveButton("Visualizza dettagli Struttura", null)
                                 .show();

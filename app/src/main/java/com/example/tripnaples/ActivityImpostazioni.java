@@ -33,6 +33,8 @@ public class ActivityImpostazioni extends AppCompatActivity implements AdapterVi
     static String emailSalvata;
     static String nicnknameSalvato;
 
+    dettagliUtenteDao dettagliUtenteDao;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -58,9 +60,6 @@ public class ActivityImpostazioni extends AppCompatActivity implements AdapterVi
                     @Override
                     public void onClick(View v) {
                         CognitoSettings.logout();
-                        //Check.loggato=false;
-                        //LoginActivity.logout();
-                        //startActivity(new Intent(ActivityImpostazioni.this, MainActivity.class));
                         Intent turnMain = new Intent(ActivityImpostazioni.this,MainActivity.class);
                         turnMain.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
                         ActivityImpostazioni.this.startActivity(turnMain);
@@ -69,8 +68,14 @@ public class ActivityImpostazioni extends AppCompatActivity implements AdapterVi
             }
         });
 
-        getDettagliUtente();
+        //getDettagliUtente
 
+        DAOFactory DF = DAOFactory.getDAOInstance(ActivityImpostazioni.this);
+        dettagliUtenteDao = DF.getAuthenticationForGetDettagliUtente();
+        dettagliUtenteDao.getDettagliUtente(ActivityImpostazioni.this,textEmail,textNickname,textNomeCognome);
+
+
+        //Spinner con firma
         Spinner coloredSpinner = findViewById(R.id.Spinner01);
         ArrayAdapter adapter = ArrayAdapter.createFromResource(
                 this,
@@ -86,13 +91,12 @@ public class ActivityImpostazioni extends AppCompatActivity implements AdapterVi
     public void onItemSelected(AdapterView<?> adapterView, View view, int i, long l) {
         String text = adapterView.getItemAtPosition(i).toString();
         Toast.makeText(adapterView.getContext(), text, Toast.LENGTH_SHORT).show();
-        //Check.firma=text;
-        //Check.controlloActivityImpostazioni=true;
+
         if (text.equals("Nome e Cognome")){
-            Check.firma=nomeCognomeSalvato;
+            Check.firma=Check.nomeCognomeSpinner;
         }
         else if (text.equals("Nickname")){
-            Check.firma=nicnknameSalvato;
+            Check.firma=Check.nicnknameSpinner;
         }
     }
 
@@ -101,6 +105,7 @@ public class ActivityImpostazioni extends AppCompatActivity implements AdapterVi
 
     }
 
+    /*
     public void getDettagliUtente(){
         GetDetailsHandler handler = new GetDetailsHandler() {
             @Override
@@ -135,6 +140,6 @@ public class ActivityImpostazioni extends AppCompatActivity implements AdapterVi
         CognitoSettings cognitoSettings = new CognitoSettings(ActivityImpostazioni.this);
         CognitoUser corrente = cognitoSettings.getUserPool().getCurrentUser();
         cognitoSettings.getUserPool().getUser(corrente.getUserId()).getDetailsInBackground(handler);
-    }
+    }*/
 
 }

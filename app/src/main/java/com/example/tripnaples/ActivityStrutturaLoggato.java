@@ -73,6 +73,7 @@ public class ActivityStrutturaLoggato extends AppCompatActivity implements OnMap
     RatingBar ratingBar;
     double rateValue;
     String temp;
+    dettagliUtenteDao dettagliUtenteDao;
 
     private RequestQueue requestQueue;
 
@@ -119,6 +120,7 @@ public class ActivityStrutturaLoggato extends AppCompatActivity implements OnMap
             textRangeStruttura.setText("Range di prezzo alto");
         }
 
+        //Carica immagine Struttura
         Glide.with(ActivityStrutturaLoggato.this)
                 .load(Check.link_immagine)
                 .diskCacheStrategy(DiskCacheStrategy.NONE)
@@ -126,18 +128,18 @@ public class ActivityStrutturaLoggato extends AppCompatActivity implements OnMap
 
         mydialog=new Dialog(this);
 
+        //Carica le recensioni della struttura
         DAOFactory DF = DAOFactory.getDAOInstance(ActivityStrutturaLoggato.this);
         recDAO = DF.getServerRecensioniDAO();
         recDAO.getRecensioneByCodStruttura(new onResultList() {
             @Override
             public void getResult(Object object) {
-                //arrayStrutture.add((Struttura) object);
                 arrayRecensioni.add((RecensioneApprovata)object);
             }
 
             @Override
             public void onFinish() {
-                //Aggiungi le recensione sulla RecyclerView
+                //aggiungi recensioni alla recyclerView
                 addReviewOnRecyclerView(arrayRecensioni);
             }
         }, Check.codiceStruttura, ActivityStrutturaLoggato.this);
@@ -186,25 +188,27 @@ public class ActivityStrutturaLoggato extends AppCompatActivity implements OnMap
     }
 
 
+    //Popup per l'inserimento della recensione che si attiva quando si preme Aggiungi Recensione
     public void ShowPopup (View v){
         mydialog.setContentView(R.layout.custompopuprecensione);
         textFirma= mydialog.findViewById(R.id.firmaRecensione);
         mydialog.getWindow().setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
         mydialog.show();
 
-        /*AlertDialog.Builder builder = new AlertDialog.Builder(ActivityStrutturaLoggato.this);
+
+        AlertDialog.Builder builder = new AlertDialog.Builder(ActivityStrutturaLoggato.this);
         builder.setTitle("Dettagli utente:");
-        builder.setMessage("Check.controlloActivityImpostazioni: "+Check.controlloActivityImpostazioni+", \n" +
-                "Check.firma: "+Check.firma);
-        builder.show();*/
+        builder.setMessage("Check.firma: "+Check.firma);
+        builder.show();
 
         if (Check.firma==null) {
-            getNicknameUtente();
-            /*AlertDialog.Builder builder = new AlertDialog.Builder(ActivityStrutturaLoggato.this);
-            builder.setTitle("Dettagli utente:");
-            builder.setMessage("Nickname: "+nicnknameSalvato);
-            builder.show();
-            textFirma.setText(nicnknameSalvato);*/
+
+            //Se la firma non è stata ancora scelta nelle impostazioni allora di default metti il nickname
+            //get Nickname
+            DAOFactory DF = DAOFactory.getDAOInstance(ActivityStrutturaLoggato.this);
+            dettagliUtenteDao = DF.getAuthenticationForGetDettagliUtente();
+            dettagliUtenteDao.getNicknameUtente(ActivityStrutturaLoggato.this,textFirma);
+
         }
         else
             textFirma.setText(Check.firma);
@@ -236,15 +240,7 @@ public class ActivityStrutturaLoggato extends AppCompatActivity implements OnMap
         submit.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                /*
-            * {
-                    "numero_stelle": "5",
-                    "descrizione_testuale": "Ottima struttura, da consigliare. Ci tornerò!",
-                    "codice_struttura": "1",
-                    "utente": "iorio170894"
-            }
-            *
-            * */
+
                 if ((String.valueOf(review.getText()).isEmpty()) || rateValue<0.5 || rateValue >5.0){
                     if (String.valueOf(review.getText()).isEmpty())
                         review.setError("Attenzione campo vuoto");
@@ -267,7 +263,8 @@ public class ActivityStrutturaLoggato extends AppCompatActivity implements OnMap
                                 "\"codice_struttura\":" + "\"" + Check.codiceStruttura + "\",\n" +
                                 "\"utente\":" + "\"" + String.valueOf(textFirma.getText())+ "\"\n" +
                                 "}";
-                        //JsonPost(data);
+
+                        //Inviare recensione da approvare al database
                         DAOFactory DF = DAOFactory.getDAOInstance(ActivityStrutturaLoggato.this);
                         recDaApprovareDAO = DF. getServerPutRecensioniDAO();
                         recDaApprovareDAO.putRecensioneByCodStruttura(data,ActivityStrutturaLoggato.this,mydialog);
@@ -278,122 +275,11 @@ public class ActivityStrutturaLoggato extends AppCompatActivity implements OnMap
         });
     }
 
-    /*private void JsonPost(String data)
-    {
-        final String savedata= data;
-        String URL="http://consigliaviaggi20.us-east-2.elasticbeanstalk.com/recensione_da_approvare/insert_recensione_da_approvare.php";
 
-        requestQueue = Volley.newRequestQueue(getApplicationContext());
-        StringRequest stringRequest = new StringRequest(Request.Method.POST, URL, new Response.Listener<String>() {
-            @Override
-            public void onResponse(String response) {
-                try {
-                    JSONObject objres=new JSONObject(response);
-                    //Toast.makeText(getApplicationContext(),objres.toString(),Toast.LENGTH_LONG).show();
-
-                    final AlertDialog dialog = new AlertDialog.Builder(ActivityStrutturaLoggato.this)
-                            .setTitle("Invio Recensione da approvare")
-                            .setMessage("Recensione da approvare inviata al BackOffice con successo!")
-                            .setPositiveButton("OK", null)
-                            .setIcon(R.drawable.ic_review_primary_dark)
-                            .show();
-                    Button positiveButton = dialog.getButton(AlertDialog.BUTTON_POSITIVE);
-                    positiveButton.setOnClickListener(new View.OnClickListener() {
-                        @Override
-                        public void onClick(View v) {
-                            dialog.dismiss();
-                            mydialog.dismiss();
-                        }
-                    });
-
-
-                } catch (JSONException e) {
-                    //Toast.makeText(getApplicationContext(),"Server Error",Toast.LENGTH_LONG).show();
-                    AlertDialog.Builder builder=new AlertDialog.Builder(ActivityStrutturaLoggato.this);
-                    builder.setTitle("Json Response:");
-                    builder.setMessage("Server Error");
-                    builder.setIcon(android.R.drawable.ic_dialog_alert);
-                    builder.show();
-
-                }
-                //Log.i("VOLLEY", response);
-            }
-        }, new Response.ErrorListener() {
-            @Override
-            public void onErrorResponse(VolleyError error) {
-
-                //Toast.makeText(getApplicationContext(), error.getMessage(), Toast.LENGTH_SHORT).show();
-                AlertDialog.Builder builder=new AlertDialog.Builder(ActivityStrutturaLoggato.this);
-                builder.setTitle("Errore:");
-                builder.setMessage("Attenzione:"+error.getLocalizedMessage());
-                builder.setIcon(android.R.drawable.ic_dialog_alert);
-                builder.show();
-
-                //Log.v("VOLLEY", error.toString());
-            }
-        }) {
-            @Override
-            public String getBodyContentType() {
-                return "application/json; charset=utf-8";
-            }
-
-            @Override
-            public byte[] getBody() throws AuthFailureError {
-                try {
-                    return savedata == null ? null : savedata.getBytes("utf-8");
-                } catch (UnsupportedEncodingException uee) {
-                    //Log.v("Unsupported Encoding while trying to get the bytes", data);
-                    return null;
-                }
-            }
-
-        };
-        requestQueue.add(stringRequest);
-    }*/
-
-
-    public void getNicknameUtente(){
-        final String[] returnNome = new String[1];
-        GetDetailsHandler handler = new GetDetailsHandler() {
-            @Override
-            public void onSuccess(final CognitoUserDetails list) {
-                //trovi dettagli utente con successo
-                returnNome[0] = String.valueOf(list.getAttributes().getAttributes().get("nickname"));
-                textFirma.setText(returnNome[0]);
-                /*AlertDialog.Builder builder=new AlertDialog.Builder(ActivityImpostazioni.this);
-                builder.setTitle("Campi Utente:");
-                builder.setMessage("Email:"+emailSalvata+"\nNome e Cognome:"+nomeCognomeSalvato+"\nNickname:"+nicnknameSalvato);
-                builder.show();*/
-            }
-            @Override
-            public void onFailure(final Exception exception) {
-                // Fallimento nel recupero dei dettagli dell'utente
-                Log.e("Eccezione dettagli utente:",exception.toString());
-                new android.app.AlertDialog.Builder(ActivityStrutturaLoggato.this)
-                        .setTitle("Errore nel recuper dei dettagli utente")
-                        .setMessage("We're sorry but we are experiencing problems with your account. Try to exit and log in again. Error details: " + exception.getLocalizedMessage())
-                        .setIcon(android.R.drawable.ic_dialog_alert)
-                        .show();
-            }
-        };
-        CognitoSettings cognitoSettings = new CognitoSettings(ActivityStrutturaLoggato.this);
-        CognitoUser corrente = cognitoSettings.getUserPool().getCurrentUser();
-        cognitoSettings.getUserPool().getUser(corrente.getUserId()).getDetailsInBackground(handler);
-
-    }
 
     @Override
     public void onMapReady(GoogleMap googleMap) {
         mMap = googleMap;
-
-        // Add a marker in Sydney and move the camera
-       /* mMap.addMarker(new MarkerOptions()
-                .position(Check.coordinateStruttura)
-                .title(Check.nomeStruttura))
-                .setSnippet(Check.tipoStruttura);
-        //mMap.moveCamera(CameraUpdateFactory.newLatLng(Check.coordinateStruttura));
-        //mMap.animateCamera(CameraUpdateFactory.zoomTo(6));
-        mMap.animateCamera(CameraUpdateFactory.newLatLngZoom(Check.coordinateStruttura,13));*/
 
         final MarkerOptions markerOptions = new MarkerOptions();
         //Aggiungi marker di colore verde con posizione corrente
