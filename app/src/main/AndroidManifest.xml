@@ -12,7 +12,7 @@
         android:supportsRtl="true"
         android:theme="@style/AppTheme"
         android:usesCleartextTraffic="true">
-        <activity android:name=".SplashScreenActivity">
+        <activity android:name=".Activity.SplashScreenActivity">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
@@ -20,25 +20,25 @@
             </intent-filter>
         </activity>
         <activity
-            android:name=".ActivityRicercaPerNome"
+            android:name=".Activity.ActivityRicercaPerNome"
             android:windowSoftInputMode="adjustResize" />
-        <activity android:name=".ActivityStrutturaNonLoggato" />
-        <activity android:name=".ActivityStrutturaLoggato" />
-        <activity android:name=".ActivityRicerca" />
-        <activity android:name=".ActivityImpostazioniOspite" />
-        <activity android:name=".ActivityImpostazioni" />
-        <activity android:name=".NavDrawer" />
+        <activity android:name=".Activity.ActivityStrutturaNonLoggato" />
+        <activity android:name=".Activity.ActivityStrutturaLoggato" />
+        <activity android:name=".Activity.ActivityRicerca" />
+        <activity android:name=".Activity.ActivityImpostazioniOspite" />
+        <activity android:name=".Activity.ActivityImpostazioni" />
+        <activity android:name=".Utility.NavDrawer" />
         <activity
-            android:name=".ActivityStruttureIntornoaMe" />
+            android:name=".Activity.ActivityStruttureIntornoaMe" />
         <activity
-            android:name=".ActivityBenvenuto">
+            android:name=".Activity.ActivityBenvenuto">
         </activity>
         <activity
-            android:name=".LoginActivity" />
+            android:name=".Activity.LoginActivity" />
         <activity
-            android:name=".ActivityRegistrazione" />
+            android:name=".Activity.ActivityRegistrazione" />
         <activity
-            android:name=".MainActivity">
+            android:name=".Activity.MainActivity">
         </activity>
 
         <meta-data
