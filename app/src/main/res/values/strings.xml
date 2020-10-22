@@ -24,12 +24,12 @@
         <item>Nome e Cognome</item>
     </string-array>
     <string-array name="spinnerStrutture">
-        <item>ristorante</item>
-        <item>hotel</item>
-        <item>bar</item>
-        <item>parco</item>
-        <item>teatro</item>
-        <item>museo</item>
+        <item>Ristorante</item>
+        <item>Hotel</item>
+        <item>Bar</item>
+        <item>Parco</item>
+        <item>Teatro</item>
+        <item>Museo</item>
     </string-array>
     <string-array name="spinnerRangePrezzo">
         <item>basso</item>

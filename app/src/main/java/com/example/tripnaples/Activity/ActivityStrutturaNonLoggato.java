@@ -146,7 +146,7 @@ public class ActivityStrutturaNonLoggato extends AppCompatActivity implements On
 
         //Calcola la media delle recensioni e aggiungila alla textView
         mediaRecensioni=getMediaRecensioni(numero_stelle);
-        textViewMediaRecensioni=findViewById(R.id.mediaRecensioniLoggato);
+        textViewMediaRecensioni=findViewById(R.id.mediaRecensioniNonLoggato);
         textViewMediaRecensioni.setText(Double.toString(mediaRecensioni));
 
         recyclerView = findViewById(R.id.recycler_viewNonLoggato);

@@ -56,8 +56,14 @@ public class MapsClass extends AppCompatActivity {
 
     //ritorna distanza in km tra due posizioni
     public static double getDistanceKm(LatLng pt1, LatLng pt2){
-        double distance = 0d;
-        try{
+        if (pt1.latitude>90 || pt2.latitude >90 || pt1.longitude>180 || pt2.longitude >180){
+            throw new IllegalArgumentException();
+        }
+        else if (pt1.latitude<0 || pt2.latitude <0 || pt1.longitude<0 || pt2.longitude <0){
+            throw new IllegalArgumentException();
+        }
+        else {
+            double distance = 0d;
             double theta = pt1.longitude - pt2.longitude;
             double dist = Math.sin(Math.toRadians(pt1.latitude)) * Math.sin(Math.toRadians(pt2.latitude))
                     + Math.cos(Math.toRadians(pt1.latitude)) * Math.cos(Math.toRadians(pt2.latitude)) * Math.cos(Math.toRadians(theta));
@@ -65,14 +71,11 @@ public class MapsClass extends AppCompatActivity {
             dist = Math.acos(dist);
             dist = Math.toDegrees(dist);
             distance = dist * 60 * 1853.1596;
+            distance = distance / 1000;
+            distance = Math.round(distance * 100);
+            distance = distance / 100;
+            return distance;
         }
-        catch (Exception ex){
-            System.out.println(ex.getMessage());
-        }
-        distance=distance/1000;
-        distance = Math.round(distance * 100);
-        distance = distance/100;
-        return distance;
     }
 
 }

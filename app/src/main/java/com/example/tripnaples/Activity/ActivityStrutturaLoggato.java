@@ -185,6 +185,12 @@ public class ActivityStrutturaLoggato extends AppCompatActivity implements OnMap
 
     public double getMediaRecensioni(double[] array) {
 
+        for (int i=0;i<array.length;i++){
+            if (array[i] <0 || array[i]>5){
+                throw new IllegalArgumentException();
+            }
+        }
+
         double media = 0;
 
         if (array.length>0) {

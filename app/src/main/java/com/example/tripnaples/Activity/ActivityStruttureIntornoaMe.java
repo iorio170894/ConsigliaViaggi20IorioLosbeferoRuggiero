@@ -159,11 +159,8 @@ public class ActivityStruttureIntornoaMe extends AppCompatActivity implements On
             markerOptionsStrutture.snippet(Check.inputTipoStrutturaForSearch);
 
             //Scegli il tipo di marker
-            if (Check.inputTipoStrutturaForSearch!=null)
-                MapsClass.chooseTypeMarker(markerOptionsStrutture,Check.inputTipoStrutturaForSearch,ActivityStruttureIntornoaMe.this);
-
-            if (mCurrLocationMarker!= null)
-                mCurrLocationMarker = mMap.addMarker(markerOptionsStrutture);
+            MapsClass.chooseTypeMarker(markerOptionsStrutture,Check.inputTipoStrutturaForSearch,ActivityStruttureIntornoaMe.this);
+            mCurrLocationMarker = mMap.addMarker(markerOptionsStrutture);
 
         }
     }

@@ -191,14 +191,10 @@ public class ActivityRicercaPerNome extends AppCompatActivity implements OnMapRe
                 markerOptionsStrutture.snippet(Check.tipoStruttura);
 
                 //Scegli il tipo di marker
-                if (Check.tipoStruttura!=null)
-                    MapsClass.chooseTypeMarker(markerOptionsStrutture,Check.tipoStruttura,ActivityRicercaPerNome.this);
-
-                if (mCurrLocationMarker!= null) {
-                    mCurrLocationMarker = mMap.addMarker(markerOptionsStrutture);
-                    marketToRemove = mCurrLocationMarker;
-                    mMap.animateCamera(CameraUpdateFactory.newLatLngZoom(latLngSelected, 13));
-                }
+                MapsClass.chooseTypeMarker(markerOptionsStrutture,Check.tipoStruttura,ActivityRicercaPerNome.this);
+                mCurrLocationMarker = mMap.addMarker(markerOptionsStrutture);
+                marketToRemove = mCurrLocationMarker;
+                mMap.animateCamera(CameraUpdateFactory.newLatLngZoom(latLngSelected, 13));
             }
         }
 
