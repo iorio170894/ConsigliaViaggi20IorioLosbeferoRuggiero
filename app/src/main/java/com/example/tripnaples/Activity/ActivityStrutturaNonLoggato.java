@@ -66,7 +66,6 @@ public class ActivityStrutturaNonLoggato extends AppCompatActivity implements On
     ImageView imageView;
     RecyclerView recyclerView;
 
-    private RequestQueue mQueue;
     ArrayList<RecensioneApprovata> arrayRecensioni=new ArrayList<>();
     TextView textViewMediaRecensioni;
     double mediaRecensioni;

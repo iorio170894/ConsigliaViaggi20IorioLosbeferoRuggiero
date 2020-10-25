@@ -30,14 +30,10 @@ import java.lang.reflect.Array;
 
 public class ActivityImpostazioni extends AppCompatActivity implements AdapterView.OnItemSelectedListener {
 
-    private Utente utenteCorrente;
     private TextView textNomeCognome;
     private TextView textEmail;
     private TextView textNickname;
 
-    static String nomeCognomeSalvato;
-    static String emailSalvata;
-    static String nicnknameSalvato;
 
     dettagliUtenteDao dettagliUtenteDao;
 

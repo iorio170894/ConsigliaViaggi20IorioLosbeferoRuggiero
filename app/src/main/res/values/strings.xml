@@ -1,5 +1,5 @@
 <resources>
-    <string name="app_name">Cicero App</string>
+    <string name="app_name">Urban Trip</string>
     <string name="currency">€</string>
     <string name="action_settings">Settings</string>
     <string name="loading">Please wait Loading…</string>

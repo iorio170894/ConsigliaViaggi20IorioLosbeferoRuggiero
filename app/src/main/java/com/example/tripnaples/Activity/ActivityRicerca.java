@@ -59,13 +59,6 @@ public class ActivityRicerca extends AppCompatActivity implements AdapterView.On
 
    // private GoogleMap mMap;
    // Location mLastLocation;
-    Marker mCurrLocationMarker;
-    GoogleApiClient mGoogleApiClient;
-    LocationRequest mLocationRequest;
-    SearchView searchView;
-    SupportMapFragment mapFragment;
-
-    ArrayList<Struttura> arrayStrutture= new ArrayList<>();
     String strutturaSelected;
     String cittàSelected;
     int range;

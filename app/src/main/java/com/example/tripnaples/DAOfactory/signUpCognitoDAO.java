@@ -47,7 +47,7 @@ public class signUpCognitoDAO implements signUpDAO {
                 positiveButton.setOnClickListener(new View.OnClickListener() {
                     @Override
                     public void onClick(View v) {
-                        //Check.firma=String.valueOf(inputNickname.getText());
+
                         context.startActivity(new Intent(context, MainActivity.class));
                         dialog.dismiss();
                     }

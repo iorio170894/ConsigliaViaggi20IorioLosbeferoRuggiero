@@ -72,7 +72,6 @@ public class ActivityStruttureIntornoaMe extends AppCompatActivity implements On
     Marker mCurrLocationMarker;
     GoogleApiClient mGoogleApiClient;
     LocationRequest mLocationRequest;
-    private RequestQueue mQueue;
     SupportMapFragment mapFragment;
     static boolean check_premuto;
     ArrayList<Struttura> arrayStrutture=new ArrayList<>();

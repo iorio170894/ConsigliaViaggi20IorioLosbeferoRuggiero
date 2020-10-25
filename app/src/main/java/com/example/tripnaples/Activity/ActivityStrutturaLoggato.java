@@ -76,22 +76,17 @@ public class ActivityStrutturaLoggato extends AppCompatActivity implements OnMap
     private TextView textRangeStruttura;
     ImageView imageView;
     private TextView textFirma;
-    String nicnknameSalvato;
-    TextView rateCount, showRating;
+    TextView rateCount;
     EditText review;
     Button submit;
     RatingBar ratingBar;
     double rateValue;
-    String temp;
     dettagliUtenteDao dettagliUtenteDao;
-
-    private RequestQueue requestQueue;
 
     Dialog mydialog;
 
     RecyclerView recyclerView;
 
-    private RequestQueue mQueue;
     ArrayList<RecensioneApprovata> arrayRecensioni=new ArrayList<>();
     TextView textViewMediaRecensioni;
     double mediaRecensioni;

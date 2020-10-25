@@ -40,7 +40,7 @@
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text=" ConsigliaViaggi20 app"
+            android:text=" Urban Trip app"
             android:textColor="#fff"
             android:textSize="20sp"
             tools:layout_editor_absoluteX="43dp"
