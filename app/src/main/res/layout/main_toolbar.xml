@@ -16,6 +16,12 @@
         android:onClick="ClickMenu"
         android:src="@drawable/ic_menu"/>
 
+    <ImageView
+        android:layout_marginLeft="20dp"
+        android:layout_width="57dp"
+        android:layout_height="35dp"
+        android:background="@drawable/ic_urbantrip_logo"></ImageView>
+
     <TextView
         android:layout_width="0dp"
         android:layout_height="wrap_content"

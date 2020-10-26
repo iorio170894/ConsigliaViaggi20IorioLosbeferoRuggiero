@@ -28,23 +28,12 @@
         tools:layout_editor_absoluteX="25dp"
         tools:layout_editor_absoluteY="-11dp" >
 
-        <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="Welcome"
-            android:textColor="#fff"
-            android:textSize="50sp"
-            tools:layout_editor_absoluteX="39dp"
-            tools:layout_editor_absoluteY="-12dp"/>
+        <ImageView
+            android:layout_width="161dp"
+            android:layout_height="99dp"
+            android:background="@drawable/ic_urbantrip_logo"></ImageView>
+        
 
-        <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text=" Urban Trip app"
-            android:textColor="#fff"
-            android:textSize="20sp"
-            tools:layout_editor_absoluteX="43dp"
-            tools:layout_editor_absoluteY="91dp"/>
     </LinearLayout>
 
             <Button
