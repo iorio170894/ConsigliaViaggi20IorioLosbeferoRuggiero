@@ -42,6 +42,7 @@ public class MapsClass extends AppCompatActivity {
         else if (inputTipoStruttura.equals("Museo")){
             markerOptionsStrutture.icon(bitmapDescriptorFromVector(context, R.drawable.ic_museo_marker));
         }
+
     }
 
 

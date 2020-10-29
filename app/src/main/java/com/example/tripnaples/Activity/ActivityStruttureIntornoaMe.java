@@ -152,17 +152,21 @@ public class ActivityStruttureIntornoaMe extends AppCompatActivity implements On
         for (int i = 0; i < arrayStrutture.size(); i++) {
             final Struttura strutturaInserita = arrayStrutture.get(i);
             LatLng latLngStrutture = new LatLng(strutturaInserita.getLatitudine(), strutturaInserita.getLongitudine());
+
             MarkerOptions markerOptionsStrutture = new MarkerOptions();
             markerOptionsStrutture.position(latLngStrutture);
             markerOptionsStrutture.title(strutturaInserita.getNome());
-            markerOptionsStrutture.snippet(Check.inputTipoStrutturaForSearch);
+            markerOptionsStrutture.snippet(strutturaInserita.getTipo_struttura());
 
             //Scegli il tipo di marker
-            MapsClass.chooseTypeMarker(markerOptionsStrutture,Check.inputTipoStrutturaForSearch,ActivityStruttureIntornoaMe.this);
+            markerOptionsStrutture.icon(BitmapDescriptorFactory.defaultMarker(BitmapDescriptorFactory.HUE_RED));
+            MapsClass.chooseTypeMarker(markerOptionsStrutture,strutturaInserita.getTipo_struttura(),ActivityStruttureIntornoaMe.this);
             mCurrLocationMarker = mMap.addMarker(markerOptionsStrutture);
 
         }
+
     }
+
 
     @Override
     public void onMapReady(GoogleMap googleMap) {
@@ -216,9 +220,9 @@ public class ActivityStruttureIntornoaMe extends AppCompatActivity implements On
     public void onLocationChanged(Location location) {
 
         mLastLocation = location;
-        if (mCurrLocationMarker != null) {
+       /* if (mCurrLocationMarker != null) {
             mCurrLocationMarker.remove();
-        }
+        }*/
 
 
         final LatLng latLng = new LatLng(location.getLatitude(), location.getLongitude());

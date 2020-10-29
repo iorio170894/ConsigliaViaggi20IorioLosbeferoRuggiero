@@ -254,9 +254,9 @@ public class ActivityRicercaPerNome extends AppCompatActivity implements OnMapRe
         mMap.clear();
 
         mLastLocation = location;
-        if (mCurrLocationMarker != null) {
+        /*if (mCurrLocationMarker != null) {
             mCurrLocationMarker.remove();
-        }
+        }*/
 
 
         final LatLng latLng = new LatLng(location.getLatitude(), location.getLongitude());

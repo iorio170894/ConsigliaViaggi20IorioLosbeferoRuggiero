@@ -169,7 +169,7 @@ public class JsonClass {
 
     }
 
-    public void putJsonRecensioniByCodStruttura(String data, final Context context, String URL, final Dialog myDialog)
+    public void putJsonRecensioniByCodStruttura(final String data, final Context context, String URL, final Dialog myDialog)
     {
         final String savedata= data;
         //String URL="http://consigliaviaggi20.us-east-2.elasticbeanstalk.com/recensione_da_approvare/insert_recensione_da_approvare.php";
@@ -180,7 +180,6 @@ public class JsonClass {
             public void onResponse(String response) {
                 try {
                     JSONObject objres=new JSONObject(response);
-
                     final AlertDialog dialog = new AlertDialog.Builder(context)
                             .setTitle("Invio Recensione da approvare")
                             .setMessage("Recensione da approvare inviata al BackOffice con successo!")
@@ -213,7 +212,7 @@ public class JsonClass {
 
                 AlertDialog.Builder builder=new AlertDialog.Builder(context);
                 builder.setTitle("Errore:");
-                builder.setMessage("Attenzione:"+error.getLocalizedMessage());
+                builder.setMessage("Attenzione:"+error.getLocalizedMessage()+"Stringa: \n"+data);
                 builder.setIcon(android.R.drawable.ic_dialog_alert);
                 builder.show();
 
