@@ -236,6 +236,9 @@ public class ActivityStrutturaLoggato extends AppCompatActivity implements OnMap
                     if (String.valueOf(review.getText()).length() < 8){
                         review.setError("Inserisci almeno 8 caratteri");
                     }
+                    else if (String.valueOf(review.getText()).length() > 500){
+                        review.setError("Attenzione puoi inserire massimo 500 caratteri");
+                    }
                     else {
                         String descrizioneTestuale=ActivityStrutturaLoggato.escape(String.valueOf(review.getText()));
                         String data = "{\n" +
