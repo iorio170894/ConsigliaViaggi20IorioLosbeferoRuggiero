@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
-    package="com.example.tripnaples">
+    package="com.example.UrbanTrip">
 
     <application
         android:allowBackup="true"
@@ -12,7 +12,7 @@
         android:supportsRtl="true"
         android:theme="@style/AppTheme"
         android:usesCleartextTraffic="true">
-        <activity android:name=".Activity.SplashScreenActivity">
+        <activity android:name="com.example.UrbanTrip.Activity.SplashScreenActivity">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
@@ -20,25 +20,25 @@
             </intent-filter>
         </activity>
         <activity
-            android:name=".Activity.ActivityRicercaPerNome"
+            android:name="com.example.UrbanTrip.Activity.ActivityRicercaPerNome"
             android:windowSoftInputMode="adjustResize" />
-        <activity android:name=".Activity.ActivityStrutturaNonLoggato" />
-        <activity android:name=".Activity.ActivityStrutturaLoggato" />
-        <activity android:name=".Activity.ActivityRicerca" />
-        <activity android:name=".Activity.ActivityImpostazioniOspite" />
-        <activity android:name=".Activity.ActivityImpostazioni" />
-        <activity android:name=".Utility.NavDrawer" />
+        <activity android:name="com.example.UrbanTrip.Activity.ActivityStrutturaNonLoggato" />
+        <activity android:name="com.example.UrbanTrip.Activity.ActivityStrutturaLoggato" />
+        <activity android:name="com.example.UrbanTrip.Activity.ActivityRicerca" />
+        <activity android:name="com.example.UrbanTrip.Activity.ActivityImpostazioniOspite" />
+        <activity android:name="com.example.UrbanTrip.Activity.ActivityImpostazioni" />
+        <activity android:name="com.example.UrbanTrip.Utility.NavDrawer" />
         <activity
-            android:name=".Activity.ActivityStruttureIntornoaMe" />
+            android:name="com.example.UrbanTrip.Activity.ActivityStruttureIntornoaMe" />
         <activity
-            android:name=".Activity.ActivityBenvenuto">
+            android:name="com.example.UrbanTrip.Activity.ActivityBenvenuto">
         </activity>
         <activity
-            android:name=".Activity.LoginActivity" />
+            android:name="com.example.UrbanTrip.Activity.LoginActivity" />
         <activity
-            android:name=".Activity.ActivityRegistrazione" />
+            android:name="com.example.UrbanTrip.Activity.ActivityRegistrazione" />
         <activity
-            android:name=".Activity.MainActivity">
+            android:name="com.example.UrbanTrip.Activity.MainActivity">
         </activity>
 
         <meta-data
