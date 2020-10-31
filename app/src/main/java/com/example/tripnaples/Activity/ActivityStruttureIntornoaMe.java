@@ -88,7 +88,7 @@ public class ActivityStruttureIntornoaMe extends AppCompatActivity implements On
         //Se il GPS non è attivo
         if (!MapsClass.isGPSEnabled(ActivityStruttureIntornoaMe.this)) {
             new AlertDialog.Builder(ActivityStruttureIntornoaMe.this)
-                    .setMessage("Attenzione, attiva il GPS!")
+                    .setMessage("Attenzione, per visualizzare questa schermata attiva il GPS!")
                     .setCancelable(false)
                     .setPositiveButton("Opzioni", new DialogInterface.OnClickListener() {
                         public void onClick(DialogInterface dialog, int id) {
@@ -96,7 +96,12 @@ public class ActivityStruttureIntornoaMe extends AppCompatActivity implements On
                             startActivity(i);
                         }
                     })
-                    .setNegativeButton("Cancella", null)
+                    .setNegativeButton("Indietro", new DialogInterface.OnClickListener() {
+                        @Override
+                        public void onClick(DialogInterface dialogInterface, int i) {
+                            onBackPressed();
+                        }
+                    })
                     .show();
         }
 
@@ -165,6 +170,11 @@ public class ActivityStruttureIntornoaMe extends AppCompatActivity implements On
 
         }
 
+        if ((Check.tipoRicerca).equals("filtrata")) {
+            Struttura strutturaForMarker = arrayStrutture.get(arrayStrutture.size()-1);
+            LatLng latLngForMarker= new LatLng(strutturaForMarker.getLatitudine(),strutturaForMarker.getLongitudine());
+            mMap.animateCamera(CameraUpdateFactory.newLatLngZoom(latLngForMarker,11));
+        }
     }
 
 
@@ -237,7 +247,8 @@ public class ActivityStruttureIntornoaMe extends AppCompatActivity implements On
         //Set current position
         Check.latLngCurrent=latLng;
 
-        mMap.animateCamera(CameraUpdateFactory.newLatLngZoom(latLng,11));
+        if (!(Check.tipoRicerca).equals("filtrata"))
+            mMap.animateCamera(CameraUpdateFactory.newLatLngZoom(latLng,11));
 
         //azione sul click di un marker
         mMap.setOnMarkerClickListener(new GoogleMap.OnMarkerClickListener() {

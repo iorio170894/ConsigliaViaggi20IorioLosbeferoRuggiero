@@ -91,7 +91,7 @@ public class ActivityRicercaPerNome extends AppCompatActivity implements OnMapRe
         //controllo gps
         if (!MapsClass.isGPSEnabled(ActivityRicercaPerNome.this)) {
             new AlertDialog.Builder(ActivityRicercaPerNome.this)
-                    .setMessage("Attenzione, attiva il GPS!")
+                    .setMessage("Attenzione, per visualizzare questa schermata attiva il GPS!")
                     .setCancelable(false)
                     .setPositiveButton("Opzioni", new DialogInterface.OnClickListener() {
                         public void onClick(DialogInterface dialog, int id) {
@@ -99,7 +99,12 @@ public class ActivityRicercaPerNome extends AppCompatActivity implements OnMapRe
                             startActivity(i);
                         }
                     })
-                    .setNegativeButton("Cancella", null)
+                    .setNegativeButton("Indietro", new DialogInterface.OnClickListener() {
+                        @Override
+                        public void onClick(DialogInterface dialogInterface, int i) {
+                            onBackPressed();
+                        }
+                    })
                     .show();
         }
 
